@@ -22,6 +22,10 @@ class Blockchain {
                 let genesisBlock = new Block(); // initial block
                 this.addBlock(genesisBlock);
             }
+            else {
+                let previousBlock = this.getPreviousBlock();
+                previousBlock.hash = this.hash; //this.hash = previousBlock.getPreviousBlockHash();
+            }
         })();
     }
 
