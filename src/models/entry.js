@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 class Entry {
     constructor(lastGuid, status, fortune) {
         if (!lastGuid || !status || !fortune)
