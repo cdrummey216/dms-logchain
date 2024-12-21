@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const Blockchain = require('./blockchain');
+const Logchain = require('./logchain');
 
 class Nodes {
     constructor(url, port) {
@@ -12,20 +12,20 @@ class Nodes {
                 this.list.push(nodes[i]);
     }
 
-    resolve(res, blockchain) {
+    resolve(res, logchain) {
         let completed = 0;
         let nNodes = this.list.length;
         let response = [];
         let errorCount = 0;
 
         this.list.forEach(function(node) {
-            fetch(node + '/blockchain')
+            fetch(node + '/logchain')
                 .then(function(resp) {
                     return resp.json();
                 })
                 .then(function(respBlockchain) {
-                    if (blockchain.blocks.length < respBlockchain.length) {
-                        blockchain.updateBlocks(respBlockchain);
+                    if (logchain.logs.length < respLogchain.length) {
+                        logchain.updateLogs(respLogchain);
                         response.push({synced: node});
                     } else {
                         response.push({noaction: node});
