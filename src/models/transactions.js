@@ -9,7 +9,7 @@ class Transactions {
         let response = '';
 
         try {
-            let tx = new Transaction(req.body.from, req.body.to, req.body.amount, req.body.fortune);
+            let tx = new Transaction(req.body.from, req.body.to, req.body.amount);
             this.list.push(tx);
             response = {'success': 1};
 
