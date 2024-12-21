@@ -12,8 +12,9 @@ class Log {
         return JSON.stringify(this.entries) + this.index + this.previousHash + this.nonce;
     }
 
-    addEntries(entries) {
+    addEntries(entries, previousLogIdx) {
         entries.list.forEach(entry => {
+            entry.lastLog = previousLogIdx;
             this.entries.push(entry);
         });
         entries.reset();
