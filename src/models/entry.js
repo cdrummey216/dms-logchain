@@ -6,7 +6,7 @@ class Entry {
 
         this.guid = crypto.randomUUID();
         this.lastGuid = lastGuid;
-        this.lastBlock = 1;
+        this.lastLog = 0;
         this.status = status;
         this.fortune = fortune;
         this.timestamp = Math.floor(+new Date() / 1000);
