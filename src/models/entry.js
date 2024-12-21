@@ -4,7 +4,7 @@ class Entry {
         if (!lastGuid || !status || !fortune)
             throw new Error('Invalid data');
 
-        this.guid = ;
+        this.guid = crypto.randomUUID();
         this.lastGuid = lastGuid;
         this.status = status;
         this.timestamp = Math.floor(+new Date() / 1000);
