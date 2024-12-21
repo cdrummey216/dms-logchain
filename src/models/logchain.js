@@ -20,7 +20,7 @@ class Logchain {
 
             if (this.logs.length == 0) {
                 let genesisLog  = new Log(); // initial block
-                this.addBlock(genesisLog);
+                this.addLog(genesisLog);
             }
         })();
     }
@@ -42,7 +42,7 @@ class Logchain {
         let log = new Log();        
         let previousLog = this.getPreviousLog();
 
-        log.addEntries(entries);
+        log.addEntries(entries, previousLog.index);
         log.index = previousLog.index + 1;
         log.previousHash = previousLog.hash;
         log.hash = this.generateHash(log);
