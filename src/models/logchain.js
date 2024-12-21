@@ -50,7 +50,7 @@ class Logchain {
         return log;
     }
 
-    getPreviousBlock() {
+    getPreviousLog() {
         return this.logs[this.logs.length - 1];
     }
 
