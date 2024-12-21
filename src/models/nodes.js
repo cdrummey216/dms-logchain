@@ -23,7 +23,7 @@ class Nodes {
                 .then(function(resp) {
                     return resp.json();
                 })
-                .then(function(respBlockchain) {
+                .then(function(respLogchain) {
                     if (logchain.logs.length < respLogchain.length) {
                         logchain.updateLogs(respLogchain);
                         response.push({synced: node});
