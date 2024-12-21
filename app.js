@@ -17,7 +17,6 @@ let listener = app.listen(port, url, function() {
 
 // API
 //let controller = new blockchainController(url, port);
-let lcontroller = new logchainController(url, port);
 //app.get('/resolve', controller.resolve.bind(controller));
 //app.get('/nodes', controller.getNodes.bind(controller));
 //app.post('/transaction', controller.postTransaction.bind(controller));
@@ -26,6 +25,8 @@ let lcontroller = new logchainController(url, port);
 //app.get('/blockchain/last-index', controller.getBlockLastIndex.bind(controller));
 //app.get('/blockchain/:idx', controller.getBlockByIndex.bind(controller));
 //app.get('/blockchain', controller.getBlockchain.bind(controller));
+
+let lcontroller = new logchainController(url, port);
 
 app.get('/resolve', lcontroller.resolve.bind(lcontroller));
 app.get('/nodes', lcontroller.getNodes.bind(lcontroller));
