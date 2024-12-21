@@ -11,7 +11,7 @@ class Logchain {
 
         (async () => {
             this.storage = nodePersist.create({
-                dir: __dirname + '/../../storage/' + crypto.createHash('md5').update(url+port).digest("hex")
+                dir: __dirname + '/../../logstorage/' + crypto.createHash('md5').update(url+port).digest("hex")
             });
             await this.storage.init();
 
