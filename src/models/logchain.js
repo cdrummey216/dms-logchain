@@ -101,7 +101,7 @@ class Logchain {
         return foundLog;
     }
 
-    getBlockLastIndex() {
+    getLogLastIndex() {
         return this.logs.length-1;
     }
 }
