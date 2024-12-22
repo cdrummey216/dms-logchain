@@ -14,7 +14,7 @@ class Log {
 
     addEntries(entries, previousLogIdx) {
         entries.list.forEach(entry => {
-            entry.lastLog = previousLogIdx;
+            entry.lastLog = previousLogIdx + 1;
             this.entries.push(entry);
         });
         entries.reset();
