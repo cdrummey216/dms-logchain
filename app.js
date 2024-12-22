@@ -10,6 +10,7 @@ const port = process.env.PORT || 4000;
 // Init express
 let app = express();
 app.use(bodyParser.json());
+app.use(express.static('public'));
 
 let listener = app.listen(port, url, function() {
     console.log('Server started at ' + listener.address().address + ':' + listener.address().port);
