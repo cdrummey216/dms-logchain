@@ -104,6 +104,26 @@ class Logchain {
     getLogLastIndex() {
         return this.logs.length-1;
     }
+    
+    getEntryByIndexGuid(idx, guid) {
+        let foundLog = [];
+        let foundEntry;
+        if (idx<=this.logs.length) {
+            this.logs.forEach( (log) => {
+                if (idx == log.index) {
+                    foundLog = log;
+                    this.foundLog.entries.forEach( (entry) => {
+                        if (guid == entry.guid) {
+                            foundEntry = entry;
+                            return;
+                        }
+                    });
+                }
+            });
+        }
+
+        return foundLog;
+    }
 }
 
 module.exports = Logchain;
