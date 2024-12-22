@@ -1,5 +1,9 @@
-import { fetch } from './node-fetch';
-const fetch = require('node-fetch');
+//import fetch from 'node-fetch';
+//const fetch = require('node-fetch');
+let fetch;
+(async () => {
+    fetch = (await import('node-fetch')).default;
+})();
 const Logchain = require('./logchain');
 
 class Nodes {
