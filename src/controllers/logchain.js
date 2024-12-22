@@ -40,6 +40,10 @@ class LogchainController {
     getLogLastIndex(req, res) {
         res.json(this.logchain.getLogLastIndex());
     }
+    
+    getEntryByIndexGuid(req, res) {
+        res.json(this.logchain.getEntryByIndexGuid(req.params.idx, req.params.guid));
+    }
 }
 
 module.exports = LogchainController;
