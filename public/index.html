@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>dms-blockchain</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+
+  </head>
+  <body>
+    <main>
+        <h1>dms-blockchain</h1>
+        <h3>dms-blockchain-newTx</h3>
+        <form id="thisForm">
+            <label for="from">from:</label>
+            <input type="text" name="from" /><br />
+            
+            <label for="to">to:</label>
+            <input type="text" name="to" /><br />
+            
+            <label for="amount">amount:</label>
+            <input type="number" name="amount" /><br />
+            
+            <label for="fortune">fortune:</label>
+            <input type="text" name="fortune" /><br />
+            
+            <label for="lastGuid">lastGuid:</label>
+            <input id="lastGuid" type="text" name="lastGuid" value="" /><br />
+            
+            <input type="submit" />
+        </form>
+            <script type="text/javascript"> 
+
+            function uuidv4() {
+              return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
+                (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
+              );
+            }
+            function setInputValue2() {
+              document.getElementById("lastGuid").value = uuidv4();
+            }
+            setInputValue2();
+            
+            
+            var form = document.getElementById('thisForm');
+            form.onsubmit = function(event){
+                    var xhr = new XMLHttpRequest();
+                    var formData = new FormData(form);
+                    //open the request
+                    xhr.open('POST','http://localhost:4000/transaction')
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    xhr.setRequestHeader('Access-Control-Allow-Origin','*');
+                    //send the form data
+                    xhr.send(JSON.stringify(Object.fromEntries(formData)));
+
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState == XMLHttpRequest.DONE) {
+                            form.reset(); //reset form after AJAX success or do something else
+                        }
+                    }
+                    //Fail the onsubmit to avoid page refresh.
+                    return false; 
+                }
+          </script>
+    </main>
+  </body>
+</html>
+
