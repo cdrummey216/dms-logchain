@@ -122,7 +122,7 @@ class Logchain {
             });
         }
 
-        return foundLog;
+        return foundEntry;
     }
 }
 
