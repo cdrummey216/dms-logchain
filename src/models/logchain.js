@@ -107,7 +107,7 @@ class Logchain {
     
     getEntryByIndexGuid(idx, guid) {
         let foundLog = [];
-        let foundEntry;
+        let foundEntry = [];
         if (idx<=this.logs.length) {
             foundLog = this.logs.filter(log => log.index === idx);
             foundLog.entries.forEach( (entry) => {
