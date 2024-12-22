@@ -109,19 +109,14 @@ class Logchain {
         let foundLog = [];
         let foundEntry;
         if (idx<=this.logs.length) {
-            this.logs.forEach( (log) => {
-                if (idx == log.index) {
-                    foundLog = log;
-                    this.foundLog.entries.forEach( (entry) => {
-                        if (guid == entry.guid) {
-                            foundEntry = entry;
-                            return;
-                        }
-                    });
+            foundLog = this.logs.filter(log => log.index === idx);
+            foundLog.entries.forEach( (entry) => {
+            if (guid == entry.guid) {
+                foundEntry = entry;
+                return;
                 }
             });
         }
-
         return foundEntry;
     }
 }
