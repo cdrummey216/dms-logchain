@@ -40,6 +40,19 @@ class Logchain {
             await this.storage.setItem('logs', this.logs);
         })();
     }
+    
+    addEntry(entry) {
+        if (this.logs.length == 0) {
+            log.previousHash = "0000000000000000";
+            log.hash = this.generateHash(log);
+        }
+
+        this.logs.push(log);
+        
+        (async () => {
+            await this.storage.setItem('logs', this.logs);
+        })();
+    }
 
     getNextLog(entries) {
         let log = new Log();        
