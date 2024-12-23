@@ -22,7 +22,7 @@ class Logchain {
                 let genesisLog  = new Log(); // initial log
                 this.addLog(genesisLog);
                 
-                let genesisEntry = new Entry("", "alive", "hello, world"); // lastGuid, status, fortune initial entry
+                let genesisEntry = new Entry("10000000-1000-4000-8000-100000000000", "alive", "hello, world"); // lastGuid, status, fortune initial entry
                 this.addEntry(genesisEntry);
             }
         })();
