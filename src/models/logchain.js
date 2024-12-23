@@ -19,8 +19,11 @@ class Logchain {
             this.logs = typeof logs != 'undefined' ? logs : [];
 
             if (this.logs.length == 0) {
-                let genesisLog  = new Log(); // initial block
+                let genesisLog  = new Log(); // initial log
                 this.addLog(genesisLog);
+                
+                let genesisEntry = new Entry(); // initial entry
+                this.addEntry(genesisEntry);
             }
         })();
     }
