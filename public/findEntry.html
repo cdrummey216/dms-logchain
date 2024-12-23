@@ -23,6 +23,25 @@
             <input type="submit" />
         </form>
         <script type="text/javascript"> 
+            var form = document.getElementById("thisForm");
+            form.onsubmit = function(event){
+                    var xhr = new XMLHttpRequest();
+                    var formData = new FormData(form);
+                    //open the request
+                    xhr.open("POST","http://localhost:4000/entry", true)
+                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                    xhr.setRequestHeader("Access-Control-Allow-Origin","*");
+                    //send the form data
+                    xhr.send(JSON.stringify(Object.fromEntries(formData)));
+
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState == XMLHttpRequest.DONE) {
+                            form.reset(); //reset form after AJAX success or do something else
+                        }
+                    }
+                    //Fail the onsubmit to avoid page refresh.
+                    return false; 
+                }
         function createAndDownloadFile(fileName, content) {
             const blob = new Blob([content], { type: "text/plain" });
             const url = URL.createObjectURL(blob);
