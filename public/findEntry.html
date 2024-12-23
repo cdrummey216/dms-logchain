@@ -18,12 +18,14 @@
             <input id="lastGuid" type="text" name="lastGuid" value="" /><br />
             
             <label for="lastLog">lastLog:</label>
-            <input type="number" name="lastLog" /><br />
+            <input id="lastLog" type="number" name="lastLog" /><br />
             
             <input type="submit" />
         </form>
         <script type="text/javascript"> 
             var form = document.getElementById("thisForm");
+            var lastGuid = document.getElementById("lastGuid").value;
+            var lastLog = document.getElementById("lastLog").value;
             form.onsubmit = function(event){
                     var xhr = new XMLHttpRequest();
                     var formData = new FormData(form);
