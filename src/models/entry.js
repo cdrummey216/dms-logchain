@@ -1,12 +1,18 @@
 const crypto = require('crypto');
 class Entry {
-    constructor(lastGuid, status, fortune) {
-        if (!lastGuid || !status || !fortune)
-            throw new Error('Invalid data');
+    constructor(lastGuid, lastLog, status, fortune) {
+        if (!lastGuid)
+            let lastGuid = "";
+        if (!lastLog)
+            let lastLog = 0;
+        if (!status)
+            let status = "alive";
+        if (!fortune)
+            let fortune = "hello, world";
 
         this.guid = crypto.randomUUID();
         this.lastGuid = lastGuid;
-        this.lastLog = 0;
+        this.lastLog = lastLog;
         this.status = status;
         this.fortune = fortune;
         this.timestamp = Math.floor(+new Date() / 1000);
