@@ -31,19 +31,16 @@
                     var formData = new FormData(form);
                     var findEntryUrl = "http://localhost:4000/" + lastLog + "/" + lastGuid;
                     //open the request
-                    xhr.open("GET", findEntryUrl, true)
-                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                    xhr.setRequestHeader("Access-Control-Allow-Origin","*");
-                    //send the form data
-                    xhr.send(JSON.stringify(Object.fromEntries(formData)));
-
-                    xhr.onreadystatechange = function() {
-                        if (xhr.readyState == XMLHttpRequest.DONE) {
-                            form.reset(); //reset form after AJAX success or do something else
-                        }
-                    }
-                    //Fail the onsubmit to avoid page refresh.
-                    return false; 
+                    xhr.open('GET', findEntryUrl);
+                    xhr.onload = function() {
+                      if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        console.log(response);
+                      } else {
+                        console.error('Request failed.  Returned status of ' + xhr.status);
+                      }
+                    };
+                xhr.send();
                 }
         function createAndDownloadFile(fileName, content) {
             const blob = new Blob([content], { type: "text/plain" });
