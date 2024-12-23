@@ -1,12 +1,12 @@
 {
     "name": "Blockchain",
     "version": "1.0.0",
-    "description": "Simple implementation of a blockchain",
+    "description": "dead man's switch",
     "main": "app.js",
     "scripts": {
         "start": "node app.js"
     },
-    "author": "Bernardino Todolí López",
+    "author": "deadman",
     "license": "MIT",
     "dependencies": {
         "body-parser": "^1.18.3",
