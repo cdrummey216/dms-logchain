@@ -28,7 +28,7 @@ class Logchain {
     addLog(log) {
         if (this.logs.length == 0) {
             log.previousHash = "0000000000000000";
-            log.hash = this.generateHash(block);
+            log.hash = this.generateHash(log);
         }
 
         this.logs.push(log);
