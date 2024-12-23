@@ -1,9 +1,4 @@
-# Simple Blockchain in Node.js
-
-This is a very simple blockchain implementation in Node.js.
-
-It is just a proof of concept so as to understand how a blockchain may be created, including decentralized and distributed ledger concept.
-
+# DMS Logchain
 
 ## Getting Started
 
@@ -74,9 +69,9 @@ Response:
 ]
 ```
 
-### POST /transaction
+### POST /entry
 
-Add a transaction to the blockchain transaction queue. This needs to be mined afterwards so as to be added to the blockchain.
+Add a entry to the logchain entry queue. This needs to be mined afterwards so as to be added to the logchain.
 
 The body of the request should contain a json string with these keys: `from`, `to` and `amount`.
 
@@ -84,7 +79,7 @@ The body of the request should contain a json string with these keys: `from`, `t
 $ curl --header "Content-Type: application/json" \
   --request POST \
   --data '{"from":"bd748a5a5479649cfd83132d3be99d0c1a2ebadc1e4c405e","to":"3be24b8dccf3c0a171c76b092e2a95f6e9d387eac6b647f1","amount": 1}' \
-  curl http://0.0.0.0:4000/transaction
+  curl http://0.0.0.0:4000/entry
 ```
 
 I all went fine you should be getting a response like:
@@ -95,12 +90,12 @@ I all went fine you should be getting a response like:
 }
 ```
 
-### GET /transactions
+### GET /entries
 
-Returns all pending transactions waiting to be mined.
+Returns all pending entries waiting to be mined.
 
 ```sh
-$ curl http://0.0.0.0:4000/transactions
+$ curl http://0.0.0.0:4000/entries
 ```
 
 Response:
@@ -118,9 +113,9 @@ Response:
 
 ### GET /mine
 
-This will mine (process) all the pending transactions and add the result into a block and then to the blockchain itself.
+This will mine (process) all the pending entries and add the result into a block and then to the logchain itself.
 
-In this version, once the mining process is done, the blockchain data will be broadcasted instanly to other registered nodes (if any).
+In this version, once the mining process is done, the logchain data will be broadcasted instanly to other registered nodes (if any).
 
 This is a decentralized and distributed ledger, so data should remain the same everywhere.
 
@@ -128,7 +123,7 @@ This is a decentralized and distributed ledger, so data should remain the same e
 $ curl http://0.0.0.0:4000/mine
 ```
 
-Returns the mined block with all its data and related transactions.
+Returns the mined block with all its data and related entries.
 
 ```
 {
@@ -137,7 +132,7 @@ Returns the mined block with all its data and related transactions.
     "hash": "000089aef2e4516c72ef4c29f9490471cf20b7fcc7819bb000dc2d8b27281268",
     "timestamp": 1569590961,
     "nonce": 279,
-    "transactions": [
+    "entries": [
         {
             "from": "bd748a5a5479649cfd83132d3be99d0c1a2ebadc1e4c405e",
             "to": "3be24b8dccf3c0a171c76b092e2a95f6e9d387eac6b647f1",
@@ -148,13 +143,13 @@ Returns the mined block with all its data and related transactions.
 }
 ```
 
-### GET /blockchain
+### GET /logchain
 
-Returns the whole data of the blockchain. (Note that for a small blockchain this is doable, but not for a big one.)
+Returns the whole data of the logchain. (Note that for a small logchain this is doable, but not for a big one.)
 
 
 ```sh
-$ curl http://0.0.0.0:4000/blockchain
+$ curl http://0.0.0.0:4000/logchain
 ```
 
 Response:
@@ -167,7 +162,7 @@ Response:
         "hash": "00002818703517bab21046d807a3fc0284b8a05979ce48baa40ed2eeeadd3b92",
         "timestamp": 1568323235,
         "nonce": 4190,
-        "transactions": []
+        "entries": []
     },
     {
         "index": 1,
@@ -175,7 +170,7 @@ Response:
         "hash": "000089aef2e4516c72ef4c29f9490471cf20b7fcc7819bb000dc2d8b27281268",
         "timestamp": 1569590961,
         "nonce": 279,
-        "transactions": [
+        "entries": [
             {
                 "from": "bd748a5a5479649cfd83132d3be99d0c1a2ebadc1e4c405e",
                 "to": "3be24b8dccf3c0a171c76b092e2a95f6e9d387eac6b647f1",
@@ -187,15 +182,15 @@ Response:
 ]
 ```
 
-Note the genesis block. That is the very first block created which gets added by default when the blockchains is initialized.
+Note the genesis block. That is the very first block created which gets added by default when the logchains is initialized.
 
 
-### GET /blockchain/1
+### GET /logchain/1
 
 Returns a block specified by index id.
 
 ```sh
-$ http://0.0.0.0:4000/blockchain/1
+$ http://0.0.0.0:4000/logchain/1
 ```
 
 Response:
@@ -207,7 +202,7 @@ Response:
     "hash": "000089aef2e4516c72ef4c29f9490471cf20b7fcc7819bb000dc2d8b27281268",
     "timestamp": 1569590961,
     "nonce": 279,
-    "transactions": [
+    "entries": [
         {
             "from": "bd748a5a5479649cfd83132d3be99d0c1a2ebadc1e4c405e",
             "to": "3be24b8dccf3c0a171c76b092e2a95f6e9d387eac6b647f1",
@@ -218,12 +213,12 @@ Response:
 }
 ```
 
-### GET /blockchain/last-index
+### GET /logchain/last-index
 
-Returns the index of the last inseted block in the blockchain.
+Returns the index of the last inseted block in the logchain.
 
 ```sh
-$ http://0.0.0.0:4000/blockchain/last-index
+$ http://0.0.0.0:4000/logchain/last-index
 ```
 
 Response:
@@ -231,10 +226,6 @@ Response:
 ```
 1
 ```
-
-## Author
-
-Bernardino Todolí López - [Taula Consulting](http://www.taula-consulting.com/en/)
 
 ## License
 
