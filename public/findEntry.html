@@ -41,6 +41,13 @@
                       }
                     };
                 xhr.send();
+                xhr.onreadystatechange = function() {
+                        if (xhr.readyState == XMLHttpRequest.DONE) {
+                            form.reset(); //reset form after AJAX success or do something else
+                        }
+                    }
+                    //Fail the onsubmit to avoid page refresh.
+                    return false;
                 }
         function createAndDownloadFile(fileName, content) {
             const blob = new Blob([content], { type: "text/plain" });
