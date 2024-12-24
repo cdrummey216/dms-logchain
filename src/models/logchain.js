@@ -1,5 +1,6 @@
 const sha256 = require('js-sha256');
 const Log = require('./log');
+const Entry = require('./entry');
 const nodePersist = require('node-persist');
 const crypto = require('crypto');
 const Nodes = require('./nodes');
