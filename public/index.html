@@ -52,7 +52,8 @@
                     xhr.setRequestHeader("Access-Control-Allow-Origin","*");
                     //send the form data
                     xhr.send(JSON.stringify(Object.fromEntries(formData)));
-
+                    console.log(JSON.stringify(Object.fromEntries(formData)));
+                    
                     xhr.onreadystatechange = function() {
                         if (xhr.readyState == XMLHttpRequest.DONE) {
                             form.reset(); //reset form after AJAX success or do something else
