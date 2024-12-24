@@ -30,8 +30,10 @@ class Logchain {
         if (this.logs.length == 0) {
             log.previousHash = "0000000000000000";
             log.hash = this.generateHash(log);
-            let genesisEntry = new Entry();
-            log.entries.push(genesisEntry);
+            if (log.index == 0) {
+                let genesisEntry = new Entry();
+                log.entries.push(genesisEntry);
+            }
         }
 
         this.logs.push(log);
