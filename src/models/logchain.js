@@ -20,17 +20,18 @@ class Logchain {
 
             if (this.logs.length == 0) {
                 let genesisLog  = new Log(); // initial log
-                let genesisEntry = new Entry();
-                this.addLog(genesisLog, genesisEntry);
+                
+                this.addLog(genesisLog);
             }
         })();
     }
 
-    addLog(log, entry) {
+    addLog(log) {
         if (this.logs.length == 0) {
             log.previousHash = "0000000000000000";
             log.hash = this.generateHash(log);
-            log.entries.push(entry);
+            let genesisEntry = new Entry();
+            log.entries.push(genesisEntry);
         }
 
         this.logs.push(log);
