@@ -22,6 +22,7 @@
             
             <input type="submit" />
         </form>
+        <table id="table_body"></table>
         <script type="text/javascript"> 
             var form = document.getElementById("thisForm");
             var lastGuid = document.getElementById("lastGuid").value;
@@ -68,7 +69,19 @@
           
           createAndDownloadFile(fileName, content);
             
-            
+            function createTable(json) {
+                var tableBody = document.getElementById("table_body");
+                // Populate table
+                json.forEach((row) => {
+                  var tr = document.createElement("tr");
+                  Object.values(row).forEach((cell) => {
+                      var td = document.createElement("td");
+                      td.textContent = cell;
+                      tr.appendChild(td);
+                  });
+                  tableBody.appendChild(tr);
+                });
+              }
         </script>
     </main>
   </body>
