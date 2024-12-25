@@ -133,7 +133,8 @@ class Logchain {
                     foundLog.entries.forEach( (entry) => {
                     if (guid == entry.guid) {
                         foundEntries.push(entry);
-                        getHistory(entry.lastLog, entry.lastGuid);
+                        idx = entry.lastLog
+                        guid = entry.lastGuid;
                         }
                     });
                 }
