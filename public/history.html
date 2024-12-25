@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>dms-blockchain</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+
+  </head>
+  <body>
+    <main>
+        <h1>dms-blockchain</h1>
+        <h3>dms-blockchain-guidHistory</h3>
+        <form id="thisForm">
+            <label for="lastGuid">lastGuid:</label>
+            <input id="lastGuid" type="text" name="lastGuid" value="" /><br />
+            
+            <label for="lastLog">lastLog:</label>
+            <input id="lastLog" type="number" name="lastLog" /><br />
+            
+            <input type="submit" />
+        </form>
+        <table id="table_body"></table>
+        <script type="text/javascript"> 
+            var form = document.getElementById("thisForm");
+            var lastGuid = document.getElementById("lastGuid").value;
+            var lastLog = document.getElementById("lastLog").value;
+            form.onsubmit = function(event){
+                    var xhr = new XMLHttpRequest();
+                    var formData = new FormData(form);
+                    var findEntryUrl = "http://localhost:4000/" + lastLog + "/" + lastGuid;
+                    //open the request
+                    xhr.open('GET', findEntryUrl);
+                    xhr.onload = function() {
+                      if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        console.log(response);
+                        createTable(response);
+                        createAndDownloadFile("file.txt", response);
+                      } else {
+                        console.error('Request failed.  Returned status of ' + xhr.status);
+                      }
+                    };
+                xhr.send();
+                xhr.onreadystatechange = function() {
+                        if (xhr.readyState == XMLHttpRequest.DONE) {
+                            form.reset(); //reset form after AJAX success or do something else
+                        }
+                    }
+                    //Fail the onsubmit to avoid page refresh.
+                    return false;
+                }
+              function createAndDownloadFile(fileName, content) {
+                  const blob = new Blob([content], { type: "text/plain" });
+                  const url = URL.createObjectURL(blob);
+                
+                  const link = document.createElement("a");
+                  link.href = url;
+                  link.download = fileName;
+                
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }
+          
+          // Example usage
+          //const fileName = "myFile.txt";
+          //const content = "Hello, World!";
+          
+          //createAndDownloadFile(fileName, content);
+            
+            function createTable(json) {
+                var tableBody = document.getElementById("table_body");
+                // Populate table
+                json.forEach((row) => {
+                  var tr = document.createElement("tr");
+                  Object.values(row).forEach((cell) => {
+                      var td = document.createElement("td");
+                      td.textContent = cell;
+                      tr.appendChild(td);
+                  });
+                  tableBody.appendChild(tr);
+                });
+              }
+        </script>
+    </main>
+  </body>
+</html>
