@@ -122,6 +122,26 @@ class Logchain {
         }
         return foundEntry;
     }
+    
+    getHistory(idx, guid) {
+        let foundLog = [];
+        let foundEntries = [];
+        if (idx<=this.logs.length) {
+            this.logs.forEach( (log) => {
+                if (idx == log.index) {
+                    foundLog = log;
+                    foundLog.entries.forEach( (entry) => {
+                    if (guid == entry.guid) {
+                        foundEntries.push(entry);
+                        getHistory(entry.lastLog, entry.lastGuid);
+                        }
+                    });
+                }
+            });
+        }
+
+        return foundEntries;
+    }
 }
 
 module.exports = Logchain;
