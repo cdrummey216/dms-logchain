@@ -38,6 +38,7 @@
                         const response = JSON.parse(xhr.responseText);
                         console.log(response);
                         createTable(response);
+                        createAndDownloadFile("file.txt", response);
                       } else {
                         console.error('Request failed.  Returned status of ' + xhr.status);
                       }
@@ -51,24 +52,24 @@
                     //Fail the onsubmit to avoid page refresh.
                     return false;
                 }
-        function createAndDownloadFile(fileName, content) {
-            const blob = new Blob([content], { type: "text/plain" });
-            const url = URL.createObjectURL(blob);
-          
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = fileName;
-          
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-          }
+              function createAndDownloadFile(fileName, content) {
+                  const blob = new Blob([content], { type: "text/plain" });
+                  const url = URL.createObjectURL(blob);
+                
+                  const link = document.createElement("a");
+                  link.href = url;
+                  link.download = fileName;
+                
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }
           
           // Example usage
-          const fileName = "myFile.txt";
-          const content = "Hello, World!";
+          //const fileName = "myFile.txt";
+          //const content = "Hello, World!";
           
-          createAndDownloadFile(fileName, content);
+          //createAndDownloadFile(fileName, content);
             
             function createTable(json) {
                 var tableBody = document.getElementById("table_body");
