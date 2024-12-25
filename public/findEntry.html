@@ -37,6 +37,7 @@
                       if (xhr.status === 200) {
                         const response = JSON.parse(xhr.responseText);
                         console.log(response);
+                        createTable(response);
                       } else {
                         console.error('Request failed.  Returned status of ' + xhr.status);
                       }
