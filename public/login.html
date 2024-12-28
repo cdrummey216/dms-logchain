@@ -38,18 +38,47 @@
 
                reader.onload = (e) => {
                    const content = e.target.result;
-                   console.log(content);
+                   const guid = getSubstring(content, '"', '"');
+                   console.log(guid);
                    const element = document.getElementById('lastGuid');
-
-                    element.innerHTML = content;
-                   const expirationDate = new Date();
-                   expirationDate.setDate(expirationDate.getDate() + 30); // Expires in 30 days
-                   document.cookie = `lastGuid=${content}; expires=${expirationDate.toUTCString()}`;
+                   element.innerHTML = guid;
+                   setCookie('lastGuid', content, 7);
                };
 
                reader.readAsText(file);
            });
+            function setCookie(name,value,days) {
+              var expires = "";
+              if (days) {
+                  var date = new Date();
+                  date.setTime(date.getTime() + (days*24*60*60*1000));
+                  expires = "; expires=" + date.toUTCString();
+              }
+              document.cookie = name + "=" + (value || "")  + expires + "; path=/; SameSite=None; Secure;";
+          }
+          function getCookie(name) {
+              var nameEQ = name + "=";
+              var ca = document.cookie.split(';');
+              for(var i=0;i < ca.length;i++) {
+                  var c = ca[i];
+                  while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                  if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+              }
+              return null;
+          }
+          function eraseCookie(name) {   
+              document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          }
+          function getSubstring(str, startChar, endChar) {
+            const startIndex = str.indexOf(startChar) + startChar.length;
+            const endIndex = str.indexOf(endChar, startIndex);
 
+            if (startIndex === -1 || endIndex === -1) {
+              return null; // Substring not found
+            }
+
+            return str.substring(startIndex, endIndex);
+          }
           </script>
     </main>
   </body>
