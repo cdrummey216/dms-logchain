@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>dms-blockchain</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+
+  </head>
+  <body>
+    <main>
+        <h1>dms-blockchain</h1>
+        <h3>dms-blockchain-login</h3>
+        <input type="file" id="fileInput">
+        <p id="lastGuid"></p>
+
+        <table id="thisTable" border="1">
+              <thead>
+                  <tr>
+                      <th>lastGuid</th>
+                      <th>lastLog</th>
+                      <th>status</th>
+                      <th>fortune</th>
+                      <th>guid</th>
+                      <th>timestamp</th>
+                  </tr>
+              </thead>
+              <tbody id="data"></tbody>
+          </table>
+        <script type="text/javascript">
+       const fileInput = document.getElementById('fileInput');
+
+       fileInput.addEventListener('change', (event) => {
+           const file = event.target.files[0];
+           const reader = new FileReader();
+
+           reader.onload = (e) => {
+               const content = e.target.result;
+               console.log(content); // Do something with the file content
+           };
+
+           reader.readAsText(file);
+       });
+          </script>
+    </main>
+  </body>
+</html>
