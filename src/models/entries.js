@@ -11,7 +11,7 @@ class Entries {
         try {
             let entry = new Entry(req.body.lastGuid, req.body.lastLog, req.body.status, req.body.fortune);
             this.list.push(entry);
-            response = {'success': entry.guid};
+            response = entry.guid;
 
         } catch(ex) {
             res.status(406);

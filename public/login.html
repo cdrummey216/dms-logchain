@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>dms-blockchain</title>
+    <title>dms-logchain</title>
     <link rel="stylesheet" href="./style.css">
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
 
   </head>
   <body>
     <main>
-        <h1>dms-blockchain</h1>
-        <h3>dms-blockchain-login</h3>
+        <h1>dms-logchain</h1>
+        <h3>dms-logchain-login</h3>
         <input type="file" id="fileInput">
         <p id="lastGuid"></p>
 
@@ -30,22 +30,26 @@
               <tbody id="data"></tbody>
           </table>
         <script type="text/javascript">
-       const fileInput = document.getElementById('fileInput');
+           const fileInput = document.getElementById('fileInput');
 
-       fileInput.addEventListener('change', (event) => {
-           const file = event.target.files[0];
-           const reader = new FileReader();
+           fileInput.addEventListener('change', (event) => {
+               const file = event.target.files[0];
+               const reader = new FileReader();
 
-           reader.onload = (e) => {
-               const content = e.target.result;
-               console.log(content); // Do something with the file content
-           };
+               reader.onload = (e) => {
+                   const content = e.target.result;
+                   console.log(content);
+                   const element = document.getElementById('lastGuid');
 
-           reader.readAsText(file);
-       });
-      const expirationDate = new Date();
-      expirationDate.setDate(expirationDate.getDate() + 30); // Expires in 30 days
-      document.cookie = `username=John Doe; expires=${expirationDate.toUTCString()}`;
+                    element.innerHTML = content;
+                   const expirationDate = new Date();
+                   expirationDate.setDate(expirationDate.getDate() + 30); // Expires in 30 days
+                   document.cookie = `lastGuid=${content}; expires=${expirationDate.toUTCString()}`;
+               };
+
+               reader.readAsText(file);
+           });
+
           </script>
     </main>
   </body>
