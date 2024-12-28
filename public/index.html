@@ -13,9 +13,12 @@
     <main>
         <h1>dms-blockchain</h1>
         <h3>dms-blockchain-newEntry</h3>
-        <form id="thisForm">
+
             <label for="lastGuid">lastGuid:</label>
             <input id="lastGuid" type="text" name="lastGuid" value="" /><br />
+            
+            <label for="lastLog">lastLog:</label>
+            <input id="lastLog" type="number" name="lastLog" /><br />
             
             <label for="status">status:</label>
             <select id="status" name="status">
@@ -25,12 +28,23 @@
             </select><br />
             
             <label for="fortune">fortune:</label>
-            <input type="text" name="fortune" /><br />
+            <input id="fortune" type="text" name="fortune" /><br />
             
-            <input type="submit" />
-        </form>
-            <script type="text/javascript"> 
-
+            <button id="addEntry" onClick="addEntry()">Add Entry</button>
+            <table id="thisTable" border="1">
+              <thead>
+                  <tr>
+                      <th>lastGuid</th>
+                      <th>lastLog</th>
+                      <th>status</th>
+                      <th>fortune</th>
+                      <th>guid</th>
+                      <th>timestamp</th>
+                  </tr>
+              </thead>
+              <tbody id="data"></tbody>
+          </table>
+            <script type="text/javascript">
             function uuidv4() {
               return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
                 (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
@@ -39,29 +53,56 @@
             function setInputValue2() {
               document.getElementById("lastGuid").value = uuidv4();
             }
-            setInputValue2();
+            function addEntry(){
+              const lastGuidi = document.getElementById("lastGuid").value;
+              const lastLogi = document.getElementById("lastLog").value;
+              const statusi = document.getElementById("status").value;
+              const fortunei = document.getElementById("fortune").value;
+              const postEntryUrl = window.location.origin + "/entry";
+              const payload = {
+                lastGuid: lastGuidi,
+                lastLog: lastLogi,
+                status: statusi,
+                fortune: fortunei
+              };
+              console.log(postEntryUrl);
+              (async () => {
+                const rawResponse = await fetch(postEntryUrl, {
+                  method: 'POST',
+                  headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(payload)
+                });
+                const contenti = await rawResponse.json();
+                const contentii = JSON.stringify(contenti)
+                const fileNamei = Math.floor(+new Date() / 1000);
+                const fileNameii = fileNamei + ".txt";
+                createAndDownloadFile(fileNameii, contentii);
+                console.log(fileNameii);
+              })();
+            }
             
-            
-            var form = document.getElementById("thisForm");
-            form.onsubmit = function(event){
-                    var xhr = new XMLHttpRequest();
-                    var formData = new FormData(form);
-                    //open the request
-                    xhr.open("POST","http://localhost:4000/entry", true)
-                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                    xhr.setRequestHeader("Access-Control-Allow-Origin","*");
-                    //send the form data
-                    xhr.send(JSON.stringify(Object.fromEntries(formData)));
-                    console.log(JSON.stringify(Object.fromEntries(formData)));
-                    
-                    xhr.onreadystatechange = function() {
-                        if (xhr.readyState == XMLHttpRequest.DONE) {
-                            form.reset(); //reset form after AJAX success or do something else
-                        }
-                    }
-                    //Fail the onsubmit to avoid page refresh.
-                    return false; 
+            function createAndDownloadFile(fileName, content) {
+                  const blob = new Blob([content], { type: "text/plain" });
+                  const url = URL.createObjectURL(blob);
+                
+                  const link = document.createElement("a");
+                  link.href = url;
+                  link.download = fileName;
+                
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
                 }
+            
+            
+            
+            
+            setInputValue2();
+
+
           </script>
     </main>
   </body>

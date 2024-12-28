@@ -21,7 +21,7 @@ class Logchain {
 
             if (this.logs.length == 0) {
                 let genesisLog  = new Log(); // initial log
-                 let genesisEntry = new Entry();
+                let genesisEntry = new Entry();
                 genesisLog.entries.push(genesisEntry);
                 this.addLog(genesisLog);
             }
@@ -103,6 +103,23 @@ class Logchain {
 
         return foundLog;
     }
+    
+    getLogIdxByGuid(guid) {
+        let foundLogIdx = 0;
+
+        if (idx<=this.logs.length) {
+            this.logs.forEach( (log) => {
+                log.entries.forEach( (entry) => {
+                    if (guid == entry.guid) {
+                        foundLogIdx = log.index;
+                        return;
+                        }
+                    });
+            });
+        }
+
+        return foundLogIdx;
+    }
 
     getLogLastIndex() {
         return this.logs.length-1;
@@ -112,14 +129,19 @@ class Logchain {
         let foundLog = [];
         let foundEntry = [];
         if (idx<=this.logs.length) {
-            foundLog = this.logs.filter(log => log.index === idx);
-            foundLog.entries.forEach( (entry) => {
-            if (guid == entry.guid) {
-                foundEntry = entry;
-                return;
+            this.logs.forEach( (log) => {
+                if (idx == log.index) {
+                    foundLog = log;
+                    log.entries.forEach( (entry) => {
+                    if (guid == entry.guid) {
+                        foundEntry.push(entry);
+                        return;
+                        }
+                    });
                 }
             });
         }
+
         return foundEntry;
     }
     
@@ -130,12 +152,13 @@ class Logchain {
             this.logs.forEach( (log) => {
                 if (idx == log.index) {
                     foundLog = log;
-                    foundLog.entries.forEach( (entry) => {
+                    log.entries.forEach( (entry) => {
                     if (guid == entry.guid) {
                         foundEntries.push(entry);
                         idx = entry.lastLog
                         guid = entry.lastGuid;
                         }
+                        return;
                     });
                 }
             });
