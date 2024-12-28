@@ -43,6 +43,9 @@
 
            reader.readAsText(file);
        });
+      const expirationDate = new Date();
+      expirationDate.setDate(expirationDate.getDate() + 30); // Expires in 30 days
+      document.cookie = `username=John Doe; expires=${expirationDate.toUTCString()}`;
           </script>
     </main>
   </body>
