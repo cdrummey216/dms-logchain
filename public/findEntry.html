@@ -37,7 +37,7 @@
             function findEntry() {
               var lastGuid = document.getElementById("lastGuid").value;
               var lastLog = document.getElementById("lastLog").value;
-              var findEntryUrl = "http://localhost:4000/logchain/" + lastLog + "/" + lastGuid;
+              var findEntryUrl = window.location.origin + "/logchain/entry/" + lastGuid;
               console.log(findEntryUrl);
               fetch(findEntryUrl)
                 .then(response => response.json())

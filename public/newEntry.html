@@ -12,13 +12,13 @@
   <body>
     <main>
         <h1>dms-logchain</h1>
-        <h3>dms-logchain-config</h3>
+        <h3>dms-logchain-newEntry</h3>
 
-            <label for="email">email:</label>
-            <input id="email" type="text" name="email" value="" /><br />
+            <label for="lastGuid">lastGuid:</label>
+            <input id="lastGuid" type="text" name="lastGuid" value="" /><br />
             
-            <label for="currentEntry">currentEntry:</label>
-            <input id="currentEntry" type="text" name="currentEntry" /><br />
+            <label for="lastLog">lastLog:</label>
+            <input id="lastLog" type="number" name="lastLog" /><br />
             
             <label for="status">status:</label>
             <select id="status" name="status">
@@ -56,7 +56,37 @@
             function setInputValue2() {
               const lastGuidCookie = getCookieValue('lastGuid');
               console.log(lastGuidCookie);
-              document.getElementById("currentEntry").value = lastGuidCookie;
+              document.getElementById("lastGuid").value = lastGuidCookie;
+            }
+            function addEntry(){
+              const lastGuidi = document.getElementById("lastGuid").value;
+              const lastLogi = document.getElementById("lastLog").value;
+              const statusi = document.getElementById("status").value;
+              const fortunei = document.getElementById("fortune").value;
+              const postEntryUrl = window.location.origin + "/entry";
+              const payload = {
+                lastGuid: lastGuidi,
+                lastLog: lastLogi,
+                status: statusi,
+                fortune: fortunei
+              };
+              console.log(postEntryUrl);
+              (async () => {
+                const rawResponse = await fetch(postEntryUrl, {
+                  method: 'POST',
+                  headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(payload)
+                });
+                const contenti = await rawResponse.json();
+                const contentii = JSON.stringify(contenti)
+                const fileNamei = Math.floor(+new Date() / 1000);
+                const fileNameii = fileNamei + ".txt";
+                createAndDownloadFile(fileNameii, contentii);
+                console.log(fileNameii);
+              })();
             }
             
             function createAndDownloadFile(fileName, content) {
@@ -82,3 +112,4 @@
     </main>
   </body>
 </html>
+

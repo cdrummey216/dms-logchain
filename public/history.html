@@ -13,78 +13,51 @@
     <main>
         <h1>dms-logchain</h1>
         <h3>dms-logchain-guidHistory</h3>
-        <form id="thisForm">
-            <label for="lastGuid">lastGuid:</label>
+        <label for="lastGuid">lastGuid:</label>
             <input id="lastGuid" type="text" name="lastGuid" value="" /><br />
             
             <label for="lastLog">lastLog:</label>
             <input id="lastLog" type="number" name="lastLog" /><br />
-            
-            <input type="submit" />
-        </form>
-        <table id="table_body"></table>
+        <button onclick="findHistory()">Click me</button>
+        <table id="thisTable" border="1">
+            <thead>
+                <tr>
+                    <th>lastGuid</th>
+                    <th>lastLog</th>
+                    <th>status</th>
+                    <th>fortune</th>
+                    <th>guid</th>
+                    <th>timestamp</th>
+                </tr>
+            </thead>
+            <tbody id="data"></tbody>
+        </table>
         <script type="text/javascript"> 
             var form = document.getElementById("thisForm");
-            var lastGuid = document.getElementById("lastGuid").value;
-            var lastLog = document.getElementById("lastLog").value;
-            form.onsubmit = function(event){
-                    var xhr = new XMLHttpRequest();
-                    var formData = new FormData(form);
-                    var findEntryUrl = "http://localhost:4000/" + lastLog + "/" + lastGuid;
-                    //open the request
-                    xhr.open('GET', findEntryUrl);
-                    xhr.onload = function() {
-                      if (xhr.status === 200) {
-                        const response = JSON.parse(xhr.responseText);
-                        console.log(response);
-                        createTable(response);
-                        createAndDownloadFile("file.txt", response);
-                      } else {
-                        console.error('Request failed.  Returned status of ' + xhr.status);
-                      }
-                    };
-                xhr.send();
-                xhr.onreadystatechange = function() {
-                        if (xhr.readyState == XMLHttpRequest.DONE) {
-                            form.reset(); //reset form after AJAX success or do something else
-                        }
-                    }
-                    //Fail the onsubmit to avoid page refresh.
-                    return false;
-                }
-              function createAndDownloadFile(fileName, content) {
-                  const blob = new Blob([content], { type: "text/plain" });
-                  const url = URL.createObjectURL(blob);
-                
-                  const link = document.createElement("a");
-                  link.href = url;
-                  link.download = fileName;
-                
-                  document.body.appendChild(link);
-                  link.click();
-                  document.body.removeChild(link);
-                }
-          
-          // Example usage
-          //const fileName = "myFile.txt";
-          //const content = "Hello, World!";
-          
-          //createAndDownloadFile(fileName, content);
-            
-            function createTable(json) {
-                var tableBody = document.getElementById("table_body");
-                // Populate table
-                json.forEach((row) => {
-                  var tr = document.createElement("tr");
-                  Object.values(row).forEach((cell) => {
-                      var td = document.createElement("td");
-                      td.textContent = cell;
-                      tr.appendChild(td);
+            function findHistory() {
+              var lastGuid = document.getElementById("lastGuid").value;
+              var lastLog = document.getElementById("lastLog").value;
+              var findHistoryUrl = window.location.origin + "/logchain/history/" + lastGuid;
+              console.log(findHistoryUrl);
+              fetch(findHistoryUrl)
+                .then(response => response.json())
+                .then(data => {
+                  const table = document.getElementById('thisTable');
+                  const tbody = table.getElementsByTagName('tbody')[0];
+
+                  data.forEach(item => {
+                    const row = tbody.insertRow();
+                    Object.values(item).forEach(value => {
+                      const cell = row.insertCell();
+                      cell.textContent = value;
+                    });
                   });
-                  tableBody.appendChild(tr);
-                });
-              }
+                })
+                .catch(error => console.error('Error fetching data:', error));
+            }
+
         </script>
+        
     </main>
   </body>
 </html>
