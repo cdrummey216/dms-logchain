@@ -37,6 +37,6 @@ app.get('/mine', lcontroller.mine.bind(lcontroller));
 app.get('/logchain/last-index', lcontroller.getLogLastIndex.bind(lcontroller));
 app.get('/logchain/:idx', lcontroller.getLogByIndex.bind(lcontroller));
 app.get('/logchain', lcontroller.getLogchain.bind(lcontroller));
-app.get('/logchain/:idx/:guid', lcontroller.getEntryByIndexGuid.bind(lcontroller));
-app.get('/logchain/history/:idx/:guid', lcontroller.getHistory.bind(lcontroller));
+app.get('/logchain/entry/:guid', lcontroller.getEntryByGuid.bind(lcontroller));
+app.get('/logchain/history/:guid', lcontroller.getHistory.bind(lcontroller));
 app.get('/logchain/log/:guid', lcontroller.getLogIdxByGuid.bind(lcontroller));

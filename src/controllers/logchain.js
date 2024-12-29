@@ -45,12 +45,12 @@ class LogchainController {
         res.json(this.logchain.getLogLastIndex());
     }
     
-    getEntryByIndexGuid(req, res) {
-        res.json(this.logchain.getEntryByIndexGuid(req.params.idx, req.params.guid));
+    getEntryByGuid(req, res) {
+        res.json(this.logchain.getEntryByGuid(req.params.guid));
     }
     
     getHistory(req, res) {
-        res.json(this.logchain.getHistory(req.params.idx, req.params.guid));
+        res.json(this.logchain.getHistory(req.params.guid));
     }
 }
 

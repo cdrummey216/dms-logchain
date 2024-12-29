@@ -44,8 +44,15 @@ class Logchain {
     getNextLog(entries) {
         let log = new Log();        
         let previousLog = this.getPreviousLog();
-
-        log.addEntries(entries, previousLog.index);
+        entries.list.forEach( (entry) => {
+            let lastEntryLogIdx = this.getLogIdxByGuid(entry.lastGuid);
+            entry.lastLog = lastEntryLogIdx;
+            console.log(lastEntryLogIdx);
+            return;
+        });
+        
+        
+        log.addEntries(entries);
         log.index = previousLog.index + 1;
         log.previousHash = previousLog.hash;
         log.hash = this.generateHash(log);
@@ -106,17 +113,14 @@ class Logchain {
     
     getLogIdxByGuid(guid) {
         let foundLogIdx = 0;
-
-        if (idx<=this.logs.length) {
-            this.logs.forEach( (log) => {
-                log.entries.forEach( (entry) => {
-                    if (guid == entry.guid) {
-                        foundLogIdx = log.index;
-                        return;
-                        }
-                    });
-            });
-        }
+        this.logs.forEach( (log) => {
+            log.entries.forEach( (entry) => {
+                if (guid == entry.guid) {
+                    foundLogIdx = log.index;
+                    return;
+                    }
+                });
+        });
 
         return foundLogIdx;
     }
@@ -125,45 +129,45 @@ class Logchain {
         return this.logs.length-1;
     }
     
-    getEntryByIndexGuid(idx, guid) {
+    getEntryByGuid(guid, results = []) {
         let foundLog = [];
-        let foundEntry = [];
-        if (idx<=this.logs.length) {
-            this.logs.forEach( (log) => {
-                if (idx == log.index) {
-                    foundLog = log;
-                    log.entries.forEach( (entry) => {
-                    if (guid == entry.guid) {
-                        foundEntry.push(entry);
-                        return;
-                        }
-                    });
-                }
-            });
+        let foundHistory = [];
+        
+        for (var i = 0; i < this.logs.length; i++){
+            this.logs[i].entries.forEach( (entry) => {
+                console.log(i);
+                
+                if (guid == entry.guid) {
+                    results.push(entry);
+                    }
+                });
         }
-
-        return foundEntry;
+        console.log(results);
+        return results;
     }
     
-    getHistory(idx, guid) {
+    getHistoryByGuid(guid, results = []) {
         let foundLog = [];
-        let foundEntries = [];
-        if (idx<=this.logs.length) {
-            this.logs.forEach( (log) => {
-                if (idx == log.index) {
-                    foundLog = log;
-                    log.entries.forEach( (entry) => {
-                    if (guid == entry.guid) {
-                        foundEntries.push(entry);
-                        idx = entry.lastLog
-                        guid = entry.lastGuid;
-                        }
-                        return;
-                    });
-                }
-            });
+        let foundHistory = [];
+        
+        for (var i = 0; i < this.logs.length; i++){
+            this.logs[i].entries.forEach( (entry) => {
+                console.log(i);
+                
+                if (guid == entry.guid) {
+                    results.push(entry);
+                    this.getEntryByGuid(entry.lastGuid, results);
+                    }
+                });
         }
-
+        console.log(results);
+        return results;
+    }
+    
+    getHistory(guid) {
+        let foundEntries = [];
+        foundEntries = this.getHistoryByGuid(guid, foundEntries);
+        console.log(foundEntries);
         return foundEntries;
     }
 }
