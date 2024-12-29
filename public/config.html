@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>dms-logchain</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+
+  </head>
+  <body>
+    <main>
+        <h1>dms-logchain</h1>
+        <h3>dms-logchain-config</h3>
+
+            <label for="email">email:</label>
+            <input id="email" type="text" name="email" value="" /><br />
+            
+            <label for="currentEntry">currentEntry:</label>
+            <input id="currentEntry" type="text" name="currentEntry" /><br />
+            
+            <label for="status">status:</label>
+            <select id="status" name="status">
+              <option value="alive">alive</option>
+              <option value="dead">dead</option>
+              <option value="whacked">whacked</option>
+            </select><br />
+            
+            <label for="fortune">fortune:</label>
+            <input id="fortune" type="text" name="fortune" /><br />
+            
+            <button id="addEntry" onClick="addEntry()">Add Entry</button>
+            <table id="thisTable" border="1">
+              <thead>
+                  <tr>
+                      <th>lastGuid</th>
+                      <th>lastLog</th>
+                      <th>status</th>
+                      <th>fortune</th>
+                      <th>guid</th>
+                      <th>timestamp</th>
+                  </tr>
+              </thead>
+              <tbody id="data"></tbody>
+          </table>
+            <script type="text/javascript">
+            function uuidv4() {
+              return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
+                (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
+              );
+            }
+            function setInputValue2() {
+              document.getElementById("lastGuid").value = uuidv4();
+            }
+            function addEntry(){
+              const lastGuidi = document.getElementById("lastGuid").value;
+              const lastLogi = document.getElementById("lastLog").value;
+              const statusi = document.getElementById("status").value;
+              const fortunei = document.getElementById("fortune").value;
+              const postEntryUrl = window.location.origin + "/entry";
+              const payload = {
+                lastGuid: lastGuidi,
+                lastLog: lastLogi,
+                status: statusi,
+                fortune: fortunei
+              };
+              console.log(postEntryUrl);
+              (async () => {
+                const rawResponse = await fetch(postEntryUrl, {
+                  method: 'POST',
+                  headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(payload)
+                });
+                const contenti = await rawResponse.json();
+                const contentii = JSON.stringify(contenti)
+                const fileNamei = Math.floor(+new Date() / 1000);
+                const fileNameii = fileNamei + ".txt";
+                createAndDownloadFile(fileNameii, contentii);
+                console.log(fileNameii);
+              })();
+            }
+            
+            function createAndDownloadFile(fileName, content) {
+                  const blob = new Blob([content], { type: "text/plain" });
+                  const url = URL.createObjectURL(blob);
+                
+                  const link = document.createElement("a");
+                  link.href = url;
+                  link.download = fileName;
+                
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }
+            
+            
+            
+            
+            setInputValue2();
+
+
+          </script>
+    </main>
+  </body>
+</html>
