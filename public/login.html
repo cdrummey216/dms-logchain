@@ -13,6 +13,9 @@
     <main>
         <h1>dms-logchain</h1>
         <h3>dms-logchain-login</h3>
+        <ul>/options
+            <li><a href="/index.html">home</a></li>
+        </ul>
         <input type="file" id="fileInput">
         <p id="lastGuid"></p>
         <button onclick="getCookieValue('key')">Click me</button>
@@ -38,8 +41,7 @@
 
                reader.onload = (e) => {
                    const content = e.target.result;
-                   const guid = content.slice(1, -1);
-                   console.log(guid);
+                   const guid = content.replace(/"/g, '');
                    const element = document.getElementById('lastGuid');
                    element.innerHTML = guid;
                    setCookie('lastGuid', guid, 7);

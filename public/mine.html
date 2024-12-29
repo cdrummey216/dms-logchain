@@ -13,6 +13,9 @@
     <main>
         <h1>dms-logchain</h1>
         <h3>dms-logchain-mine</h3>
+        <ul>/options
+            <li><a href="/index.html">home</a></li>
+        </ul>
         <button onclick="mineEntries()">mine entries</button>
         <table id="thisTable" border="1">
             <thead>
@@ -28,19 +31,16 @@
             <tbody id="data"></tbody>
         </table>
         <script type="text/javascript"> 
-            var form = document.getElementById("thisForm");
             function mineEntries() {
-              var lastGuid = document.getElementById("lastGuid").value;
-              var lastLog = document.getElementById("lastLog").value;
-              var mineEntriesUrl = window.location.origin + "/mine";;
+              var mineEntriesUrl = window.location.origin + "/mine";
               console.log(mineEntriesUrl);
               fetch(mineEntriesUrl)
                 .then(response => response.json())
                 .then(data => {
                   const table = document.getElementById('thisTable');
                   const tbody = table.getElementsByTagName('tbody')[0];
-
-                  data.forEach(item => {
+                  console.log(data.entries);
+                  data.entries.forEach(item => {
                     const row = tbody.insertRow();
                     Object.values(item).forEach(value => {
                       const cell = row.insertCell();
