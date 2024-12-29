@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>dms-logchain</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+
+  </head>
+  <body>
+    <main>
+        <h1>dms-logchain</h1>
+        <h3>dms-logchain-mine</h3>
+        <button onclick="mineEntries()">mine entries</button>
+        <table id="thisTable" border="1">
+            <thead>
+                <tr>
+                    <th>lastGuid</th>
+                    <th>lastLog</th>
+                    <th>status</th>
+                    <th>fortune</th>
+                    <th>guid</th>
+                    <th>timestamp</th>
+                </tr>
+            </thead>
+            <tbody id="data"></tbody>
+        </table>
+        <script type="text/javascript"> 
+            var form = document.getElementById("thisForm");
+            function mineEntries() {
+              var lastGuid = document.getElementById("lastGuid").value;
+              var lastLog = document.getElementById("lastLog").value;
+              var mineEntriesUrl = window.location.origin + "/mine";;
+              console.log(mineEntriesUrl);
+              fetch(mineEntriesUrl)
+                .then(response => response.json())
+                .then(data => {
+                  const table = document.getElementById('thisTable');
+                  const tbody = table.getElementsByTagName('tbody')[0];
+
+                  data.forEach(item => {
+                    const row = tbody.insertRow();
+                    Object.values(item).forEach(value => {
+                      const cell = row.insertCell();
+                      cell.textContent = value;
+                    });
+                  });
+                })
+                .catch(error => console.error('Error fetching data:', error));
+            }
+
+        </script>
+    </main>
+  </body>
+</html>
