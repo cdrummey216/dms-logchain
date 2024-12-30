@@ -40,6 +40,10 @@ class LogchainController {
     getLogIdxByGuid(req, res) {
         res.json(this.logchain.getLogIdxByGuid(req.params.guid));
     }
+    
+    getLastLogIdxByGuid(req, res) {
+        res.json(this.logchain.getLastLogIdxByGuid(req.params.guid));
+    }
 
     getLogLastIndex(req, res) {
         res.json(this.logchain.getLogLastIndex());
