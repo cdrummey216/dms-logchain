@@ -124,7 +124,21 @@ class Logchain {
 
         return foundLogIdx;
     }
+    
+    getLastLogIdxByGuid(guid) {
+        let foundLogIdx = -1;
+        this.logs.forEach( (log) => {
+            log.entries.forEach( (entry) => {
+                if (guid == entry.lastGuid) {
+                    foundLogIdx = log.index;
+                    return;
+                    }
+                });
+        });
 
+        return foundLogIdx;
+    }
+    
     getLogLastIndex() {
         return this.logs.length-1;
     }
