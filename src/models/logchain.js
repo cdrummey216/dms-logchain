@@ -130,7 +130,7 @@ class Logchain {
         this.logs.forEach( (log) => {
             log.entries.forEach( (entry) => {
                 if (guid == entry.lastGuid) {
-                    foundLogIdx = log.index;
+                    foundLogIdx = entry.lastLog;
                     return;
                     }
                 });
