@@ -40,4 +40,4 @@ app.get('/logchain', lcontroller.getLogchain.bind(lcontroller));
 app.get('/logchain/entry/:guid', lcontroller.getEntryByGuid.bind(lcontroller));
 app.get('/logchain/history/:guid', lcontroller.getHistory.bind(lcontroller));
 app.get('/logchain/log/:guid', lcontroller.getLogIdxByGuid.bind(lcontroller));
-app.get('/logchain/lastLog/:guid', lcontroller.getLastLogIdxByGuid.bind(lcontroller));
+app.get('/logchain/lastLog/:guid', lcontroller.getLastTimestampByGuid.bind(lcontroller));

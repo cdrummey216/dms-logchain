@@ -125,12 +125,12 @@ class Logchain {
         return foundLogIdx;
     }
     
-    getLastLogIdxByGuid(guid) {
+    getLastTimestampByGuid(guid) {
         let foundLogIdx = -1;
         this.logs.forEach( (log) => {
             log.entries.forEach( (entry) => {
                 if (guid == entry.lastGuid) {
-                    foundLogIdx = entry.lastLog;
+                    foundLogIdx = entry.timestamp;
                     return;
                     }
                 });
