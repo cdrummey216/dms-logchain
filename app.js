@@ -31,9 +31,9 @@ let listener = app.listen(port, url, function() {
 let lcontroller = new logchainController(url, port);
 
 const thisCache = new NodeCache();
-app.get('/data/:guid/:timestamp', (req, res) => {
+app.get('/dig', (req, res) => {
   const now = Math.floor(+new Date() / 1000);
-  const key = req.guid;
+  //const key = req.guid;
   //const timestamp = req.timestamp;
 
   const keys = thisCache.keys();
