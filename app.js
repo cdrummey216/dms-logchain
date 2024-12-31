@@ -34,15 +34,16 @@ const thisCache = new NodeCache();
 app.get('/data/:guid/:timestamp', (req, res) => {
   const now = Math.floor(+new Date() / 1000);
   const key = req.guid;
-  const timestamp = req.timestamp;
-  const cachedValue = thisCache.get(key);
-  const diff = Math.abs(now - timestamp);
-  const seconds = Math.floor(diff / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  const days = Math.floor(hours / 24);
+  //const timestamp = req.timestamp;
+
   const keys = thisCache.keys();
   for (const key of keys) {
+      const cachedStamp = thisCache.get(key);
+      const diff = Math.abs(now - cachedStamp);
+      const seconds = Math.floor(diff / 1000);
+      const minutes = Math.floor(seconds / 60);
+      const hours = Math.floor(minutes / 60);
+      const days = Math.floor(hours / 24);
       console.log(key, thisCache.get(key));
       if (days >= 7) {
         //log dead status
@@ -50,7 +51,6 @@ app.get('/data/:guid/:timestamp', (req, res) => {
   }
   
   thisCache.set(key, timestamp, 604800);
-  const cachedValue = thisCache.get("key");
 });
 app.get('/resolve', lcontroller.resolve.bind(lcontroller));
 app.get('/nodes', lcontroller.getNodes.bind(lcontroller));
