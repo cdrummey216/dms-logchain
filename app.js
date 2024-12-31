@@ -41,10 +41,14 @@ app.get('/data/:guid/:timestamp', (req, res) => {
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
   const days = Math.floor(hours / 24);
-
-  if (days >= 7) {
+  const keys = thisCache.keys();
+  for (const key of keys) {
+      console.log(key, thisCache.get(key));
+      if (days >= 7) {
         //log dead status
         }
+  }
+  
   thisCache.set(key, timestamp, 604800);
   const cachedValue = thisCache.get("key");
 });
