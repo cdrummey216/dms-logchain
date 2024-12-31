@@ -2,7 +2,7 @@
 const logchainController = require('./src/controllers/logchain');
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const NodeCache = require('node-cache');
 // Load env vars
 const url = process.env.URL || '0.0.0.0';
 const port = process.env.PORT || 4000;
@@ -15,6 +15,7 @@ app.use(express.static('public'));
 let listener = app.listen(port, url, function() {
     console.log('Server started at ' + listener.address().address + ':' + listener.address().port);
 });
+
 
 // API
 //let controller = new blockchainController(url, port);
@@ -29,6 +30,24 @@ let listener = app.listen(port, url, function() {
 
 let lcontroller = new logchainController(url, port);
 
+const thisCache = new NodeCache();
+app.get('/data/:guid/:timestamp', (req, res) => {
+  const now = Math.floor(+new Date() / 1000);
+  const key = req.guid;
+  const timestamp = req.timestamp;
+  const cachedValue = thisCache.get(key);
+  const diff = Math.abs(now - timestamp);
+  const seconds = Math.floor(diff / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (days >= 7) {
+        //log dead status
+        }
+  thisCache.set(key, timestamp, 604800);
+  const cachedValue = myCache.get("key");
+});
 app.get('/resolve', lcontroller.resolve.bind(lcontroller));
 app.get('/nodes', lcontroller.getNodes.bind(lcontroller));
 app.post('/entry', lcontroller.postEntry.bind(lcontroller));
