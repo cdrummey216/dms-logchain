@@ -46,7 +46,7 @@ app.get('/data/:guid/:timestamp', (req, res) => {
         //log dead status
         }
   thisCache.set(key, timestamp, 604800);
-  const cachedValue = myCache.get("key");
+  const cachedValue = thisCache.get("key");
 });
 app.get('/resolve', lcontroller.resolve.bind(lcontroller));
 app.get('/nodes', lcontroller.getNodes.bind(lcontroller));
