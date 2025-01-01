@@ -13,7 +13,7 @@
     <main>
         <h1>dms-logchain</h1>
         <h3>dms-logchain-newEntry</h3>
-        <a href="/index.html">home</a></li>
+        <a href="/index.html">home</a><br />
             <label for="lastGuid">lastGuid:</label>
             <input id="lastGuid" type="text" name="lastGuid" value="" /><br />
             
@@ -53,7 +53,7 @@
                   expires = "; expires=" + date.toUTCString();
               }
               document.cookie = name + "=" + (value || "")  + expires + "; path=/; SameSite=None; Secure;";
-          };
+            };
             function getCookieValue(name) {
                 const regex = new RegExp(`(^| )${name}=([^;]+)`)
                 const match = document.cookie.match(regex)
@@ -64,10 +64,8 @@
              };
             function setInputValue2() {
               const lastGuidCookie = getCookieValue('lastGuid');
-              //console.log(lastGuidCookie);
-
               document.getElementById("lastGuid").value = lastGuidCookie;
-            }
+            };
             function addEntry(){
               const lastGuidi = document.getElementById("lastGuid").value;
               console.log(lastGuidi);
@@ -97,46 +95,51 @@
                 console.log(guid);
                 const fileNamei = Math.floor(+new Date() / 1000);
                 const fileNameii = fileNamei + ".txt";
+                setCookie('lastGuid', guid, 7);
+                setCookie('key', fileNameii, 7);
+                setCookie('timestamp', fileNamei, 7);
                 createAndDownloadFile(fileNameii, guid);
+                updateCache(lastGuidi, fileNamei, guid);
                 console.log(guid);
               })();
-            }
+            };
             
             function createAndDownloadFile(fileName, content) {
-                  
-                  setCookie('lastGuid', content, 7);
-                  setCookie('key', fileName, 7);
-                  const blob = new Blob([content], { type: "text/plain" });
-                  const url = URL.createObjectURL(blob);
-                
-                  const link = document.createElement("a");
-                  link.href = url;
-                  link.download = fileName;
-                
-                  document.body.appendChild(link);
-                  link.click();
-                  document.body.removeChild(link);
-                }
-                function findLogIdx() {
-                  var lastGuid = document.getElementById("lastGuid").value;
-                  var lastLog = document.getElementById("lastLog").value;
-                  var findLogIdxUrl = window.location.origin + "/logchain/log/" + lastGuid;
-                  console.log(findLogIdxUrl);
-                  fetch(findLogIdxUrl)
-                    .then(response => response.json())
-                    .then(data => {
-                      console.log(data);
-                      setCookie('lastLog', JSON.stringify(data), 7);                      
-                      document.getElementById("lastLog").value = data;
-                    })
-                    .catch(error => console.error('Error fetching data:', error));
-                }
-            
-            
-            
+              const blob = new Blob([content], { type: "text/plain" });
+              const url = URL.createObjectURL(blob);
+              const link = document.createElement("a");
+              link.href = url;
+              link.download = fileName;
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+            };
+            function updateCache(oldguid, timestamp, newguid) {
+              var updateCacheUrl = window.location.origin + "/lode/" + oldguid + "/" + timestamp + "/" + newguid;
+              console.log(updateCacheUrl);
+              fetch(updateCacheUrl)
+                .then(response => response.json())
+                .then(data => {
+                  console.log("Cache Updated for  guid: " + newguid);
+                })
+                .catch(error => console.error('Error fetching data:', error));
+            };
+            function findLogIdx() {
+              var lastGuid = document.getElementById("lastGuid").value;
+              var lastLog = document.getElementById("lastLog").value;
+              var findLogIdxUrl = window.location.origin + "/logchain/log/" + lastGuid;
+              console.log(findLogIdxUrl);
+              fetch(findLogIdxUrl)
+                .then(response => response.json())
+                .then(data => {
+                  console.log("Found log for spawned guid: " + newguid);
+                  setCookie('lastLog', JSON.stringify(data), 7);                      
+                  document.getElementById("lastLog").value = data;
+                })
+                .catch(error => console.error('Error fetching data:', error));
+            };
             setInputValue2();
             findLogIdx();
-
           </script>
     </main>
   </body>

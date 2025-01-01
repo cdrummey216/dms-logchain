@@ -3,11 +3,9 @@ const logchainController = require('./src/controllers/logchain');
 const express = require('express');
 const bodyParser = require('body-parser');
 const NodeCache = require('node-cache');
-// Load env vars
 const url = process.env.URL || '0.0.0.0';
 const port = process.env.PORT || 4000;
 
-// Init express
 let app = express();
 app.use(bodyParser.json());
 app.use(express.static('public'));
@@ -31,12 +29,21 @@ let listener = app.listen(port, url, function() {
 let lcontroller = new logchainController(url, port);
 
 const thisCache = new NodeCache();
-app.get('/unlode', (req, res) => {
+app.get('/lode/:oldguid/:timestamp/:newguid', (req, res) => {
   const now = Math.floor(+new Date() / 1000);
-  //const key = req.guid;
-  //const timestamp = req.timestamp;
+  const newkey = req.params.newguid;
+  const oldkey = req.params.oldguid;
+  const timestamp = req.params.timestamp;
+  const currentURL = url + ':' + port;
+  
+  if (thisCache.has(oldkey)) {
+    thisCache.del(oldkey);
+  }  
+  thisCache.set(newkey, timestamp, 604800);
 
   const keys = thisCache.keys();
+  const postEntryUrl = "http://" + currentURL + "/entry";
+  console.log(keys);
   for (const key of keys) {
       const cachedStamp = thisCache.get(key);
       const diff = Math.abs(now - cachedStamp);
@@ -44,13 +51,31 @@ app.get('/unlode', (req, res) => {
       const minutes = Math.floor(seconds / 60);
       const hours = Math.floor(minutes / 60);
       const days = Math.floor(hours / 24);
-      console.log(key, thisCache.get(key));
+      const payload = {
+        lastGuid: key,
+        lastLog: -1,
+        status: "dead",
+        fortune: "veritatem iterum"
+      };
+     
+      
       if (days >= 7) {
-        //log dead status
-        }
-  }
-  
-  thisCache.set(key, timestamp, 604800);
+        (async () => {
+        const rawResponse = await fetch(postEntryUrl, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+        const contenti = await rawResponse.json();
+        const contentii = JSON.stringify(contenti);
+        const guid = contentii.replace(/"/g, '');
+        //console.log(guid);
+      })();
+    }
+  }  
 });
 app.get('/resolve', lcontroller.resolve.bind(lcontroller));
 app.get('/nodes', lcontroller.getNodes.bind(lcontroller));
