@@ -16,37 +16,23 @@
         <a href="/index.html">home</a><br />
         <input type="file" id="fileInput">
         <p id="lastGuid"></p>
-        <button onclick="getCookieValue('key')">Click me</button>
-        <table id="thisTable" border="1">
-              <thead>
-                  <tr>
-                      <th>lastGuid</th>
-                      <th>lastLog</th>
-                      <th>status</th>
-                      <th>fortune</th>
-                      <th>guid</th>
-                      <th>timestamp</th>
-                  </tr>
-              </thead>
-              <tbody id="data"></tbody>
-          </table>
+        <p id="lastLog"></p>
         <script type="text/javascript">
            const fileInput = document.getElementById('fileInput');
 
            fileInput.addEventListener('change', (event) => {
                const file = event.target.files[0];
+               setCookie('filename', file.name, 7);
                const reader = new FileReader();
 
                reader.onload = (e) => {
                    const content = e.target.result;
                    const guid = content.replace(/"/g, '');
                    const element = document.getElementById('lastGuid');
-                   element.innerHTML = guid;
+                   element.innerHTML = guid;                   
+                   findLogIdx();
                    setCookie('lastGuid', guid, 7);
-                   setCookie('key', file.name, 7);
-                   //console.log('hello world' + file.name);
                };
-
                reader.readAsText(file);
            });
           function setCookie(name,value,days) {
@@ -67,6 +53,21 @@
               return match[2];
             }
          };
+         function findLogIdx() {
+              var lastGuid = document.getElementById("lastGuid").value;
+              var lastLog = document.getElementById("lastLog").value;
+              var findLogIdxUrl = window.location.origin + "/logchain/log/" + lastGuid;
+              console.log(findLogIdxUrl);
+              fetch(findLogIdxUrl)
+                .then(response => response.json())
+                .then(data => {
+                  setCookie('lastLog', JSON.stringify(data), 7);
+                  const element = document.getElementById('lastLog');
+                  element.innerHTML = data;
+                })
+                .catch(error => console.error('Error fetching data:', error));
+            };
+            
           </script>
     </main>
   </body>

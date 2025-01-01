@@ -96,7 +96,7 @@
                 const fileNamei = Math.floor(+new Date() / 1000);
                 const fileNameii = fileNamei + ".txt";
                 setCookie('lastGuid', guid, 7);
-                setCookie('key', fileNameii, 7);
+                //setCookie('key', fileNameii, 7);
                 setCookie('timestamp', fileNamei, 7);
                 createAndDownloadFile(fileNameii, guid);
                 updateCache(lastGuidi, fileNamei, guid);
@@ -132,7 +132,6 @@
               fetch(findLogIdxUrl)
                 .then(response => response.json())
                 .then(data => {
-                  console.log("Found log for spawned guid: " + newguid);
                   setCookie('lastLog', JSON.stringify(data), 7);                      
                   document.getElementById("lastLog").value = data;
                 })
