@@ -10,6 +10,26 @@
 
   </head>
   <body>
+      <div id="consentBox">
+        <img src="" alt="Logo">
+        <div id="consentContent">
+            <header id="consentHeader">
+                  dms-cookies
+              </header>
+            <p>
+              We use cookies to monitor for sign of life.
+              <br>The cookies are necessary for site to function and are anonymous.
+            </p>
+            <div class="buttons">
+                <button class="consentButton">
+                      Accept Cookies
+                  </button>
+                <button class="rejectButton">
+                      Reject
+                  </button>
+            </div>
+        </div>
+    </div>
     <main>
         <h1>dms-logchain</h1>
         <h3>dms-logchain-home</h3>
@@ -19,8 +39,37 @@
             <li><a href="/history.html">view user history</a></li>            
             <li><a href="/config.html">configure</a></li>
             <li><a href="/newEntry.html">add new entry</a></li>
+            <li><a href="/mine.html">mine entries</a></li>
+            <li><a href="/lode.html">lode uids</a></li>
         </ul>
     </main>
+    <script src="./script.js"></script>
+    <script type="text/javascript">
+    const consentBox = document.getElementById("consentBox");
+    const acceptBtn = document.querySelector(".consentButton");
+    const rejectBtn = document.querySelector(".rejectButton");
+
+    acceptBtn.onclick = () => {
+        document.cookie = "CookieBy=dms-logchain; max-age=" + 60 * 60 * 24 * 30;
+        if (document.cookie) {
+            consentBox.classList.add("hide");
+        } else {
+            alert
+                ("Cookie can't be set! Please"+
+                  " unblock this site from the cookie"+
+                  " setting of your browser.");
+        }
+    };
+
+    rejectBtn.onclick = () => {
+        alert(
+            "Cookies rejected. Some functionality may be limited.");
+        consentBox.classList.add("hide");
+    };
+
+    let checkCookie = document.cookie.indexOf("CookieBy=dms-logchain");
+    checkCookie !== -1 ? consentBox.classList.add("hide") : consentBox.classList.remove("hide");
+    </script>
   </body>
 </html>
 

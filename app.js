@@ -36,10 +36,15 @@ app.get('/lode/:oldguid/:timestamp/:newguid', (req, res) => {
   const timestamp = req.params.timestamp;
   const currentURL = url + ':' + port;
   
+  if (thisCache.keys().length === 0) {
+        thisCache.set("10000000-1000-4000-8000-100000000000", timestamp, 1209600);
+  }
+  
   if (thisCache.has(oldkey)) {
     thisCache.del(oldkey);
-  }  
-  thisCache.set(newkey, timestamp, 604800);
+  }
+  
+  thisCache.set(newkey, timestamp, 1209600);
 
   const keys = thisCache.keys();
   const postEntryUrl = "http://" + currentURL + "/entry";

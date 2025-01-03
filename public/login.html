@@ -13,62 +13,32 @@
     <main>
         <h1>dms-logchain</h1>
         <h3>dms-logchain-login</h3>
-        <a href="/index.html">home</a><br />
+        <h4>dms-logchain-account: <span id="currentAccount"></span></h4>
+        <a href="/index.html">home</a><br /><br />
         <input type="file" id="fileInput">
         <p id="lastGuid"></p>
         <p id="lastLog"></p>
+        <script src="./script.js"></script>
         <script type="text/javascript">
-           const fileInput = document.getElementById('fileInput');
+        const fileInput = document.getElementById('fileInput');
 
-           fileInput.addEventListener('change', (event) => {
-               const file = event.target.files[0];
-               setCookie('filename', file.name, 7);
-               const reader = new FileReader();
+        fileInput.addEventListener('change', (event) => {
+           const file = event.target.files[0];
+           setCookie('filename', file.name, 7);
+           const reader = new FileReader();
 
-               reader.onload = (e) => {
-                   const content = e.target.result;
-                   const guid = content.replace(/"/g, '');
-                   const element = document.getElementById('lastGuid');
-                   element.innerHTML = guid;                   
-                   findLogIdx();
-                   setCookie('lastGuid', guid, 7);
-               };
-               reader.readAsText(file);
-           });
-          function setCookie(name,value,days) {
-              var expires = "";
-              if (days) {
-                  var date = new Date();
-                  date.setTime(date.getTime() + (days*24*60*60*1000));
-                  expires = "; expires=" + date.toUTCString();
-              }
-              document.cookie = name + "=" + (value || "")  + expires + "; path=/; SameSite=None; Secure;";
-          };
-          function getCookieValue(name) 
-          {
-            const regex = new RegExp(`(^| )${name}=([^;]+)`)
-            const match = document.cookie.match(regex)
-            if (match) {
-              console.log(match[2]);
-              return match[2];
-            }
-         };
-         function findLogIdx() {
-              var lastGuid = document.getElementById("lastGuid").value;
-              var lastLog = document.getElementById("lastLog").value;
-              var findLogIdxUrl = window.location.origin + "/logchain/log/" + lastGuid;
-              console.log(findLogIdxUrl);
-              fetch(findLogIdxUrl)
-                .then(response => response.json())
-                .then(data => {
-                  setCookie('lastLog', JSON.stringify(data), 7);
-                  const element = document.getElementById('lastLog');
-                  element.innerHTML = data;
-                })
-                .catch(error => console.error('Error fetching data:', error));
-            };
-            
-          </script>
+           reader.onload = (e) => {
+               const content = e.target.result;
+               const guid = content.replace(/"/g, '');
+               const element = document.getElementById('lastGuid');
+               element.innerHTML = guid;                   
+               findLogIdx(guid);
+               setCookie('lastGuid', guid, 7);
+           };
+           reader.readAsText(file);
+        });
+        setInputValue1();
+        </script>
     </main>
   </body>
 </html>

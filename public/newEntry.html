@@ -13,7 +13,8 @@
     <main>
         <h1>dms-logchain</h1>
         <h3>dms-logchain-newEntry</h3>
-        <a href="/index.html">home</a><br />
+        <h4>dms-logchain-account: <span id="currentAccount"></span></h4>
+        <a href="/index.html">home</a><br /><br />
             <label for="lastGuid">lastGuid:</label>
             <input id="lastGuid" type="text" name="lastGuid" value="" /><br />
             
@@ -31,114 +32,11 @@
             <input id="fortune" type="text" name="fortune" /><br />
             
             <button id="addEntry" onClick="addEntry()">Add Entry</button>
-            <table id="thisTable" border="1">
-              <thead>
-                  <tr>
-                      <th>lastGuid</th>
-                      <th>lastLog</th>
-                      <th>status</th>
-                      <th>fortune</th>
-                      <th>guid</th>
-                      <th>timestamp</th>
-                  </tr>
-              </thead>
-              <tbody id="data"></tbody>
-          </table>
+          <script src="./script.js"></script>
             <script type="text/javascript">
-            function setCookie(name,value,days) {
-              var expires = "";
-              if (days) {
-                  var date = new Date();
-                  date.setTime(date.getTime() + (days*24*60*60*1000));
-                  expires = "; expires=" + date.toUTCString();
-              }
-              document.cookie = name + "=" + (value || "")  + expires + "; path=/; SameSite=None; Secure;";
-            };
-            function getCookieValue(name) {
-                const regex = new RegExp(`(^| )${name}=([^;]+)`)
-                const match = document.cookie.match(regex)
-                if (match) {
-                  //console.log(match[2]);
-                  return match[2];
-                }
-             };
-            function setInputValue2() {
-              const lastGuidCookie = getCookieValue('lastGuid');
-              document.getElementById("lastGuid").value = lastGuidCookie;
-            };
-            function addEntry(){
-              const lastGuidi = document.getElementById("lastGuid").value;
-              console.log(lastGuidi);
-              const lastLogi = document.getElementById("lastLog").value;
-              const statusi = document.getElementById("status").value;
-              const fortunei = document.getElementById("fortune").value;
-              const postEntryUrl = window.location.origin + "/entry";
-              const payload = {
-                lastGuid: lastGuidi,
-                lastLog: lastLogi,
-                status: statusi,
-                fortune: fortunei
-              };
-              console.log(postEntryUrl);
-              (async () => {
-                const rawResponse = await fetch(postEntryUrl, {
-                  method: 'POST',
-                  headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify(payload)
-                });
-                const contenti = await rawResponse.json();
-                const contentii = JSON.stringify(contenti);
-                const guid = contentii.replace(/"/g, '');
-                console.log(guid);
-                const fileNamei = Math.floor(+new Date() / 1000);
-                const fileNameii = fileNamei + ".txt";
-                setCookie('lastGuid', guid, 7);
-                //setCookie('key', fileNameii, 7);
-                setCookie('timestamp', fileNamei, 7);
-                createAndDownloadFile(fileNameii, guid);
-                updateCache(lastGuidi, fileNamei, guid);
-                console.log(guid);
-              })();
-            };
-            
-            function createAndDownloadFile(fileName, content) {
-              const blob = new Blob([content], { type: "text/plain" });
-              const url = URL.createObjectURL(blob);
-              const link = document.createElement("a");
-              link.href = url;
-              link.download = fileName;
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
-            };
-            function updateCache(oldguid, timestamp, newguid) {
-              var updateCacheUrl = window.location.origin + "/lode/" + oldguid + "/" + timestamp + "/" + newguid;
-              console.log(updateCacheUrl);
-              fetch(updateCacheUrl)
-                .then(response => response.json())
-                .then(data => {
-                  console.log("Cache Updated for  guid: " + newguid);
-                })
-                .catch(error => console.error('Error fetching data:', error));
-            };
-            function findLogIdx() {
-              var lastGuid = document.getElementById("lastGuid").value;
-              var lastLog = document.getElementById("lastLog").value;
-              var findLogIdxUrl = window.location.origin + "/logchain/log/" + lastGuid;
-              console.log(findLogIdxUrl);
-              fetch(findLogIdxUrl)
-                .then(response => response.json())
-                .then(data => {
-                  setCookie('lastLog', JSON.stringify(data), 7);                      
-                  document.getElementById("lastLog").value = data;
-                })
-                .catch(error => console.error('Error fetching data:', error));
-            };
             setInputValue2();
-            findLogIdx();
+            setInputValue1();
+            findLogIdx(getCookieValue('lastGuid'));
           </script>
     </main>
   </body>
