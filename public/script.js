@@ -117,7 +117,7 @@ function mineEntries() {
     .catch(error => console.error('Error fetching data:', error));
 }
 
-function lodeEntries() {
+function lodeUIDs() {
     const lastGuidCookie = getCookieValue('lastGuid');
     const timestampCookie = getCookieValue('timestamp');
       var updateCacheUrl = window.location.origin + "/lode/10000000-1000-4000-8000-100000000000/" + timestampCookie + "/" + lastGuidCookie;
@@ -125,7 +125,7 @@ function lodeEntries() {
       fetch(updateCacheUrl)
         .then(response => response.json())
         .then(data => {
-          console.log("Cache Updated for  guid: " + newguid);
+          console.log("Cache Updated for  guid: " + data);
         })
         .catch(error => console.error('Error fetching data:', error));
 };

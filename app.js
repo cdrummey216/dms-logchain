@@ -1,4 +1,3 @@
-//const blockchainController = require('./src/controllers/blockchain');
 const logchainController = require('./src/controllers/logchain');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -45,38 +44,36 @@ app.get('/lode/:oldguid/:timestamp/:newguid', (req, res) => {
   const keys = thisCache.keys();
   const postEntryUrl = "http://" + currentURL + "/entry";
   console.log(keys);
-  for (const key of keys) {
-      const cachedStamp = thisCache.get(key);
-      const diff = Math.abs(now - cachedStamp);
-      const seconds = Math.floor(diff / 1000);
-      const minutes = Math.floor(seconds / 60);
-      const hours = Math.floor(minutes / 60);
-      const days = Math.floor(hours / 24);
-      const payload = {
-        lastGuid: key,
-        lastLog: -1,
-        status: "dead",
-        fortune: "veritatem iterum"
-      };
-     
-      
-      if (days >= 7) {
-        (async () => {
-        const rawResponse = await fetch(postEntryUrl, {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload)
-        });
-        const contenti = await rawResponse.json();
-        const contentii = JSON.stringify(contenti);
-        const guid = contentii.replace(/"/g, '');
-        //console.log(guid);
-      })();
-    }
-  }  
+  keys.forEach( (key) => {
+              var cachedStamp = thisCache.get(key);
+              var diff = Math.abs(now - cachedStamp);
+              var seconds = Math.floor(diff / 1000);
+              var minutes = Math.floor(seconds / 60);
+              var hours = Math.floor(minutes / 60);
+              var days = Math.floor(hours / 24);
+              var payload = {
+                lastGuid: key,
+                lastLog: -1,
+                status: "dead",
+                fortune: "veritatem iterum"
+              };
+            if (days >= 7) {
+                (async () => {
+                const rawResponse = await fetch(postEntryUrl, {
+                  method: 'POST',
+                  headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(payload)
+                });
+                var contenti = await rawResponse.json();
+                var contentii = JSON.stringify(contenti);
+                var guid = contentii.replace(/"/g, '');
+              })();
+            }
+            return;
+        }); 
 });
 app.get('/resolve', lcontroller.resolve.bind(lcontroller));
 app.get('/nodes', lcontroller.getNodes.bind(lcontroller));
