@@ -41,7 +41,7 @@ app.get('/lode/:oldguid/:timestamp/:newguid', (req, res) => {
   }
   
   if (thisCache.has(oldkey)) {
-    if (str.includes("10000000-1000-4000-8000-100000000000")) {
+    if (oldkey.includes("10000000-1000-4000-8000-100000000000")) {
       thisCache.set(oldkey, timestamp, 1209600);
     }
     else {
