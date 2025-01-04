@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>dms-logchain</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+
+  </head>
+  <body>
+    <main>
+        <h1>dms-logchain</h1>
+        <h3>dms-logchain-newAccount</h3>
+        <h4>dms-logchain-account: <span id="currentAccount"></span></h4>
+        <a href="/index.html">home</a><br /><br />
+            <label for="lastGuid">lastGuid:</label>
+            <input id="lastGuid" type="text" name="lastGuid" value="" /><br />
+            
+            <label for="lastLog">lastLog:</label>
+            <input id="lastLog" type="number" name="lastLog" /><br />
+            
+            <label for="status">status:</label>
+            <select id="status" name="status">
+              <option value="alive">alive</option>
+              <option value="dead">dead</option>
+              <option value="whacked">whacked</option>
+            </select><br />
+            
+            <label for="fortune">fortune:</label>
+            <input id="fortune" type="text" name="fortune" /><br />
+            
+            <button id="addEntry" onClick="addEntry()">Add Entry</button>
+          <script src="./script.js"></script>
+            <script type="text/javascript">
+            setInputValue3();
+            setInputValue1();
+          </script>
+    </main>
+  </body>
+</html>
+

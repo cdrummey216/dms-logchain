@@ -24,6 +24,11 @@ function setInputValue2() {
   const lastGuidCookie = getCookieValue('lastGuid');
   document.getElementById("lastGuid").value = lastGuidCookie;
 };
+function setInputValue3() {
+  const lastGuidCookie = "10000000-1000-4000-8000-100000000000";
+  document.getElementById("lastGuid").value = lastGuidCookie;
+  document.getElementById("lastLog").value = 0;
+};
 function addEntry(){
   const lastGuidi = document.getElementById("lastGuid").value;
   console.log(lastGuidi);

@@ -43,23 +43,27 @@ app.get('/lode/:oldguid/:timestamp/:newguid', (req, res) => {
 
   const keys = thisCache.keys();
   const postEntryUrl = "http://" + currentURL + "/entry";
-  console.log(keys);
+  const deadUIDs = {};
   keys.forEach( (key) => {
-              var cachedStamp = thisCache.get(key);
-              var diff = Math.abs(now - cachedStamp);
-              var seconds = Math.floor(diff / 1000);
-              var minutes = Math.floor(seconds / 60);
-              var hours = Math.floor(minutes / 60);
-              var days = Math.floor(hours / 24);
-              var payload = {
-                lastGuid: key,
-                lastLog: -1,
-                status: "dead",
-                fortune: "veritatem iterum"
-              };
-            if (days >= 7) {
-                (async () => {
-                const rawResponse = await fetch(postEntryUrl, {
+          var cachedStamp = thisCache.get(key);
+          var diff = Math.abs(now - cachedStamp);
+          var seconds = Math.floor(diff / 1000);
+          var minutes = Math.floor(seconds / 60);
+          var hours = Math.floor(minutes / 60);
+          var days = Math.floor(hours / 24);
+          var payload = {
+            lastGuid: key,
+            lastLog: -1,
+            status: "dead",
+            fortune: "veritatem iterum",
+          };
+          
+          if (days < 7) {
+            console.log("last sign of life for " +key+ " was " +days+ " days ago." );
+          }
+          else {
+            (async () => {
+                var rawResponse = await fetch(postEntryUrl, {
                   method: 'POST',
                   headers: {
                     'Accept': 'application/json',
@@ -67,13 +71,11 @@ app.get('/lode/:oldguid/:timestamp/:newguid', (req, res) => {
                   },
                   body: JSON.stringify(payload)
                 });
-                var contenti = await rawResponse.json();
-                var contentii = JSON.stringify(contenti);
-                var guid = contentii.replace(/"/g, '');
+                console.log(JSON.stringify(payload));
+                return await rawResponse.json();
               })();
-            }
-            return;
-        }); 
+            };
+        });        
 });
 app.get('/resolve', lcontroller.resolve.bind(lcontroller));
 app.get('/nodes', lcontroller.getNodes.bind(lcontroller));
