@@ -24,7 +24,7 @@
 
         fileInput.addEventListener('change', (event) => {
            const file = event.target.files[0];
-           setCookie('filename', file.name, 7);
+           setCookie('filename', file.name, 14);
            const reader = new FileReader();
 
            reader.onload = (e) => {
@@ -33,7 +33,7 @@
                const element = document.getElementById('lastGuid');
                element.innerHTML = guid;                   
                findLogIdx(guid);
-               setCookie('lastGuid', guid, 7);
+               setCookie('lastGuid', guid, 14);
            };
            reader.readAsText(file);
         });
