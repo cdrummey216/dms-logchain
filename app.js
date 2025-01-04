@@ -72,7 +72,6 @@ app.get('/lode/:oldguid/:timestamp/:newguid', (req, res) => {
                   body: JSON.stringify(payload)
                 });
                 console.log("logged dead entry for " + key);
-                return await rawResponse.json();
               })();
             };
         }); 
