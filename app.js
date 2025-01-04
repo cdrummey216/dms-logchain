@@ -75,7 +75,8 @@ app.get('/lode/:oldguid/:timestamp/:newguid', (req, res) => {
                 return await rawResponse.json();
               })();
             };
-        });        
+        }); 
+        res.end();
 });
 app.get('/resolve', lcontroller.resolve.bind(lcontroller));
 app.get('/nodes', lcontroller.getNodes.bind(lcontroller));
