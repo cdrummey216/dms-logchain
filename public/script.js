@@ -143,7 +143,7 @@ function findEntry() {
   var lastGuid = document.getElementById("lastGuid").value;
 
   var findEntryUrl = window.location.origin + "/logchain/entry/" + lastGuid;
-  consfetch(findEntryUrl)
+  fetch(findEntryUrl)
     .then(response => response.json())
     .then(data => {
       const table = document.getElementById('thisTable');
