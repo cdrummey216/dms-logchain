@@ -47,7 +47,6 @@ class Logchain {
         entries.list.forEach( (entry) => {
             let lastEntryLogIdx = this.getLogIdxByGuid(entry.lastGuid);
             entry.lastLog = lastEntryLogIdx;
-            console.log(lastEntryLogIdx);
             return;
         });
         
@@ -149,14 +148,11 @@ class Logchain {
         
         for (var i = 0; i < this.logs.length; i++){
             this.logs[i].entries.forEach( (entry) => {
-                console.log(i);
-                
                 if (guid == entry.guid) {
                     results.push(entry);
                     }
                 });
         }
-        console.log(results);
         return results;
     }
     
@@ -166,22 +162,18 @@ class Logchain {
         
         for (var i = 0; i < this.logs.length; i++){
             this.logs[i].entries.forEach( (entry) => {
-                console.log(i);
-                
                 if (guid == entry.guid) {
                     results.push(entry);
                     this.getEntryByGuid(entry.lastGuid, results);
                     }
                 });
         }
-        console.log(results);
         return results;
     }
     
     getHistory(guid) {
         let foundEntries = [];
         foundEntries = this.getHistoryByGuid(guid, foundEntries);
-        console.log(foundEntries);
         return foundEntries;
     }
 }
