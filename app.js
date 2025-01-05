@@ -43,7 +43,6 @@ app.get('/lode/:oldguid/:timestamp/:newguid', (req, res) => {
 
   const keys = thisCache.keys();
   const postEntryUrl = "http://" + currentURL + "/entry";
-  const deadUIDs = {};
   keys.forEach( (key) => {
           var cachedStamp = thisCache.get(key);
           var diff = Math.abs(now - cachedStamp);
@@ -72,6 +71,8 @@ app.get('/lode/:oldguid/:timestamp/:newguid', (req, res) => {
                   body: JSON.stringify(payload)
                 });
                 console.log("logged dead entry for " + key);
+                thisCache.del(key);
+                console.log("removed " + key +" from cache");
               })();
             };
         }); 
