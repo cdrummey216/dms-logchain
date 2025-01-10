@@ -15,21 +15,21 @@
         <h3>dms-logchain-newAccount</h3>
         <h4>dms-logchain-account: <span id="currentAccount"></span></h4>
         <a href="/index.html">home</a><br /><br />
-            <label for="lastGuid">lastGuid:</label>
-            <input id="lastGuid" type="text" name="lastGuid" value="" /><br />
+            <label class="hide" for="lastGuid">lastGuid:</label>
+            <input class="hide" id="lastGuid" type="text" name="lastGuid" value="" />
             
-            <label for="lastLog">lastLog:</label>
-            <input id="lastLog" type="number" name="lastLog" /><br />
+            <label class="hide" for="lastLog">lastLog:</label>
+            <input class="hide" id="lastLog" type="number" name="lastLog" />
             
-            <label for="status">status:</label>
+            <label class="label" for="status">status:</label>
             <select id="status" name="status">
               <option value="alive">alive</option>
               <option value="dead">dead</option>
               <option value="whacked">whacked</option>
             </select><br />
             
-            <label for="fortune">fortune:</label>
-            <input id="fortune" type="text" name="fortune" /><br />
+            <label class="label" for="fortune">fortune:</label>
+            <textarea id="fortune" type="text" name="fortune"></textarea><br />
             
             <button id="addEntry" onClick="addEntry()">Add Entry</button>
           <script src="./script.js"></script>

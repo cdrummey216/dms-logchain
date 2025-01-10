@@ -15,12 +15,14 @@
         <h3>dms-logchain-findEntry</h3>
         <h4>dms-logchain-account: <span id="currentAccount"></span></h4>
         <a href="/index.html">home</a><br /><br />
-            <label for="lastGuid">lastGuid:</label>
-            <input id="lastGuid" type="text" name="lastGuid" value="" /><br />
-            
-            <label for="lastLog">lastLog:</label>
-            <input id="lastLog" type="number" name="lastLog" /><br />
-        <button onclick="findEntry()">Click me</button>
+        <label class="label" for="lastGuid">lastGuid:</label>
+        <input id="lastGuid" type="text" name="lastGuid" value="" /><br />
+        
+        <label class="label" for="lastLog">lastLog:</label>
+        <input id="lastLog" type="number" name="lastLog" /><br />
+        <br />
+        <button onclick="findEntry()">find entry</button>
+        <br />
         <table id="thisTable" border="1">
             <thead>
                 <tr>

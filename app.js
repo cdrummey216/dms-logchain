@@ -19,6 +19,9 @@ let listener = app.listen(port, url, function() {
 let lcontroller = new logchainController(url, port);
 
 const thisCache = new NodeCache();
+app.get('/cache', (req, res) => {
+res.send("total uids: " + (thisCache.keys().length - 1));
+});
 app.get('/lode/:oldguid/:timestamp/:newguid', (req, res) => {
   const now = Math.floor(+new Date() / 1000);
   const newkey = req.params.newguid;
@@ -56,7 +59,7 @@ app.get('/lode/:oldguid/:timestamp/:newguid', (req, res) => {
             status: "dead",
             fortune: "veritatem iterum",
           };
-          
+
           if (days < 7) {
             console.log("last sign of life for " +key+ " was " +days+ " days ago." );
           }
@@ -75,8 +78,9 @@ app.get('/lode/:oldguid/:timestamp/:newguid', (req, res) => {
                 console.log("removed " + key +" from cache");
               })();
             };
-        }); 
-        res.end();
+        });
+        res.send(JSON.stringify(newkey));
+        //res.end();
 });
 app.get('/resolve', lcontroller.resolve.bind(lcontroller));
 app.get('/nodes', lcontroller.getNodes.bind(lcontroller));

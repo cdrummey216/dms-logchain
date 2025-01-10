@@ -74,7 +74,7 @@ function updateCache(oldguid, timestamp, newguid) {
   fetch(updateCacheUrl)
     .then(response => response.json())
     .then(data => {
-      console.log("Cache Updated for uid: " + newguid);
+      console.log("Cache Updated for uid: " + data);
     })
     .catch(error => console.error('Error fetching data:', error));
 };
@@ -94,15 +94,16 @@ function mineEntries() {
   fetch(mineEntriesUrl)
     .then(response => response.json())
     .then(data => {
-      const table = document.getElementById('thisTable');
-      const tbody = table.getElementsByTagName('tbody')[0];
-      data.entries.forEach(item => {
-        const row = tbody.insertRow();
-        Object.values(item).forEach(value => {
-          const cell = row.insertCell();
-          cell.textContent = value;
-        });
-      });
+    console.log("entries successfully mined");
+      //const table = document.getElementById('thisTable');
+      //const tbody = table.getElementsByTagName('tbody')[0];
+     // data.entries.forEach(item => {
+       // const row = tbody.insertRow();
+       // Object.values(item).forEach(value => {
+      //    const cell = row.insertCell();
+      //    cell.textContent = value;
+      //  });
+      //});
     })
     .catch(error => console.error('Error fetching data:', error));
 }
