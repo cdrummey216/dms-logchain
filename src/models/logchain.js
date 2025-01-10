@@ -176,6 +176,21 @@ class Logchain {
         foundEntries = this.getHistoryByGuid(guid, foundEntries);
         return foundEntries;
     }
+    
+    getLastLog() {
+        let foundLog = [];
+        let idx = this.logs.length-1;
+        if (idx<=this.logs.length) {
+            this.logs.forEach( (log) => {
+                if (idx == log.index) {
+                    foundLog = log;
+                    return;
+                }
+            });
+        }
+
+        return foundLog;
+    }
 }
 
 module.exports = Logchain;
