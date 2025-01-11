@@ -12,44 +12,32 @@
   <body>
     <main>
         <h1>dms-logchain</h1>
-        <h3>dms-logchain-config</h3>
+        <h3>dms-logchain-newUid</h3>
         <h4>dms-logchain-uid: <span id="currentUid"></span></h4>
         <a href="/index.html">home</a><br /><br />
-            <label for="email">email:</label>
-            <input id="email" type="text" name="email" value="" /><br />
+            <label class="hide" for="lastGuid">lastGuid:</label>
+            <input class="hide" id="lastGuid" type="text" name="lastGuid" value="" />
             
-            <label for="lastGuid">lastGuid:</label>
-            <input id="lastGuid" type="text" name="lastGuid" /><br />
+            <label class="hide" for="lastLog">lastLog:</label>
+            <input class="hide" id="lastLog" type="number" name="lastLog" />
             
-            <label for="status">status:</label>
+            <label class="label" for="status">status:</label>
             <select id="status" name="status">
               <option value="alive">alive</option>
               <option value="dead">dead</option>
               <option value="whacked">whacked</option>
-            </select><br />
+            </select><br /><br />
             
-            <label for="fortune">fortune:</label>
-            <input id="fortune" type="text" name="fortune" /><br />
+            <label class="label" for="fortune">fortune:</label>
+            <textarea id="fortune" type="text" name="fortune"></textarea><br /><br />
             
             <button id="addEntry" onClick="addEntry()">Add Entry</button>
-            <table id="thisTable" border="1">
-              <thead>
-                  <tr>
-                      <th>lastGuid</th>
-                      <th>lastLog</th>
-                      <th>status</th>
-                      <th>fortune</th>
-                      <th>guid</th>
-                      <th>timestamp</th>
-                  </tr>
-              </thead>
-              <tbody id="data"></tbody>
-          </table>
           <script src="./script.js"></script>
             <script type="text/javascript">
-            setInputValue2();
+            setInputValue3();
             setInputValue1();
           </script>
     </main>
   </body>
 </html>
+

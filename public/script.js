@@ -16,7 +16,7 @@ function getCookieValue(name) {
  };
  function setInputValue1() {
   const lastGuidCookie = getCookieValue('lastGuid');
-  document.getElementById("currentAccount").innerHTML = lastGuidCookie;
+  document.getElementById("currentUid").innerHTML = lastGuidCookie;
 }
 function setInputValue2() {
   const lastGuidCookie = getCookieValue('lastGuid');
@@ -56,6 +56,37 @@ function addEntry(){
     setCookie('lastGuid', guid, 14);
     setCookie('timestamp', fileNamei, 14);
     createAndDownloadFile(fileNameii, guid);
+    updateCache(lastGuidi, fileNamei, guid);
+  })();
+};
+function checkin(){
+  const lastGuidi = getCookieValue('lastGuid');
+  const lastLogi = getCookieValue('lastLog');
+  const statusi = "alive";
+  const fortunei = "checking in";
+  const postEntryUrl = window.location.origin + "/entry";
+  const payload = {
+    lastGuid: lastGuidi,
+    lastLog: lastLogi,
+    status: statusi,
+    fortune: fortunei
+  };
+  (async () => {
+    const rawResponse = await fetch(postEntryUrl, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+    const contenti = await rawResponse.json();
+    const contentii = JSON.stringify(contenti);
+    const guid = contentii.replace(/"/g, '');
+    const fileNamei = Math.floor(+new Date() / 1000);
+    const fileNameii = fileNamei + ".txt";
+    setCookie('lastGuid', guid, 14);
+    setCookie('timestamp', fileNamei, 14);
     updateCache(lastGuidi, fileNamei, guid);
   })();
 };
@@ -136,7 +167,13 @@ function findHistory() {
         const row = tbody.insertRow();
         Object.values(item).forEach(value => {
           const cell = row.insertCell();
-          cell.textContent = value;
+          if (item.timestamp == value){
+            const date = new Date(value);
+            cell.textContent = date;
+          }
+          else {
+            cell.textContent = value;
+          }
         });
       });
     })
@@ -156,7 +193,13 @@ function findEntry() {
         const row = tbody.insertRow();
         Object.values(item).forEach(value => {
           const cell = row.insertCell();
-          cell.textContent = value;
+          if (item.timestamp == value){
+            const date = new Date(value);
+            cell.textContent = date;
+          }
+          else {
+            cell.textContent = value;
+          }
         });
       });
     })

@@ -13,23 +13,37 @@
     <main>
         <h1>dms-logchain</h1>
         <h3>dms-logchain-config</h3>
-        <h4>dms-logchain-account: <span id="currentAccount"></span></h4>
-        <a href="/index.html">home</a><br /><br />
-            <i>this is the last unique identifier associated with this browser's history</i><br />
-            <label for="lastGuid">lastGuid:</label>
-            <input id="lastGuid" type="text" name="lastGuid" /><br /><br />
-            
-            <i>simple; to the point; i'm alive;</i><br />            
-            <label class="label" for="status">status:</label>
-            <select id="status" name="status">
-              <option value="alive">alive</option>
-              <option value="dead">dead</option>
-              <option value="whacked">whacked</option>
-            </select><br />
-            <br />
-            <i>what do you etch upon the digital stone</i><br />
-            <label for="fortune" class="label">fortune:</label>
-            <textarea id="fortune" type="text" name="fortune"></textarea><br /><br />
+        <h4>dms-logchain-uid: <span id="currentUid"></span></h4>
+        <a href="/index.html">home</a><br />
+        <h4>what-is-dms-logchain</h4>
+        <i style="width:50%;display: block;">dms-logchain is a blockchain solution to log for sign of life. as long as you check in every week, the logchain is updated with a record that indicates you're alive. if you miss a check in, an dead entry is added to the logchain. keep you uids safe and only share with those you want to be able to view your logchain history.</i>
+        <br /><br />
+        
+        <label for="lastGuid">lastGuid:</label>
+        <input id="lastGuid" type="text" name="lastGuid" /><br />
+        <i>this is the last unique identifier associated with this browser's history</i><br /><br />
+        
+                    
+        <label class="label" for="status">status:</label>
+        <select id="status" name="status">
+          <option value="alive">alive</option>
+          <option value="dead">dead</option>
+          <option value="whacked">whacked</option>
+        </select><br />
+        <i>simple; to the point; i'm alive;</i><br />
+        <br />
+        
+        <label for="fortune" class="label">fortune:</label>
+        <textarea id="fortune" type="text" name="fortune"></textarea><br />
+        <i>what do you etch upon the digital stone</i><br /><br />
+        <div>          
+          <button onclick="#">mine entries</button><br />
+          <i>mine the current entries to the logchain</i><br /><br />
+          <button onclick="#">lode uids</button><br />
+          <i>check for new dead logs</i><br /><br />
+          <button onclick="#">check in</button><br />
+          <i>add a generic checkin entry</i><br /><br />
+        </div>
           <script src="./script.js"></script>
             <script type="text/javascript">
             setInputValue2();

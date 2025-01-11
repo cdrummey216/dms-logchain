@@ -12,8 +12,8 @@
   <body>
     <main>
         <h1>dms-logchain</h1>
-        <h3>dms-logchain-guidHistory</h3>
-        <h4>dms-logchain-account: <span id="currentAccount"></span></h4>
+        <h3>dms-logchain-history</h3>
+        <h4>dms-logchain-uid: <span id="currentUid"></span></h4>
         <a href="/index.html">home</a><br /><br />
         <label class="label" for="lastGuid">lastGuid:</label>
         <input id="lastGuid" type="text" name="lastGuid" value="" /><br />
@@ -22,6 +22,7 @@
         <input id="lastLog" type="number" name="lastLog" /><br />
         <br />
         <button onclick="findHistory()">view history</button>
+        <br />
         <br />
         <table id="thisTable" border="1">
             <thead>

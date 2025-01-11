@@ -58,9 +58,7 @@ class LogchainController {
     }
     
     getLastLog(req, res) {
-        console.log("test");
         res.json(this.logchain.getLastLog());
-        //res.json(this.logchain.logs[0]);
     }
 }
 
