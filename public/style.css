@@ -4,7 +4,9 @@ display:none;
 .label {
 display:block;
 }
-
+body {
+  font-family: 'Courier New', monospace;
+}
 button.clicked#mine::after {
   content: ">>>>> mined";
   position: absolute;
