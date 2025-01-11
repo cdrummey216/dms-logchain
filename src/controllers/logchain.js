@@ -56,6 +56,12 @@ class LogchainController {
     getHistory(req, res) {
         res.json(this.logchain.getHistory(req.params.guid));
     }
+    
+    getLastLog(req, res) {
+        console.log("test");
+        res.json(this.logchain.getLastLog());
+        //res.json(this.logchain.logs[0]);
+    }
 }
 
 module.exports = LogchainController;

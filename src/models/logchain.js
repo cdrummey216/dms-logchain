@@ -178,8 +178,9 @@ class Logchain {
     }
     
     getLastLog() {
-        let foundLog = [];
         let idx = this.logs.length-1;
+        let foundLog = [];
+
         if (idx<=this.logs.length) {
             this.logs.forEach( (log) => {
                 if (idx == log.index) {

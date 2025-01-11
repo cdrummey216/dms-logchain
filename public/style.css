@@ -4,8 +4,20 @@ display:none;
 .label {
 display:block;
 }
+main {
+  float: left;
+  margin-right: inherit;
+}
 main i {
    font-size: 10px;
+}
+h1 {
+
+}
+iframe {
+  width: 50%;
+  float: left;
+  height: 400px;
 }
 #consentBox {
     background: #fff;

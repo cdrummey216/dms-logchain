@@ -4,6 +4,21 @@ const bodyParser = require('body-parser');
 const NodeCache = require('node-cache');
 const url = process.env.URL || '0.0.0.0';
 const port = process.env.PORT || 4000;
+const fs = require('fs');
+
+const thisCache = new NodeCache();
+process.on('SIGINT', () => {
+    const cacheData = JSON.stringify(thisCache.data);
+    fs.writeFileSync('cache.json', cacheData);
+    process.exit(0);
+});
+
+try {
+    const cacheData = fs.readFileSync('cache.json');
+    thisCache.data = JSON.parse(cacheData);
+} catch(err) {
+    console.log(err);
+}
 
 let app = express();
 app.use(bodyParser.json());
@@ -13,14 +28,10 @@ let listener = app.listen(port, url, function() {
     console.log('Server started at ' + listener.address().address + ':' + listener.address().port);
 });
 
-
-// API
-
 let lcontroller = new logchainController(url, port);
 
-const thisCache = new NodeCache();
 app.get('/cache', (req, res) => {
-res.send("total uids: " + (thisCache.keys().length - 1));
+    res.send("total uids: " + (thisCache.keys().length - 1));
 });
 app.get('/lode/:oldguid/:timestamp/:newguid', (req, res) => {
   const now = Math.floor(+new Date() / 1000);
@@ -93,5 +104,5 @@ app.get('/logchain', lcontroller.getLogchain.bind(lcontroller));
 app.get('/logchain/entry/:guid', lcontroller.getEntryByGuid.bind(lcontroller));
 app.get('/logchain/history/:guid', lcontroller.getHistory.bind(lcontroller));
 app.get('/logchain/log/:guid', lcontroller.getLogIdxByGuid.bind(lcontroller));
-app.get('/logchain/lastLog', lcontroller.getLastLog.bind(lcontroller));
 app.get('/logchain/lastLog/:guid', lcontroller.getLastTimestampByGuid.bind(lcontroller));
+app.get('/latestlog', lcontroller.getLastLog.bind(lcontroller));

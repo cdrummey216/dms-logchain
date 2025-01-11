@@ -63,18 +63,20 @@ function createAndDownloadFile(fileName, content) {
   const blob = new Blob([content], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
+  const item = JSON.stringify(fileName).replace(/"/g, '');
   link.href = url;
+  link.innerHTML = 'to log back in: ' + item;
   link.download = fileName;
   document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  //link.click();
+  //document.body.removeChild(link);
 };
 function updateCache(oldguid, timestamp, newguid) {
   var updateCacheUrl = window.location.origin + "/lode/" + oldguid + "/" + timestamp + "/" + newguid;
   fetch(updateCacheUrl)
     .then(response => response.json())
     .then(data => {
-      console.log("Cache Updated for uid: " + data);
+      console.log("cache updated for uid: " + data);
     })
     .catch(error => console.error('Error fetching data:', error));
 };
