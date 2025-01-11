@@ -150,8 +150,9 @@ class Logchain {
             this.logs[i].entries.forEach( (entry) => {
                 if (guid == entry.guid) {
                     results.push(entry);
-                    }
-                });
+                    this.getHistoryByGuid(entry.lastGuid, results);
+                }
+            });
         }
         return results;
     }
