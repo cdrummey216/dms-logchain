@@ -122,6 +122,8 @@ function findLogIdx(guid) {
     })
     .catch(error => console.error('Error fetching data:', error));
 };
+
+
 function mineEntries() {
   var mineEntriesUrl = window.location.origin + "/mine";
   fetch(mineEntriesUrl)
@@ -140,7 +142,6 @@ function mineEntries() {
     })
     .catch(error => console.error('Error fetching data:', error));
 }
-
 function lodeUIDs() {
     const lastGuidCookie = getCookieValue('lastGuid');
     const timestampCookie = getCookieValue('timestamp');
@@ -168,7 +169,7 @@ function findHistory() {
         Object.values(item).forEach(value => {
           const cell = row.insertCell();
           if (item.timestamp == value){
-            const date = new Date(value);
+            const date = new Date(value * 1000);
             cell.textContent = date;
           }
           else {
@@ -194,7 +195,7 @@ function findEntry() {
         Object.values(item).forEach(value => {
           const cell = row.insertCell();
           if (item.timestamp == value){
-            const date = new Date(value);
+            const date = new Date(value * 1000);
             cell.textContent = date;
           }
           else {

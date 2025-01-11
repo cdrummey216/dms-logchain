@@ -4,6 +4,19 @@ display:none;
 .label {
 display:block;
 }
+
+button.clicked#mine::after {
+  content: ">>>>> mined";
+  position: absolute;
+}
+button.clicked#lode::after {
+  content: ">>>>> loded";
+  position: absolute;
+}
+button.clicked#log::after {
+  content: ">>>>> logged";
+  position: absolute;
+}
 main {
   float: left;
   margin-right: inherit;

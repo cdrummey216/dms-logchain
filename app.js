@@ -59,17 +59,17 @@ app.get('/lode/:oldguid/:timestamp/:newguid', (req, res) => {
   const postEntryUrl = "http://" + currentURL + "/entry";
   keys.forEach( (key) => {
           var cachedStamp = thisCache.get(key);
-          console.log(cachedStamp);
+          //console.log(cachedStamp);
           var diff = Math.abs(now - cachedStamp);
-          console.log(diff);
+          //console.log(diff);
           var seconds = Math.floor(diff / 1000);
-          console.log(seconds);
+          //console.log(seconds);
           var minutes = Math.floor(seconds / 60);
-          console.log(minutes);
+          //console.log(minutes);
           var hours = Math.floor(minutes / 60);
-          console.log(hours);
+          //console.log(hours);
           var days = Math.floor(hours / 24);
-          console.log(days);
+          //console.log(days);
           var payload = {
             lastGuid: key,
             lastLog: -1,
