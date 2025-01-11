@@ -85,6 +85,10 @@ function checkin(){
     const guid = contentii.replace(/"/g, '');
     const fileNamei = Math.floor(+new Date() / 1000);
     const fileNameii = fileNamei + ".txt";
+    var output = document.getElementById("logoutput");
+    const item = document.createElement("span");
+    item.innerHTML = '%> checkin entry successfully logged';
+    output.appendChild(item);
     setCookie('lastGuid', guid, 14);
     setCookie('timestamp', fileNamei, 14);
     updateCache(lastGuidi, fileNamei, guid);
@@ -107,7 +111,11 @@ function updateCache(oldguid, timestamp, newguid) {
   fetch(updateCacheUrl)
     .then(response => response.json())
     .then(data => {
-      console.log("cache updated for uid: " + data);
+        var output = document.getElementById("logoutput");
+        const item = document.createElement("span");
+        item.innerHTML = '%> cache updated for uid: ' + data;
+        output.appendChild(item);
+        console.log("cache updated for uid: " + data);
     })
     .catch(error => console.error('Error fetching data:', error));
 };
@@ -129,7 +137,11 @@ function mineEntries() {
   fetch(mineEntriesUrl)
     .then(response => response.json())
     .then(data => {
-    console.log("entries successfully mined");
+        var output = document.getElementById("logoutput");
+        const item = document.createElement("span");
+        item.innerHTML = '%> entries successfully mined';
+        output.appendChild(item);
+        console.log("entries successfully mined");
       //const table = document.getElementById('thisTable');
       //const tbody = table.getElementsByTagName('tbody')[0];
      // data.entries.forEach(item => {
@@ -149,7 +161,11 @@ function lodeUIDs() {
       fetch(updateCacheUrl)
         .then(response => response.json())
         .then(data => {
-          console.log("Cache Updated for uid: " + data);
+          var output = document.getElementById("logoutput");
+          const item = document.createElement("span");
+          item.innerHTML = '%> cache updated for uid: ' + data;
+          output.appendChild(item);
+          console.log("cache updated for uid: " + data);
         })
         .catch(error => console.error('Error fetching data:', error));
 };
