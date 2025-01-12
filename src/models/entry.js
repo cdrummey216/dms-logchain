@@ -23,7 +23,7 @@ class Entry {
         }
         
         if (!fortune) {
-            this.fortune = "hello, world";
+            this.fortune = "but you did not look to the One who made it, or have regard for the One who planned it long ago";
         }            
         else {
             this.fortune = fortune;

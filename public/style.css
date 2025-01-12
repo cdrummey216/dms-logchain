@@ -10,7 +10,6 @@ body {
 #logoutput {
   display: inline-grid;
   position: absolute;
-  margin-top: 5%;
 }
 button.clicked#mine::after {
   content: ">>>>> mined";
@@ -37,7 +36,6 @@ h1 {
 iframe {
   width: 50%;
   float: left;
-  height: 400px;
 }
 #consentBox {
     background: #fff;

@@ -100,7 +100,7 @@ function createAndDownloadFile(fileName, content) {
   const link = document.createElement("a");
   const item = JSON.stringify(fileName).replace(/"/g, '');
   link.href = url;
-  link.innerHTML = 'to log back in: ' + item;
+  link.innerHTML = 'to log back in: (now)' + item;
   link.download = fileName;
   document.body.appendChild(link);
   //link.click();
