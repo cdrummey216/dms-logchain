@@ -17,7 +17,7 @@
         <a href="/index.html">home</a><br /><br />
         <i>import the file with your last uid</i><br />
         <input type="file" id="fileInput">
-        <p id="lastGuid"></p>
+        <p id="lastUuid"></p>
         <p id="lastLog"></p>
         <script src="./script.js"></script>
         <script type="text/javascript">
@@ -31,10 +31,10 @@
            reader.onload = (e) => {
                const content = e.target.result;
                const guid = content.replace(/"/g, '');
-               const element = document.getElementById('lastGuid');
+               const element = document.getElementById('lastUuid');
                element.innerHTML = guid;                   
                findLogIdx(guid);
-               setCookie('lastGuid', guid, 14);
+               setCookie('lastUuid', guid, 14);
            };
            reader.readAsText(file);
         });

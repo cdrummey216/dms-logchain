@@ -19,26 +19,26 @@ function getCookieValue(name) {
   return params.get(paramName);
 };
  function setCurrentUid() {
-  const lastGuidCookie = getCookieValue('lastGuid');
-  document.getElementById("currentUid").innerHTML = lastGuidCookie;
+  const lastUuidCookie = getCookieValue('lastUuid');
+  document.getElementById("currentUid").innerHTML = lastUuidCookie;
 };
 function setInputValue2() {
-  const lastGuidCookie = getCookieValue('lastGuid');
-  document.getElementById("lastGuid").value = lastGuidCookie;
+  const lastUuidCookie = getCookieValue('lastUuid');
+  document.getElementById("lastUuid").value = lastUuidCookie;
 };
 function setInputValue3() {
-  const lastGuidCookie = "10000000-1000-4000-8000-100000000000";
-  document.getElementById("lastGuid").value = lastGuidCookie;
+  const lastUuidCookie = "10000000-1000-4000-8000-100000000000";
+  document.getElementById("lastUuid").value = lastUuidCookie;
   document.getElementById("lastLog").value = 0;
 };
 function addEntry(){
-  const lastGuidi = getCookieValue('lastGuid');
+  const lastUuidi = getCookieValue('lastUuid');
   const lastLogi = JSON.stringify(getCookieValue('lastLog'));
   const statusi = document.getElementById("status").value;
   const fortunei = document.getElementById("fortune").value;
   const postEntryUrl = window.location.origin + "/entry";
   const payload = {
-    lastGuid: lastGuidi,
+    lastUuid: lastUuidi,
     lastLog: lastLogi,
     status: statusi,
     fortune: fortunei
@@ -57,20 +57,20 @@ function addEntry(){
     const guid = contentii.replace(/"/g, '');
     const fileNamei = Math.floor(+new Date() / 1000);
     const fileNameii = fileNamei + ".txt";
-    setCookie('lastGuid', guid, 14);
+    setCookie('lastUuid', guid, 14);
     setCookie('timestamp', fileNamei, 14);
     createAndDownloadFile(fileNameii, guid);
-    updateCache(lastGuidi, fileNamei, guid);
+    updateCache(lastUuidi, fileNamei, guid);
   })();
 };
 function checkin(){
-  const lastGuidi = getCookieValue('lastGuid');
+  const lastUuidi = getCookieValue('lastUuid');
   const lastLogi = JSON.stringify(getCookieValue('lastLog'));
   const statusi = "alive";
   const fortunei = "checking in";
   const postEntryUrl = window.location.origin + "/entry";
   const payload = {
-    lastGuid: lastGuidi,
+    lastUuid: lastUuidi,
     lastLog: lastLogi,
     status: statusi,
     fortune: fortunei
@@ -93,9 +93,9 @@ function checkin(){
     const item = document.createElement("span");
     item.innerHTML = '%> checkin entry successfully logged';
     output.appendChild(item);
-    setCookie('lastGuid', guid, 14);
+    setCookie('lastUuid', guid, 14);
     setCookie('timestamp', fileNamei, 14);
-    updateCache(lastGuidi, fileNamei, guid);
+    updateCache(lastUuidi, fileNamei, guid);
   })();
 };
 function createAndDownloadFile(fileName, content) {
@@ -124,8 +124,8 @@ function updateCache(oldguid, timestamp, newguid) {
     .catch(error => console.error('Error fetching data:', error));
 };
 function findLogIdx(guid) {
-  var lastGuid = guid;
-  var findLogIdxUrl = window.location.origin + "/logchain/log/" + lastGuid;
+  var lastUuid = guid;
+  var findLogIdxUrl = window.location.origin + "/logchain/log/" + lastUuid;
   fetch(findLogIdxUrl)
     .then(response => response.json())
     .then(data => {
@@ -144,15 +144,15 @@ function mineEntries() {
         item.innerHTML = '%> entries successfully mined';
         output.appendChild(item);
         console.log("entries successfully mined");
-        const lastGuidCookie = getCookieValue('lastGuid');
-        findLogIdx(lastGuidCookie);
+        const lastUuidCookie = getCookieValue('lastUuid');
+        findLogIdx(lastUuidCookie);
     })
     .catch(error => console.error('Error fetching data:', error));
 };
 function lodeUIDs() {
-    const lastGuidCookie = getCookieValue('lastGuid');
+    const lastUuidCookie = getCookieValue('lastUuid');
     const timestampCookie = getCookieValue('timestamp');
-      var updateCacheUrl = window.location.origin + "/lode/10000000-1000-4000-8000-100000000000/" + timestampCookie + "/" + lastGuidCookie;
+      var updateCacheUrl = window.location.origin + "/lode/10000000-1000-4000-8000-100000000000/" + timestampCookie + "/" + lastUuidCookie;
       fetch(updateCacheUrl)
         .then(response => response.json())
         .then(data => {
@@ -165,8 +165,8 @@ function lodeUIDs() {
         .catch(error => console.error('Error fetching data:', error));
 };
 function findHistory() {
-  var lastGuid = getCookieValue('lastGuid');
-  var findHistoryUrl = window.location.origin + "/logchain/strata/" + lastGuid;
+  var lastUuid = getCookieValue('lastUuid');
+  var findHistoryUrl = window.location.origin + "/logchain/strata/" + lastUuid;
   clearTable("thisTable");
   fetch(findHistoryUrl)
     .then(response => response.json())
@@ -191,9 +191,9 @@ function findHistory() {
     .catch(error => console.error('Error fetching data:', error));
 };
 function findEntry() {
-  var lastGuid = document.getElementById("lastGuid").value;
+  var lastUuid = document.getElementById("lastUuid").value;
   clearTable("thisTable");
-  var findEntryUrl = window.location.origin + "/logchain/entry/" + lastGuid;
+  var findEntryUrl = window.location.origin + "/logchain/entry/" + lastUuid;
   fetch(findEntryUrl)
     .then(response => response.json())
     .then(data => {
@@ -215,9 +215,9 @@ function findEntry() {
     .catch(error => console.error('Error fetching data:', error));
 };
 function findSubsequence() {
-  var lastGuid = document.getElementById("lastGuid").value;
+  var lastUuid = document.getElementById("lastUuid").value;
   clearTable("thisTable");
-  var findSubsequenceUrl = window.location.origin + "/logchain/subsequence/" + lastGuid;
+  var findSubsequenceUrl = window.location.origin + "/logchain/subsequence/" + lastUuid;
 
   fetch(findSubsequenceUrl)
     .then(response => response.json())
@@ -243,7 +243,7 @@ function findSubsequence() {
 };
 function initiateWatchlist() {
     let delimiter = '#';
-    let uid = document.getElementById("lastGuid").value;
+    let uid = document.getElementById("lastUuid").value;
     const watchlistCookieStr = getCookieValue("watchlist");
     if (watchlistCookieStr === undefined) {
       console.log("no uids in watchlist");
@@ -264,7 +264,7 @@ function initiateWatchlist() {
 };
 function addData() {
     let delimiter = '#';
-    let uid = document.getElementById("lastGuid").value;
+    let uid = document.getElementById("lastUuid").value;
     const watchlistCookieStr = getCookieValue("watchlist");
     if (watchlistCookieStr === undefined) {
       let first = uid;
@@ -299,7 +299,7 @@ function deleteData(button) {
 };
 
 function clearInputs() {            
-    document.getElementById("lastGuid").value = "";
+    document.getElementById("lastUuid").value = "";
 };
 function clearTable(tableId) {
   const table = document.getElementById(tableId);

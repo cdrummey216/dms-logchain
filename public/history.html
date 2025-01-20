@@ -16,8 +16,8 @@
         <h4>dms-logchain-uid: <span id="currentUid"></span></h4>
         <a href="/index.html">home</a><br /><br />
         <i>the strata are any entries that were logged before a given uid</i><br /><br />
-        <label class="label" for="lastGuid">lastGuid:</label>
-        <input id="lastGuid" type="text" name="lastGuid" value="" /><br /><br />
+        <label class="label" for="lastUuid">lastUuid:</label>
+        <input id="lastUuid" type="text" name="lastUuid" value="" /><br /><br />
         
         <label class="hide" for="lastLog">lastLog:</label>
         <input class="hide" id="lastLog" type="number" name="lastLog" />
@@ -28,7 +28,7 @@
         <table id="thisTable" border="1">
             <thead>
                 <tr>
-                    <th>lastGuid</th>
+                    <th>lastUuid</th>
                     <th>lastLog</th>
                     <th>status</th>
                     <th>fortune</th>
@@ -42,9 +42,9 @@
         <script type="text/javascript">
             //setInputValue2();
             setCurrentUid();
-            findLogIdx(getCookieValue('lastGuid'));
+            findLogIdx(getCookieValue('lastUuid'));
             const uid = getParam('uid'); 
-            document.getElementById("lastGuid").value = uid;
+            document.getElementById("lastUuid").value = uid;
         </script>
     </main>
   </body>

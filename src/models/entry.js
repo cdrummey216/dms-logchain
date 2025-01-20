@@ -1,11 +1,11 @@
 const crypto = require('crypto');
 class Entry {
-    constructor(lastGuid, lastLog, status, fortune) {
-        if (!lastGuid) {
-            this.lastGuid = "10000000-1000-4000-8000-100000000000";
+    constructor(lastUuid, lastLog, status, fortune) {
+        if (!lastUuid) {
+            this.lastUuid = "10000000-1000-4000-8000-100000000000";
         }
         else {
-            this.lastGuid = lastGuid;
+            this.lastUuid = lastUuid;
         }
         
         if (!lastLog || isNaN(lastLog)) {

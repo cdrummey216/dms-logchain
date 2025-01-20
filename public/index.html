@@ -84,31 +84,31 @@
     };
     mineBtn.onclick = () => {
         mineEntries();
-        findLogIdx(getCookieValue('lastGuid'));
+        findLogIdx(getCookieValue('lastUuid'));
     };
 
     lodeBtn.onclick = () => {
       lodeUIDs();
       mineEntries();
-      findLogIdx(getCookieValue('lastGuid'));
+      findLogIdx(getCookieValue('lastUuid'));
     };
 
     checkinBtn.onclick = () => {
-      findLogIdx(getCookieValue('lastGuid'));
+      findLogIdx(getCookieValue('lastUuid'));
       mineEntries();      
       checkin();
       mineEntries();
-      findLogIdx(getCookieValue('lastGuid'));
+      findLogIdx(getCookieValue('lastUuid'));
     };
     let checkCookie = document.cookie.indexOf("cookieby=dms-logchain");
     checkCookie !== -1 ? consentBox.classList.add("hide") : consentBox.classList.remove("hide");
     
-    const lastGuidCookie = getCookieValue('lastGuid');
+    const lastUuidCookie = getCookieValue('lastUuid');
     const strataElement = document.getElementById("strata");    
-    let uidCookie = document.cookie.indexOf("lastGuid");
-    uidCookie !== -1 ? strataElement.setAttribute("href", "/history.html?uid="+lastGuidCookie) : strataElement.setAttribute("href", "#");
+    let uidCookie = document.cookie.indexOf("lastUuid");
+    uidCookie !== -1 ? strataElement.setAttribute("href", "/history.html?uid="+lastUuidCookie) : strataElement.setAttribute("href", "#");
     const subsequenceElement = document.getElementById("subsequence");
-    uidCookie !== -1 ? subsequenceElement.setAttribute("href", "/following.html?uid="+lastGuidCookie) : subsequenceElement.setAttribute("href", "#");
+    uidCookie !== -1 ? subsequenceElement.setAttribute("href", "/following.html?uid="+lastUuidCookie) : subsequenceElement.setAttribute("href", "#");
     
     const latestlog = document.getElementById('latestlog');
     const cache = document.getElementById('cache');
