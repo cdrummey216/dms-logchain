@@ -45,7 +45,7 @@ class Logchain {
         let log = new Log();        
         let previousLog = this.getPreviousLog();
         entries.list.forEach( (entry) => {
-            let lastEntryLogIdx = this.getLogIdxByGuid(entry.lastGuid);
+            let lastEntryLogIdx = this.getLogIdxByUuid(entry.lastUuid);
             entry.lastLog = lastEntryLogIdx;
             return;
         });
@@ -110,11 +110,11 @@ class Logchain {
         return foundLog;
     }
     
-    getLogIdxByGuid(guid) {
+    getLogIdxByUuid(uuid) {
         let foundLogIdx = 0;
         this.logs.forEach( (log) => {
             log.entries.forEach( (entry) => {
-                if (guid == entry.guid) {
+                if (uuid == entry.uuid) {
                     foundLogIdx = log.index;
                     return;
                     }
@@ -124,11 +124,11 @@ class Logchain {
         return foundLogIdx;
     }
     
-    getLastTimestampByGuid(guid) {
+    getLastTimestampByUuid(uuid) {
         let foundLogIdx = -1;
         this.logs.forEach( (log) => {
             log.entries.forEach( (entry) => {
-                if (guid == entry.lastGuid) {
+                if (uuid == entry.lastUuid) {
                     foundLogIdx = entry.timestamp;
                     return;
                     }
@@ -142,7 +142,7 @@ class Logchain {
         return this.logs.length-1;
     }
     
-    getNextUid(guid, results = []) {
+    getNextUid(uuid, results = []) {
         let foundLog = [];
         let foundHistory = [];
         let numbers = [];
@@ -150,9 +150,9 @@ class Logchain {
         let i = 0;
         while (i < length) {
             this.logs[i].entries.forEach( (entry) => {
-                if (guid == entry.lastGuid) {
+                if (uuid == entry.lastUuid) {
                     results.push(entry);
-                    this.getNextUid(entry.guid, results);
+                    this.getNextUid(entry.uuid, results);
                 }
             });
           i++;
@@ -160,7 +160,7 @@ class Logchain {
         return results;
     }
     
-    getUidHistory(guid, results = []) {
+    getUidHistory(uuid, results = []) {
         let foundLog = [];
         let foundHistory = [];
         let numbers = [];
@@ -168,9 +168,9 @@ class Logchain {
         let i = 0;
         while (i < length) {
             this.logs[i].entries.forEach( (entry) => {
-                if (guid == entry.guid) {
+                if (uuid == entry.uuid) {
                     results.push(entry);
-                    this.getUidHistory(entry.lastGuid, results);
+                    this.getUidHistory(entry.lastUuid, results);
                 }
             });
           i++;
@@ -178,15 +178,15 @@ class Logchain {
         return results;
     }
     
-    getSubsequence(guid) {
+    getSubsequence(uuid) {
         let foundEntries = [];
-        foundEntries = this.getNextUid(guid, foundEntries);
+        foundEntries = this.getNextUid(uuid, foundEntries);
         return foundEntries;
     }
     
-    getStrata(guid) {
+    getStrata(uuid) {
         let foundEntries = [];
-        foundEntries = this.getUidHistory(guid, foundEntries);
+        foundEntries = this.getUidHistory(uuid, foundEntries);
         return foundEntries;
     }
     

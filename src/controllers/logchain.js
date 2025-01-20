@@ -37,28 +37,28 @@ class LogchainController {
         res.json(this.logchain.getLogByIndex(req.params.idx));
     }
     
-    getLogIdxByGuid(req, res) {
-        res.json(this.logchain.getLogIdxByGuid(req.params.guid));
+    getLogIdxByUuid(req, res) {
+        res.json(this.logchain.getLogIdxByUuid(req.params.uuid));
     }
     
-    getLastTimestampByGuid(req, res) {
-        res.json(this.logchain.getLastTimestampByGuid(req.params.guid));
+    getLastTimestampByUuid(req, res) {
+        res.json(this.logchain.getLastTimestampByUuid(req.params.uuid));
     }
 
     getLogLastIndex(req, res) {
         res.json(this.logchain.getLogLastIndex());
     }
     
-    getEntryByGuid(req, res) {
-        res.json(this.logchain.getStrata(req.params.guid));
+    getEntryByUuid(req, res) {
+        res.json(this.logchain.getStrata(req.params.uuid));
     }
     
     getStrata(req, res) {
-        res.json(this.logchain.getStrata(req.params.guid));
+        res.json(this.logchain.getStrata(req.params.uuid));
     }
     
     getSubsequence(req, res) {
-        res.json(this.logchain.getSubsequence(req.params.guid));
+        res.json(this.logchain.getSubsequence(req.params.uuid));
     }
     
     getLastLog(req, res) {

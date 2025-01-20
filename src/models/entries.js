@@ -11,7 +11,7 @@ class Entries {
         try {
             let entry = new Entry(req.body.lastUuid, req.body.lastLog, req.body.status, req.body.fortune);
             this.list.push(entry);
-            response = entry.guid;
+            response = entry.uuid;
 
         } catch(ex) {
             res.status(406);

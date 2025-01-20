@@ -54,13 +54,13 @@ function addEntry(){
     });
     const contenti = await rawResponse.json();
     const contentii = JSON.stringify(contenti);
-    const guid = contentii.replace(/"/g, '');
+    const uuid = contentii.replace(/"/g, '');
     const fileNamei = Math.floor(+new Date() / 1000);
     const fileNameii = fileNamei + ".txt";
-    setCookie('lastUuid', guid, 14);
+    setCookie('lastUuid', uuid, 14);
     setCookie('timestamp', fileNamei, 14);
-    createAndDownloadFile(fileNameii, guid);
-    updateCache(lastUuidi, fileNamei, guid);
+    createAndDownloadFile(fileNameii, uuid);
+    updateCache(lastUuidi, fileNamei, uuid);
   })();
 };
 function checkin(){
@@ -86,16 +86,16 @@ function checkin(){
     });
     const contenti = await rawResponse.json();
     const contentii = JSON.stringify(contenti);
-    const guid = contentii.replace(/"/g, '');
+    const uuid = contentii.replace(/"/g, '');
     const fileNamei = Math.floor(+new Date() / 1000);
     const fileNameii = fileNamei + ".txt";
     var output = document.getElementById("logoutput");
     const item = document.createElement("span");
     item.innerHTML = '%> checkin entry successfully logged';
     output.appendChild(item);
-    setCookie('lastUuid', guid, 14);
+    setCookie('lastUuid', uuid, 14);
     setCookie('timestamp', fileNamei, 14);
-    updateCache(lastUuidi, fileNamei, guid);
+    updateCache(lastUuidi, fileNamei, uuid);
   })();
 };
 function createAndDownloadFile(fileName, content) {
@@ -110,8 +110,8 @@ function createAndDownloadFile(fileName, content) {
   //link.click();
   //document.body.removeChild(link);
 };
-function updateCache(oldguid, timestamp, newguid) {
-  var updateCacheUrl = window.location.origin + "/lode/" + oldguid + "/" + timestamp + "/" + newguid;
+function updateCache(olduuid, timestamp, newuuid) {
+  var updateCacheUrl = window.location.origin + "/lode/" + olduuid + "/" + timestamp + "/" + newuuid;
   fetch(updateCacheUrl)
     .then(response => response.json())
     .then(data => {
@@ -123,8 +123,8 @@ function updateCache(oldguid, timestamp, newguid) {
     })
     .catch(error => console.error('Error fetching data:', error));
 };
-function findLogIdx(guid) {
-  var lastUuid = guid;
+function findLogIdx(uuid) {
+  var lastUuid = uuid;
   var findLogIdxUrl = window.location.origin + "/logchain/log/" + lastUuid;
   fetch(findLogIdxUrl)
     .then(response => response.json())

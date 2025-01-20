@@ -29,7 +29,7 @@ class Entry {
             this.fortune = fortune;
         }
 
-        this.guid = crypto.randomUUID();
+        this.uuid = crypto.randomUUID();
         this.timestamp = Math.floor(+new Date() / 1000);
     }
 }

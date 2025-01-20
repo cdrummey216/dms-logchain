@@ -37,10 +37,10 @@ app.get('/cache', (req, res) => {
       };
     res.send(JSON.stringify(response));
 });
-app.get('/lode/:oldguid/:timestamp/:newguid', (req, res) => {
+app.get('/lode/:olduuid/:timestamp/:newuuid', (req, res) => {
   const now = Math.floor(+new Date() / 1000);
-  const newkey = req.params.newguid;
-  const oldkey = req.params.oldguid;
+  const newkey = req.params.newuuid;
+  const oldkey = req.params.olduuid;
   const timestamp = req.params.timestamp;
   const currentURL = url + ':' + port;
   
@@ -111,9 +111,9 @@ app.get('/mine', lcontroller.mine.bind(lcontroller));
 app.get('/logchain/last-index', lcontroller.getLogLastIndex.bind(lcontroller));
 app.get('/logchain/:idx', lcontroller.getLogByIndex.bind(lcontroller));
 app.get('/logchain', lcontroller.getLogchain.bind(lcontroller));
-app.get('/logchain/entry/:guid', lcontroller.getEntryByGuid.bind(lcontroller));
-app.get('/logchain/strata/:guid', lcontroller.getStrata.bind(lcontroller));
-app.get('/logchain/log/:guid', lcontroller.getLogIdxByGuid.bind(lcontroller));
-app.get('/logchain/last/:guid', lcontroller.getLastTimestampByGuid.bind(lcontroller));
-app.get('/logchain/subsequence/:guid', lcontroller.getSubsequence.bind(lcontroller));
+app.get('/logchain/entry/:uuid', lcontroller.getEntryByUuid.bind(lcontroller));
+app.get('/logchain/strata/:uuid', lcontroller.getStrata.bind(lcontroller));
+app.get('/logchain/log/:uuid', lcontroller.getLogIdxByUuid.bind(lcontroller));
+app.get('/logchain/last/:uuid', lcontroller.getLastTimestampByUuid.bind(lcontroller));
+app.get('/logchain/subsequence/:uuid', lcontroller.getSubsequence.bind(lcontroller));
 app.get('/latestlog', lcontroller.getLastLog.bind(lcontroller));
