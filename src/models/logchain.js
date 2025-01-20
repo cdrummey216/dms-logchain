@@ -142,39 +142,51 @@ class Logchain {
         return this.logs.length-1;
     }
     
-    getEntryByGuid(guid, results = []) {
+    getNextUid(guid, results = []) {
         let foundLog = [];
         let foundHistory = [];
-        
-        for (var i = 0; i < this.logs.length; i++){
+        let numbers = [];
+        let length = this.logs.length;
+        let i = 0;
+        while (i < length) {
             this.logs[i].entries.forEach( (entry) => {
-                if (guid == entry.guid) {
+                if (guid == entry.lastGuid) {
                     results.push(entry);
-                    this.getHistoryByGuid(entry.lastGuid, results);
+                    this.getNextUid(entry.guid, results);
                 }
             });
+          i++;
         }
         return results;
     }
     
-    getHistoryByGuid(guid, results = []) {
+    getUidHistory(guid, results = []) {
         let foundLog = [];
         let foundHistory = [];
-        
-        for (var i = 0; i < this.logs.length; i++){
+        let numbers = [];
+        let length = this.logs.length;
+        let i = 0;
+        while (i < length) {
             this.logs[i].entries.forEach( (entry) => {
                 if (guid == entry.guid) {
                     results.push(entry);
-                    this.getEntryByGuid(entry.lastGuid, results);
-                    }
-                });
+                    this.getUidHistory(entry.lastGuid, results);
+                }
+            });
+          i++;
         }
         return results;
     }
     
-    getHistory(guid) {
+    getSubsequence(guid) {
         let foundEntries = [];
-        foundEntries = this.getHistoryByGuid(guid, foundEntries);
+        foundEntries = this.getNextUid(guid, foundEntries);
+        return foundEntries;
+    }
+    
+    getStrata(guid) {
+        let foundEntries = [];
+        foundEntries = this.getUidHistory(guid, foundEntries);
         return foundEntries;
     }
     

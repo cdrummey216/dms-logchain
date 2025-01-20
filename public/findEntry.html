@@ -18,7 +18,7 @@
         <label class="label" for="lastGuid">lastGuid:</label>
         <input id="lastGuid" type="text" name="lastGuid" value="" /><br /><br />
 
-        <button onclick="findEntry()">find entry</button><br />
+        <button onclick="findEntry()">view entry</button><br />
         <br />
         <table id="thisTable" border="1">
             <thead>
@@ -33,9 +33,10 @@
             </thead>
             <tbody id="data"></tbody>
         </table>
+        <div id="logoutput"></div>
         <script src="./script.js"></script>
         <script type="text/javascript">
-            setInputValue1();
+            setCurrentUid();
           </script>
     </main>
   </body>

@@ -50,11 +50,15 @@ class LogchainController {
     }
     
     getEntryByGuid(req, res) {
-        res.json(this.logchain.getEntryByGuid(req.params.guid));
+        res.json(this.logchain.getStrata(req.params.guid));
     }
     
-    getHistory(req, res) {
-        res.json(this.logchain.getHistory(req.params.guid));
+    getStrata(req, res) {
+        res.json(this.logchain.getStrata(req.params.guid));
+    }
+    
+    getSubsequence(req, res) {
+        res.json(this.logchain.getSubsequence(req.params.guid));
     }
     
     getLastLog(req, res) {

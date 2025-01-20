@@ -31,11 +31,12 @@
             <label class="label" for="fortune">fortune:</label>
             <textarea id="fortune" type="text" name="fortune"></textarea><br /><br />
             
-            <button id="addEntry" onClick="addEntry()">Add Entry</button>
+            <button id="addEntry" onClick="addEntry()">Add Entry</button><br />
+            <div id="logoutput"></div>
           <script src="./script.js"></script>
             <script type="text/javascript">
-            setInputValue2();
-            setInputValue1();
+            //setInputValue2();
+            setCurrentUid();
             findLogIdx(getCookieValue('lastGuid'));
           </script>
     </main>

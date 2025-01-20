@@ -31,7 +31,11 @@ let listener = app.listen(port, url, function() {
 let lcontroller = new logchainController(url, port);
 
 app.get('/cache', (req, res) => {
-    res.send("total uids: " + (thisCache.keys().length - 1));
+      var response = {
+        count: (thisCache.keys().length - 1),
+        status: "running"
+      };
+    res.send(JSON.stringify(response));
 });
 app.get('/lode/:oldguid/:timestamp/:newguid', (req, res) => {
   const now = Math.floor(+new Date() / 1000);
@@ -108,7 +112,8 @@ app.get('/logchain/last-index', lcontroller.getLogLastIndex.bind(lcontroller));
 app.get('/logchain/:idx', lcontroller.getLogByIndex.bind(lcontroller));
 app.get('/logchain', lcontroller.getLogchain.bind(lcontroller));
 app.get('/logchain/entry/:guid', lcontroller.getEntryByGuid.bind(lcontroller));
-app.get('/logchain/history/:guid', lcontroller.getHistory.bind(lcontroller));
+app.get('/logchain/strata/:guid', lcontroller.getStrata.bind(lcontroller));
 app.get('/logchain/log/:guid', lcontroller.getLogIdxByGuid.bind(lcontroller));
-app.get('/logchain/lastLog/:guid', lcontroller.getLastTimestampByGuid.bind(lcontroller));
+app.get('/logchain/last/:guid', lcontroller.getLastTimestampByGuid.bind(lcontroller));
+app.get('/logchain/subsequence/:guid', lcontroller.getSubsequence.bind(lcontroller));
 app.get('/latestlog', lcontroller.getLastLog.bind(lcontroller));

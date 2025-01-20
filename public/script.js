@@ -14,10 +14,14 @@ function getCookieValue(name) {
       return match[2];
     }
  };
- function setInputValue1() {
+ function getParam(paramName) {
+  const params = new URLSearchParams(window.location.search);
+  return params.get(paramName);
+};
+ function setCurrentUid() {
   const lastGuidCookie = getCookieValue('lastGuid');
   document.getElementById("currentUid").innerHTML = lastGuidCookie;
-}
+};
 function setInputValue2() {
   const lastGuidCookie = getCookieValue('lastGuid');
   document.getElementById("lastGuid").value = lastGuidCookie;
@@ -28,8 +32,8 @@ function setInputValue3() {
   document.getElementById("lastLog").value = 0;
 };
 function addEntry(){
-  const lastGuidi = document.getElementById("lastGuid").value;
-  const lastLogi = document.getElementById("lastLog").value;
+  const lastGuidi = getCookieValue('lastGuid');
+  const lastLogi = JSON.stringify(getCookieValue('lastLog'));
   const statusi = document.getElementById("status").value;
   const fortunei = document.getElementById("fortune").value;
   const postEntryUrl = window.location.origin + "/entry";
@@ -61,7 +65,7 @@ function addEntry(){
 };
 function checkin(){
   const lastGuidi = getCookieValue('lastGuid');
-  const lastLogi = getCookieValue('lastLog');
+  const lastLogi = JSON.stringify(getCookieValue('lastLog'));
   const statusi = "alive";
   const fortunei = "checking in";
   const postEntryUrl = window.location.origin + "/entry";
@@ -126,12 +130,10 @@ function findLogIdx(guid) {
     .then(response => response.json())
     .then(data => {
       setCookie('lastLog', JSON.stringify(data), 14);                      
-      document.getElementById("lastLog").value = data;
+      //document.getElementById("lastLog").value = data;
     })
     .catch(error => console.error('Error fetching data:', error));
 };
-
-
 function mineEntries() {
   var mineEntriesUrl = window.location.origin + "/mine";
   fetch(mineEntriesUrl)
@@ -142,18 +144,11 @@ function mineEntries() {
         item.innerHTML = '%> entries successfully mined';
         output.appendChild(item);
         console.log("entries successfully mined");
-      //const table = document.getElementById('thisTable');
-      //const tbody = table.getElementsByTagName('tbody')[0];
-     // data.entries.forEach(item => {
-       // const row = tbody.insertRow();
-       // Object.values(item).forEach(value => {
-      //    const cell = row.insertCell();
-      //    cell.textContent = value;
-      //  });
-      //});
+        const lastGuidCookie = getCookieValue('lastGuid');
+        findLogIdx(lastGuidCookie);
     })
     .catch(error => console.error('Error fetching data:', error));
-}
+};
 function lodeUIDs() {
     const lastGuidCookie = getCookieValue('lastGuid');
     const timestampCookie = getCookieValue('timestamp');
@@ -170,10 +165,9 @@ function lodeUIDs() {
         .catch(error => console.error('Error fetching data:', error));
 };
 function findHistory() {
-  var lastGuid = document.getElementById("lastGuid").value;
-
-  var findHistoryUrl = window.location.origin + "/logchain/history/" + lastGuid;
-
+  var lastGuid = getCookieValue('lastGuid');
+  var findHistoryUrl = window.location.origin + "/logchain/strata/" + lastGuid;
+  clearTable("thisTable");
   fetch(findHistoryUrl)
     .then(response => response.json())
     .then(data => {
@@ -195,12 +189,37 @@ function findHistory() {
       });
     })
     .catch(error => console.error('Error fetching data:', error));
-}
+};
 function findEntry() {
   var lastGuid = document.getElementById("lastGuid").value;
-
+  clearTable("thisTable");
   var findEntryUrl = window.location.origin + "/logchain/entry/" + lastGuid;
   fetch(findEntryUrl)
+    .then(response => response.json())
+    .then(data => {
+      const table = document.getElementById('thisTable');
+      const tbody = table.getElementsByTagName('tbody')[0];
+      console.log(data[0]);
+      const row = tbody.insertRow();
+      Object.values(data[0]).forEach(value => {
+          const cell = row.insertCell();
+          if (data[0].timestamp == value){
+            const date = new Date(value * 1000);
+            cell.textContent = date;
+          }
+          else {
+            cell.textContent = value;
+          }
+        });
+    })
+    .catch(error => console.error('Error fetching data:', error));
+};
+function findSubsequence() {
+  var lastGuid = document.getElementById("lastGuid").value;
+  clearTable("thisTable");
+  var findSubsequenceUrl = window.location.origin + "/logchain/subsequence/" + lastGuid;
+
+  fetch(findSubsequenceUrl)
     .then(response => response.json())
     .then(data => {
       const table = document.getElementById('thisTable');
@@ -221,4 +240,72 @@ function findEntry() {
       });
     })
     .catch(error => console.error('Error fetching data:', error));
+};
+function initiateWatchlist() {
+    let delimiter = '#';
+    let uid = document.getElementById("lastGuid").value;
+    const watchlistCookieStr = getCookieValue("watchlist");
+    if (watchlistCookieStr === undefined) {
+      console.log("no uids in watchlist");
+    }
+    else {
+      const watchlistArray = watchlistCookieStr.split("#");
+      watchlistArray.pop();
+      for (let i = 0; i < watchlistArray.length; i++) {
+        let table = document.getElementById("outputTable");
+        let newRow = table.insertRow(table.rows.length);
+        newRow.insertCell(0).innerHTML = watchlistArray[i];
+        newRow.insertCell(1).innerHTML = '<a href="history.html?uid='+watchlistArray[i]+'">prior entries</a>';
+        newRow.insertCell(2).innerHTML = '<a href="following.html?uid='+watchlistArray[i]+'">following entries</a>';
+        newRow.insertCell(3).innerHTML = '<button onclick="deleteData(this)">Delete</button>';
+        clearInputs();
+      }
+    }
+};
+function addData() {
+    let delimiter = '#';
+    let uid = document.getElementById("lastGuid").value;
+    const watchlistCookieStr = getCookieValue("watchlist");
+    if (watchlistCookieStr === undefined) {
+      let first = uid;
+      setCookie('watchlist', first + delimiter, 14);
+    }
+    else {
+      let multiple = watchlistCookieStr + uid;
+      setCookie('watchlist', multiple + delimiter, 14);
+    }
+    let table = document.getElementById("outputTable");
+    let newRow = table.insertRow(table.rows.length);
+
+    newRow.insertCell(0).innerHTML = uid;
+    newRow.insertCell(1).innerHTML = '<a href="history.html?uid='+uid+'">prior entries</a>';
+    newRow.insertCell(2).innerHTML = '<a href="following.html?uid='+uid+'">following entries</a>';
+    newRow.insertCell(3).innerHTML = '<button onclick="deleteData(this)">Delete</button>';
+    clearInputs();
+};
+function deleteData(button) {
+    let row = button.parentNode.parentNode;
+    let uidCell = row.cells[0];
+    let uid = uidCell.innerHTML;
+    const watchlistCookieStr = getCookieValue("watchlist");
+    const watchlistArray = watchlistCookieStr.split("#");          
+    const index = watchlistArray.indexOf(uid);
+    if (index > -1) {
+      watchlistArray.splice(index, 1);
+      const delimited = watchlistArray.join("#");
+      setCookie('watchlist', delimited, 14);
+    }
+    row.parentNode.removeChild(row);
+};
+
+function clearInputs() {            
+    document.getElementById("lastGuid").value = "";
+};
+function clearTable(tableId) {
+  const table = document.getElementById(tableId);
+  const rows = table.getElementsByTagName("tr");
+  for (let i = 1; i < rows.length; i++) {
+    table.deleteRow(i);
+    i--;
+  }
 }

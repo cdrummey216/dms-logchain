@@ -37,30 +37,36 @@
             <li><a href="/about.html">what is</a></li>
             <li><a href="/newUid.html">new deadman</a></li>
             <li><a href="/login.html">returning deadman</a></li>
-            <li><a href="/history.html">view my history</a></li>            
-            <li><a href="/findEntry.html">find uid history</a></li>
+            <li><a href="/watchlist.html">uid watchlist</a></li>
+            <li><a id="strata" href="/history.html">view my strata</a></li>            
+            <li><a id="subsequence" href="/following.html">view my subsequence</a></li>
+            <li><a href="/findEntry.html">find entry</a></li>
             <li><a href="/newEntry.html">add new entry</a></li>
         </ul>
         <div class="buttons">
-          <button onclick="mineEntries()" id="mine">mine entries</button><br /><br />
-          <button onclick="lodeUIDs()" id="lode">lode uids</button><br /><br />
-          <button onclick="checkin()" id="log">checkin</button><br /><br />
+          <button id="log">checkin</button><br /><br />
+          <button id="mine">mine entries</button><br /><br />
+          <button id="lode">lode uids</button><br /><br />
         </div>
         <div id="logoutput"></div>
     </main>
-    
-    <h3>latest log</h3>
-    
-    <iframe src="/latestlog" title="description"></iframe>
-    
+    <div class="windows">
+      <h3>latest log</h3>
+      <iframe id="latestlog" src="/latestlog" title="description"></iframe>
+      <h3>cache</h3>
+      <iframe id="cache" src="/cache" title="description"></iframe>
+    </div>
     <script src="./script.js"></script>
     <script type="text/javascript">
     const consentBox = document.getElementById("consentBox");
     const acceptBtn = document.querySelector(".consentButton");
     const rejectBtn = document.querySelector(".rejectButton");
+    const mineBtn = document.getElementById("mine");
+    const lodeBtn = document.getElementById("lode");
+    const checkinBtn = document.getElementById("log");
 
     acceptBtn.onclick = () => {
-        document.cookie = "CookieBy=dms-logchain; max-age=" + 60 * 60 * 24 * 30;
+        document.cookie = "cookieby=dms-logchain; max-age=" + 60 * 60 * 24 * 30;
         if (document.cookie) {
             consentBox.classList.add("hide");
         } else {
@@ -73,12 +79,45 @@
 
     rejectBtn.onclick = () => {
         alert(
-            "Cookies rejected. Some functionality may be limited.");
+            "Cookies rejected. functionality will be limited.");
         consentBox.classList.add("hide");
     };
+    mineBtn.onclick = () => {
+        mineEntries();
+        findLogIdx(getCookieValue('lastGuid'));
+    };
 
-    let checkCookie = document.cookie.indexOf("CookieBy=dms-logchain");
+    lodeBtn.onclick = () => {
+      lodeUIDs();
+      mineEntries();
+      findLogIdx(getCookieValue('lastGuid'));
+    };
+
+    checkinBtn.onclick = () => {
+      findLogIdx(getCookieValue('lastGuid'));
+      mineEntries();      
+      checkin();
+      mineEntries();
+      findLogIdx(getCookieValue('lastGuid'));
+    };
+    let checkCookie = document.cookie.indexOf("cookieby=dms-logchain");
     checkCookie !== -1 ? consentBox.classList.add("hide") : consentBox.classList.remove("hide");
+    
+    const lastGuidCookie = getCookieValue('lastGuid');
+    const strataElement = document.getElementById("strata");    
+    let uidCookie = document.cookie.indexOf("lastGuid");
+    uidCookie !== -1 ? strataElement.setAttribute("href", "/history.html?uid="+lastGuidCookie) : strataElement.setAttribute("href", "#");
+    const subsequenceElement = document.getElementById("subsequence");
+    uidCookie !== -1 ? subsequenceElement.setAttribute("href", "/following.html?uid="+lastGuidCookie) : subsequenceElement.setAttribute("href", "#");
+    
+    const latestlog = document.getElementById('latestlog');
+    const cache = document.getElementById('cache');
+    latestlog.onload = function() {
+      latestlog.style.height = latestlog.contentWindow.document.body.scrollHeight + 'px';
+    };
+    cache.onload = function() {
+      cache.style.height = cache.contentWindow.document.body.scrollHeight + 'px';
+    };
     </script>
   </body>
 </html>
