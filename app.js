@@ -75,7 +75,7 @@ app.get('/lode/:oldguid/:timestamp/:newguid', (req, res) => {
           var days = Math.floor(hours / 24);
           //console.log(days);
           var payload = {
-            lastGuid: key,
+            lastUuid: key,
             lastLog: -1,
             status: "dead",
             fortune: "veritatem iterum",
