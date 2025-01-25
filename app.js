@@ -45,7 +45,9 @@ app.get('/cache', (req, res) => {
             lastUuid: key,
             lastSeen: days + " days ago"
           };
-          keylist.push(payload);
+          if (key !== "10000000-1000-4000-8000-100000000000") {
+              keylist.push(payload);
+            }
         });
     var response = {
         count: (thisCache.keys().length - 1),
