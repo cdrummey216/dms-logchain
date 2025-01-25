@@ -33,15 +33,15 @@
     <main>
         <h1>dms-logchain</h1>
         <h3>dms-logchain-home</h3>
-        <ul>/options
+        <ul style="list-style: none;">/options
             <li><a href="/about.html">what is</a></li>
             <li><a href="/newUid.html">new deadman</a></li>
             <li><a href="/login.html">returning deadman</a></li>
-            <li><a href="/watchlist.html">uid watchlist</a></li>
-            <li><a id="strata" href="/history.html">view my strata</a></li>            
-            <li><a id="subsequence" href="/following.html">view my subsequence</a></li>
             <li><a href="/findEntry.html">find entry</a></li>
-            <li><a href="/newEntry.html">add new entry</a></li>
+            <li><a class="hide" id="watchlist" href="/watchlist.html">uid watchlist</a></li>
+            <li><a class="hide" id="strata" href="/history.html">view my strata</a></li>            
+            <li><a class="hide" id="subsequence" href="/following.html">view my subsequence</a></li>            
+            <li><a class="hide" id="newEntry" href="/newEntry.html">add new entry</a></li>
         </ul>
         <div class="buttons">
           <button id="log">checkin</button><br /><br />
@@ -104,20 +104,18 @@
     checkCookie !== -1 ? consentBox.classList.add("hide") : consentBox.classList.remove("hide");
     
     const lastUuidCookie = getCookieValue('lastUuid');
-    const strataElement = document.getElementById("strata");    
-    let uidCookie = document.cookie.indexOf("lastUuid");
-    uidCookie !== -1 ? strataElement.setAttribute("href", "/history.html?uid="+lastUuidCookie) : strataElement.setAttribute("href", "#");
+    const strataElement = document.getElementById("strata");
     const subsequenceElement = document.getElementById("subsequence");
-    uidCookie !== -1 ? subsequenceElement.setAttribute("href", "/following.html?uid="+lastUuidCookie) : subsequenceElement.setAttribute("href", "#");
+    const watchlistElement = document.getElementById("watchlist");
+    const newEntryElement = document.getElementById("newEntry");
+    let uidCookie = document.cookie.indexOf("lastUuid");    
     
-    const latestlog = document.getElementById('latestlog');
-    const cache = document.getElementById('cache');
-    latestlog.onload = function() {
-      latestlog.style.height = latestlog.contentWindow.document.body.scrollHeight + 'px';
-    };
-    cache.onload = function() {
-      cache.style.height = cache.contentWindow.document.body.scrollHeight + 'px';
-    };
+    uidCookie !== -1 ? strataElement.setAttribute("href", "/history.html?uid="+lastUuidCookie) : strataElement.setAttribute("href", "#");
+    uidCookie !== -1 ? subsequenceElement.setAttribute("href", "/following.html?uid="+lastUuidCookie) : subsequenceElement.setAttribute("href", "#");
+    uidCookie !== -1 ?  strataElement.classList.remove("hide") : strataElement.classList.add("hide");
+    uidCookie !== -1 ?  subsequenceElement.classList.remove("hide") : subsequenceElement.classList.add("hide");
+    uidCookie !== -1 ?  watchlistElement.classList.remove("hide") : watchlistElement.classList.add("hide");
+    uidCookie !== -1 ?  newEntryElement.classList.remove("hide") : newEntryElement.classList.add("hide");
     </script>
   </body>
 </html>

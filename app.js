@@ -31,9 +31,26 @@ let listener = app.listen(port, url, function() {
 let lcontroller = new logchainController(url, port);
 
 app.get('/cache', (req, res) => {
-      var response = {
+    const keylist = [];
+    const keys = thisCache.keys();
+    const now = Math.floor(+new Date() / 1000);
+    keys.forEach( (key) => {
+          var cachedStamp = thisCache.get(key);
+          var diff = Math.abs(now - cachedStamp);
+          var seconds = Math.floor(diff / 1000);
+          var minutes = Math.floor(seconds / 60);
+          var hours = Math.floor(minutes / 60);
+          var days = Math.floor(hours / 24);
+          var payload = {
+            lastUuid: key,
+            lastSeen: days + " days ago"
+          };
+          keylist.push(payload);
+        });
+    var response = {
         count: (thisCache.keys().length - 1),
-        status: "running"
+        status: "running",
+        keys: keylist
       };
     res.send(JSON.stringify(response));
 });
