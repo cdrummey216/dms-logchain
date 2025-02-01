@@ -164,8 +164,8 @@ function lodeUIDs() {
         })
         .catch(error => console.error('Error fetching data:', error));
 };
-function findHistory() {
-  var lastUuid = getCookieValue('lastUuid');
+function findHistory(uuid) {
+  var lastUuid = uuid;
   var findHistoryUrl = window.location.origin + "/logchain/strata/" + lastUuid;
   clearTable("thisTable");
   fetch(findHistoryUrl)
@@ -190,8 +190,8 @@ function findHistory() {
     })
     .catch(error => console.error('Error fetching data:', error));
 };
-function findEntry() {
-  var lastUuid = document.getElementById("lastUuid").value;
+function findEntry(uuid) {
+  var lastUuid = uuid;
   clearTable("thisTable");
   var findEntryUrl = window.location.origin + "/logchain/entry/" + lastUuid;
   fetch(findEntryUrl)
@@ -199,7 +199,7 @@ function findEntry() {
     .then(data => {
       const table = document.getElementById('thisTable');
       const tbody = table.getElementsByTagName('tbody')[0];
-      console.log(data[0]);
+      console.log(findEntryUrl);
       const row = tbody.insertRow();
       Object.values(data[0]).forEach(value => {
           const cell = row.insertCell();
@@ -214,8 +214,8 @@ function findEntry() {
     })
     .catch(error => console.error('Error fetching data:', error));
 };
-function findSubsequence() {
-  var lastUuid = document.getElementById("lastUuid").value;
+function findSubsequence(uuid) {
+  var lastUuid = uuid;
   clearTable("thisTable");
   var findSubsequenceUrl = window.location.origin + "/logchain/subsequence/" + lastUuid;
 
@@ -308,4 +308,75 @@ function clearTable(tableId) {
     table.deleteRow(i);
     i--;
   }
-}
+};
+function graphSubsequence(uuid) {
+    var lastUuid = uuid;
+    var traceUrl = "/logchain/trace/subsequence/"+ lastUuid;
+    fetch(traceUrl)
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        const nodes = data.nodes;
+        const links = data.links;
+        forceGraph(data);
+        })
+    .catch(error => console.error('Error fetching data:', error));
+
+};
+
+function graphStrata(uuid) {
+    var lastUuid = uuid;
+    var traceUrl = "/logchain/trace/strata/"+ lastUuid;
+    var response1 = [];
+
+    fetch(traceUrl)
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        const nodes = data.nodes;
+        const links = data.links;
+        forceGraph(data);
+        })
+    .catch(error => console.error('Error fetching data:', error));
+};
+function forceGraph(data) {
+    // create an array with nodes
+    var nodes = new vis.DataSet(data.nodes);
+
+    // create an array with edges
+    var edges = new vis.DataSet(data.links);
+
+    // create a network
+    var container = document.getElementById('graph');
+
+    // provide the data in the vis format
+    var data = {
+        nodes: nodes,
+        edges: edges
+    };
+      var options = {
+        nodes: {
+          shape: "dot",
+          size: 16,
+          color: "#000000"
+        },
+        edges: {
+            width: 2,
+            color: "#000000"
+          },
+        physics: {
+          forceAtlas2Based: {
+            gravitationalConstant: -26,
+            centralGravity: 0.005,
+            springLength: 230,
+            springConstant: 0.18,
+          },
+          maxVelocity: 146,
+          solver: "forceAtlas2Based",
+          timestep: 0.35,
+          stabilization: { iterations: 150 },
+        },
+      };
+    // initialize your network!
+    var network = new vis.Network(container, data, options);
+};

@@ -11,6 +11,7 @@ body {
   display: inline-grid;
   position: absolute;
   bottom: 0;
+  z-index: -1;
 }
 button.clicked#mine::after {
   content: ">>>>> mined";
@@ -35,7 +36,6 @@ h1 {
 
 }
 .windows {
-  width: 50%;
   float: left;
   background: white;
   margin-top: inherit;
@@ -43,9 +43,16 @@ h1 {
 iframe {
   resize: both;
   overflow: auto;
+  width: inherit;
+  border: 2px solid black;
 }
 .active {
   z-index:1;
+}
+#graph {
+  margin-left: 15px;
+  border: 2px solid black;
+  height: 400px;
 }
 #consentBox {
     background: #fff;
@@ -113,4 +120,28 @@ iframe {
     font-size: 25px;
     font-weight: 600;
     margin-top: 10px;
+}
+circle {
+cursor: pointer;
+}
+.link {
+  stroke: #000;
+  stroke-width: 5px;
+}
+
+.node {
+  cursor: move;
+  fill: #fff;
+  stroke: #000;
+  stroke-width: 5px;
+  transition: fill 1s ease;
+}
+.node:hover {
+  fill: black !important;
+}
+.node.fixed {
+  fill: #f00;
+}
+svg {
+overflow: inherit;
 }

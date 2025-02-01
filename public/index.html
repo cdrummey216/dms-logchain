@@ -7,7 +7,7 @@
     <title>dms-logchain</title>
     <link rel="stylesheet" href="./style.css">
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
-
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
   </head>
   <body>
       <div id="consentBox">
@@ -32,15 +32,15 @@
     </div>
     <main>
         <h1>dms-logchain</h1>
-        <h3>dms-logchain-home</h3>
+        <h3>dms-logchain-home</h3>        
         <ul style="list-style: none;">/options
             <li><a href="/about.html">what is</a></li>
             <li><a href="/newUid.html">new deadman</a></li>
             <li><a href="/login.html">returning deadman</a></li>
-            <li><a href="/findEntry.html">find entry</a></li>
+            <li><a id="findEntry" href="/findEntry.html">find entry</a></li>
             <li><a class="hide" id="watchlist" href="/watchlist.html">uid watchlist</a></li>
-            <li><a class="hide" id="strata" href="/history.html">view my strata</a></li>            
-            <li><a class="hide" id="subsequence" href="/following.html">view my subsequence</a></li>            
+            <li><a class="hide" id="strata" href="/history.html">view a strata</a></li>            
+            <li><a class="hide" id="subsequence" href="/following.html">view a subsequence</a></li>            
             <li><a class="hide" id="newEntry" href="/newEntry.html">add new entry</a></li>
         </ul>
         <div class="buttons">
@@ -56,6 +56,11 @@
       <h3>cache</h3>
       <iframe id="cache" src="/cache" title="description"></iframe>
     </div>
+    
+    <div class="windows">
+      <h3 id="current">dms-logchain-uid: <span id="currentUid"></span></h3>
+      <div id="graph"></div>
+    </div>
     <script src="./script.js"></script>
     <script type="text/javascript">
     const consentBox = document.getElementById("consentBox");
@@ -64,7 +69,6 @@
     const mineBtn = document.getElementById("mine");
     const lodeBtn = document.getElementById("lode");
     const checkinBtn = document.getElementById("log");
-
     acceptBtn.onclick = () => {
         document.cookie = "cookieby=dms-logchain; max-age=" + 60 * 60 * 24 * 30;
         if (document.cookie) {
@@ -108,14 +112,22 @@
     const subsequenceElement = document.getElementById("subsequence");
     const watchlistElement = document.getElementById("watchlist");
     const newEntryElement = document.getElementById("newEntry");
+    const findEntryElement = document.getElementById("findEntry");
+    const currentElement = document.getElementById("current");
+    const graphElement = document.getElementById("graph");
     let uidCookie = document.cookie.indexOf("lastUuid");    
     
     uidCookie !== -1 ? strataElement.setAttribute("href", "/history.html?uid="+lastUuidCookie) : strataElement.setAttribute("href", "#");
     uidCookie !== -1 ? subsequenceElement.setAttribute("href", "/following.html?uid="+lastUuidCookie) : subsequenceElement.setAttribute("href", "#");
+    //uidCookie !== -1 ? findEntryElement.setAttribute("href", "/findEntry.html?uid="+lastUuidCookie) : findEntryElement.setAttribute("href", "#");
     uidCookie !== -1 ?  strataElement.classList.remove("hide") : strataElement.classList.add("hide");
     uidCookie !== -1 ?  subsequenceElement.classList.remove("hide") : subsequenceElement.classList.add("hide");
     uidCookie !== -1 ?  watchlistElement.classList.remove("hide") : watchlistElement.classList.add("hide");
     uidCookie !== -1 ?  newEntryElement.classList.remove("hide") : newEntryElement.classList.add("hide");
+    uidCookie !== -1 ?  currentElement.classList.remove("hide") : currentElement.classList.add("hide");
+    uidCookie !== -1 ?  graphElement.classList.remove("hide") : graphElement.classList.add("hide");
+    setCurrentUid();
+    graphStrata(getCookieValue('lastUuid'));
     </script>
   </body>
 </html>

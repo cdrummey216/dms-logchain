@@ -11,6 +11,7 @@
   </head>
   <body>
     <main>
+    <div class="windows">
         <h1>dms-logchain</h1>
         <h3>dms-logchain-findEntry</h3>
         <h4>dms-logchain-uid: <span id="currentUid"></span></h4>
@@ -18,8 +19,9 @@
         <label class="label" for="lastUuid">lastUuid:</label>
         <input id="lastUuid" type="text" name="lastUuid" value="" /><br /><br />
 
-        <button onclick="findEntry()">view entry</button><br />
+        <button id="entry">view entry</button><br />
         <br />
+        </div>
         <table id="thisTable" border="1">
             <thead>
                 <tr>
@@ -33,10 +35,15 @@
             </thead>
             <tbody id="data"></tbody>
         </table>
-        <div id="logoutput"></div>
         <script src="./script.js"></script>
         <script type="text/javascript">
             setCurrentUid();
+            //const uid = getParam('uid');
+            //document.getElementById("lastUuid").value = uid;
+            const entryBtn = document.getElementById("entry");
+            entryBtn.onclick = () => {
+                findEntry(document.getElementById("lastUuid").value);
+            };
           </script>
     </main>
   </body>

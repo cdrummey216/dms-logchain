@@ -190,6 +190,128 @@ class Logchain {
         return foundEntries;
     }
     
+    traceStrata(uuid) {
+        let foundEntries = [];
+        foundEntries = this.getUidHistory(uuid, foundEntries);
+        var resn = [];
+        var resl = [];
+        foundEntries.forEach((item, index) => {
+        if (index + 1 < foundEntries.length) {
+                var fixed = undefined;
+                var center = Math.floor(foundEntries.length / 2);
+                if(index === center) {
+                    fixed = true;
+                }
+                var temporalOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                temporalOptions.timeZone = "UTC";
+                temporalOptions.timeZoneName = "short";
+                
+                var node = {
+                    id: index,
+                    timestamp: new Date(item.timestamp * 1000),
+                    lastUuid: item.lastUuid,
+                    fortune: item.fortune,
+                    status: item.status,
+                    uuid: item.uuid,
+                    fx: undefined,
+                    label: `${new Date(item.timestamp * 1000).toLocaleString("en-US")}`,
+                    color: "#000000",
+                    title: `when: `+`${new Date(item.timestamp * 1000).toLocaleString("en-US")}` + `\nuuid: `+`${item.lastUuid}`+`\nstatus: `+`${item.status}`+`\nfortune: `+`${item.fortune}`
+                };
+                var link = {
+                    source: index,
+                    target: index + 1,
+                    from: index,
+                    to: index + 1
+                };
+                resn.push(node);
+                resl.push(link);
+            }
+            else {
+                var node = {
+                    id: index,
+                    timestamp: new Date(item.timestamp * 1000),
+                    lastUuid: item.lastUuid,
+                    fortune: item.fortune,
+                    status: item.status,
+                    uuid: item.uuid,
+                    fx: undefined,
+                    label: `${new Date(item.timestamp * 1000).toLocaleString("en-US")}`,
+                    color: "#000000",
+                    title: `when: `+`${new Date(item.timestamp * 1000).toLocaleString("en-US")}` + `\nuuid: `+`${item.lastUuid}`+`\nstatus: `+`${item.status}`+`\nfortune: `+`${item.fortune}`
+                };
+
+
+                resn.push(node);
+
+            }
+          });
+        const data = {
+            nodes: resn,
+            links: resl
+          };
+        return data;
+    }
+    
+    traceSubsequence(uuid) {
+        let foundEntries = [];
+        foundEntries = this.getNextUid(uuid, foundEntries);
+        var resn = [];
+        var resl = [];
+        foundEntries.forEach((item, index) => {
+        if (index + 1 < foundEntries.length) {
+                var fixed = undefined;
+                var center = Math.floor(foundEntries.length / 2);
+                if(index === center) {
+                    fixed = true;
+                }
+                var node = {
+                    id: index,
+                    timestamp: new Date(item.timestamp * 1000),
+                    lastUuid: item.lastUuid,
+                    fortune: item.fortune,
+                    status: item.status,
+                    uuid: item.uuid,
+                    fx: undefined,
+                    label: `${new Date(item.timestamp * 1000).toLocaleString("en-US")}`,
+                    color: "#000000",
+                    title: `when: `+`${new Date(item.timestamp * 1000).toLocaleString("en-US")}` + `\nuuid: `+`${item.lastUuid}`+`\nstatus: `+`${item.status}`+`\nfortune: `+`${item.fortune}`
+                };
+                var link = {
+                    source: index,
+                    target: index + 1,
+                    from: index,
+                    to: index + 1
+                };
+                resn.push(node);
+                resl.push(link);
+            }
+            else {
+                var node = {
+                    id: index,
+                    timestamp: new Date(item.timestamp * 1000),
+                    lastUuid: item.lastUuid,
+                    fortune: item.fortune,
+                    status: item.status,
+                    uuid: item.uuid,
+                    fx: undefined,
+                    label: `${new Date(item.timestamp * 1000).toLocaleString("en-US")}`,
+                    color: "#000000",
+                    title: `when: `+`${new Date(item.timestamp * 1000).toLocaleString("en-US")}` + `\nuuid: `+`${item.lastUuid}`+`\nstatus: `+`${item.status}`+`\nfortune: `+`${item.fortune}`
+                };
+
+
+                resn.push(node);
+
+            }
+          });
+        const data = {
+            nodes: resn,
+            links: resl
+          };
+        return data;
+    }
+    
     getLastLog() {
         let idx = this.logs.length-1;
         let foundLog = [];

@@ -57,8 +57,16 @@ class LogchainController {
         res.json(this.logchain.getStrata(req.params.uuid));
     }
     
+    traceStrata(req, res) {
+        res.json(this.logchain.traceStrata(req.params.uuid));
+    }
+    
     getSubsequence(req, res) {
         res.json(this.logchain.getSubsequence(req.params.uuid));
+    }
+    
+    traceSubsequence(req, res) {
+        res.json(this.logchain.traceSubsequence(req.params.uuid));
     }
     
     getLastLog(req, res) {

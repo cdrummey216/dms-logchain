@@ -7,10 +7,11 @@
     <title>dms-logchain</title>
     <link rel="stylesheet" href="./style.css">
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
-
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
   </head>
   <body>
     <main>
+    <div class="windows">
         <h1>dms-logchain</h1>
         <h3>dms-logchain-history</h3>
         <h4>dms-logchain-uid: <span id="currentUid"></span></h4>
@@ -22,9 +23,13 @@
         <label class="hide" for="lastLog">lastLog:</label>
         <input class="hide" id="lastLog" type="number" name="lastLog" />
         <br />
-        <button onclick="findHistory()">view history</button>
+        <button id="history">view history</button>
         <br />
         <br />
+        </div>
+        <div class="windows">
+          <div id="graph"></div>
+        </div>
         <table id="thisTable" border="1">
             <thead>
                 <tr>
@@ -45,6 +50,11 @@
             findLogIdx(getCookieValue('lastUuid'));
             const uid = getParam('uid'); 
             document.getElementById("lastUuid").value = uid;
+            graphStrata(uid);
+            const historyBtn = document.getElementById("history");
+            historyBtn.onclick = () => {
+              findHistory(uid);
+          };
         </script>
     </main>
   </body>

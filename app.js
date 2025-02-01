@@ -54,7 +54,7 @@ app.get('/cache', (req, res) => {
         status: "running",
         keys: keylist
       };
-    res.send(JSON.stringify(response));
+    res.send(response);
 });
 app.get('/lode/:olduuid/:timestamp/:newuuid', (req, res) => {
   const now = Math.floor(+new Date() / 1000);
@@ -132,7 +132,9 @@ app.get('/logchain/:idx', lcontroller.getLogByIndex.bind(lcontroller));
 app.get('/logchain', lcontroller.getLogchain.bind(lcontroller));
 app.get('/logchain/entry/:uuid', lcontroller.getEntryByUuid.bind(lcontroller));
 app.get('/logchain/strata/:uuid', lcontroller.getStrata.bind(lcontroller));
+app.get('/logchain/trace/strata/:uuid', lcontroller.traceStrata.bind(lcontroller));
 app.get('/logchain/log/:uuid', lcontroller.getLogIdxByUuid.bind(lcontroller));
 app.get('/logchain/last/:uuid', lcontroller.getLastTimestampByUuid.bind(lcontroller));
 app.get('/logchain/subsequence/:uuid', lcontroller.getSubsequence.bind(lcontroller));
+app.get('/logchain/trace/subsequence/:uuid', lcontroller.traceSubsequence.bind(lcontroller));
 app.get('/latestlog', lcontroller.getLastLog.bind(lcontroller));
