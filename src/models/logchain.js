@@ -160,6 +160,23 @@ class Logchain {
         return results;
     }
     
+    getUuidNetwork(uuid, results = []) {
+        let foundLog = [];
+        let foundHistory = [];
+        let numbers = [];
+        let length = this.logs.length;
+        let i = 0;
+        while (i < length) {
+            this.logs[i].entries.forEach( (entry) => {
+                if (uuid == entry.lastUuid) {
+                    results.push(entry);
+                }
+            });
+          i++;
+        }
+        return results;
+    }
+    
     getUidHistory(uuid, results = []) {
         let foundLog = [];
         let foundHistory = [];
@@ -214,9 +231,10 @@ class Logchain {
                     status: item.status,
                     uuid: item.uuid,
                     fx: undefined,
-                    label: `${new Date(item.timestamp * 1000).toLocaleString("en-US")}`,
+                    localeDate: `${new Date(item.timestamp * 1000).toLocaleString("en-US")}`,
+                    label: `${new Date(item.timestamp * 1000).toLocaleDateString("en-US")}`+ `\n... `+`${item.uuid.slice(-12)}`,
                     color: "#000000",
-                    title: `when: `+`${new Date(item.timestamp * 1000).toLocaleString("en-US")}` + `\nuuid: `+`${item.lastUuid}`+`\nstatus: `+`${item.status}`+`\nfortune: `+`${item.fortune}`
+                    title: `when: `+`${new Date(item.timestamp * 1000).toLocaleString("en-US")}` + `\nuuid: `+`${item.uuid}`+`\nstatus: `+`${item.status}`+`\nfortune: `+`${item.fortune}`
                 };
                 var link = {
                     source: index,
@@ -236,9 +254,10 @@ class Logchain {
                     status: item.status,
                     uuid: item.uuid,
                     fx: undefined,
-                    label: `${new Date(item.timestamp * 1000).toLocaleString("en-US")}`,
+                    localeDate: `${new Date(item.timestamp * 1000).toLocaleString("en-US")}`,
+                    label: `${new Date(item.timestamp * 1000).toLocaleDateString("en-US")}`+ `\n... `+`${item.uuid.slice(-12)}`,
                     color: "#000000",
-                    title: `when: `+`${new Date(item.timestamp * 1000).toLocaleString("en-US")}` + `\nuuid: `+`${item.lastUuid}`+`\nstatus: `+`${item.status}`+`\nfortune: `+`${item.fortune}`
+                    title: `when: `+`${new Date(item.timestamp * 1000).toLocaleString("en-US")}` + `\nuuid: `+`${item.uuid}`+`\nstatus: `+`${item.status}`+`\nfortune: `+`${item.fortune}`
                 };
 
 
@@ -273,9 +292,10 @@ class Logchain {
                     status: item.status,
                     uuid: item.uuid,
                     fx: undefined,
-                    label: `${new Date(item.timestamp * 1000).toLocaleString("en-US")}`,
+                    localeDate: `${new Date(item.timestamp * 1000).toLocaleString("en-US")}`,
+                    label: `${new Date(item.timestamp * 1000).toLocaleDateString("en-US")}`+ `\n... `+`${item.uuid.slice(-12)}`,
                     color: "#000000",
-                    title: `when: `+`${new Date(item.timestamp * 1000).toLocaleString("en-US")}` + `\nuuid: `+`${item.lastUuid}`+`\nstatus: `+`${item.status}`+`\nfortune: `+`${item.fortune}`
+                    title: `when: `+`${new Date(item.timestamp * 1000).toLocaleString("en-US")}` + `\nuuid: `+`${item.uuid}`+`\nstatus: `+`${item.status}`+`\nfortune: `+`${item.fortune}`
                 };
                 var link = {
                     source: index,
@@ -295,9 +315,72 @@ class Logchain {
                     status: item.status,
                     uuid: item.uuid,
                     fx: undefined,
-                    label: `${new Date(item.timestamp * 1000).toLocaleString("en-US")}`,
+                    localeDate: `${new Date(item.timestamp * 1000).toLocaleString("en-US")}`,
+                    label: `${new Date(item.timestamp * 1000).toLocaleDateString("en-US")}`+ `\n... `+`${item.uuid.slice(-12)}`,
                     color: "#000000",
-                    title: `when: `+`${new Date(item.timestamp * 1000).toLocaleString("en-US")}` + `\nuuid: `+`${item.lastUuid}`+`\nstatus: `+`${item.status}`+`\nfortune: `+`${item.fortune}`
+                    title: `when: `+`${new Date(item.timestamp * 1000).toLocaleString("en-US")}` + `\nuuid: `+`${item.uuid}`+`\nstatus: `+`${item.status}`+`\nfortune: `+`${item.fortune}`
+                };
+
+
+                resn.push(node);
+
+            }
+          });
+        const data = {
+            nodes: resn,
+            links: resl
+          };
+        return data;
+    }
+    
+    traceUuidNetwork(uuid) {
+        let foundEntries = [];
+        foundEntries = this.getUuidNetwork(uuid, foundEntries);
+        var resn = [];
+        var resl = [];
+        //console.log(foundEntries);
+        foundEntries.forEach((item, index) => {
+        if (index + 1 < foundEntries.length) {
+                var fixed = undefined;
+                var center = Math.floor(foundEntries.length / 2);
+                if(index === center) {
+                    fixed = true;
+                }
+                var node = {
+                    id: index,
+                    timestamp: new Date(item.timestamp * 1000),
+                    lastUuid: item.lastUuid,
+                    fortune: item.fortune,
+                    status: item.status,
+                    uuid: item.uuid,
+                    fx: undefined,
+                    localeDate: `${new Date(item.timestamp * 1000).toLocaleString("en-US")}`,
+                    label: `${new Date(item.timestamp * 1000).toLocaleDateString("en-US")}`+ `\n... `+`${item.uuid.slice(-12)}`,
+                    color: "#000000",
+                    title: `when: `+`${new Date(item.timestamp * 1000).toLocaleString("en-US")}` + `\nuuid: `+`${item.uuid}`+`\nstatus: `+`${item.status}`+`\nfortune: `+`${item.fortune}`
+                };
+                var link = {
+                    source: 0,
+                    target: index + 1,
+                    from: 0,
+                    to: index + 1
+                };
+                resn.push(node);
+                resl.push(link);
+            }
+            else {
+                var node = {
+                    id: index,
+                    timestamp: new Date(item.timestamp * 1000),
+                    lastUuid: item.lastUuid,
+                    fortune: item.fortune,
+                    status: item.status,
+                    uuid: item.uuid,
+                    fx: undefined,
+                    localeDate: `${new Date(item.timestamp * 1000).toLocaleString("en-US")}`,
+                    label: `${new Date(item.timestamp * 1000).toLocaleDateString("en-US")}`+ `\n... `+`${item.uuid.slice(-12)}`,
+                    color: "#000000",
+                    title: `when: `+`${new Date(item.timestamp * 1000).toLocaleString("en-US")}` + `\nuuid: `+`${item.uuid}`+`\nstatus: `+`${item.status}`+`\nfortune: `+`${item.fortune}`
                 };
 
 

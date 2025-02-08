@@ -7,30 +7,28 @@
     <title>dms-logchain</title>
     <link rel="stylesheet" href="./style.css">
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
-    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <script type="text/javascript" src="/vis-network.min.js"></script>
   </head>
   <body>
     <main>
     <div class="windows">
         <h1>dms-logchain</h1>
-        <h3>dms-logchain-history</h3>
+        <h3>dms-logchain-strata</h3>
         <h4>dms-logchain-uid: <span id="currentUid"></span></h4>
         <a href="/index.html">home</a><br /><br />
-        <i>the strata are any entries that were logged before a given uid</i><br /><br />
-        <label class="label" for="lastUuid">lastUuid:</label>
-        <input id="lastUuid" type="text" name="lastUuid" value="" /><br /><br />
-        
+        <i>the strata are any entries that were logged before a given uid</i><br />
+        <label class="hide" for="lastUuid">lastUuid:</label>
+        <input class="hide" id="lastUuid" type="text" name="lastUuid" value="" />        
         <label class="hide" for="lastLog">lastLog:</label>
         <input class="hide" id="lastLog" type="number" name="lastLog" />
-        <br />
-        <button id="history">view history</button>
-        <br />
-        <br />
-        </div>
+        <button class="hide" id="history">view history</button>
         <div class="windows">
           <div id="graph"></div>
+          <div id="selectedNode"></div>
         </div>
-        <table id="thisTable" border="1">
+        </div>
+
+        <table id="thisTable" class="hide" border="1">
             <thead>
                 <tr>
                     <th>lastUuid</th>
@@ -53,7 +51,8 @@
             graphStrata(uid);
             const historyBtn = document.getElementById("history");
             historyBtn.onclick = () => {
-              findHistory(uid);
+              findHistory(document.getElementById("lastUuid").value);
+              graphStrata(document.getElementById("lastUuid").value);
           };
         </script>
     </main>

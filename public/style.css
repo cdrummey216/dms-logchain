@@ -145,3 +145,38 @@ cursor: pointer;
 svg {
 overflow: inherit;
 }
+.nodeInfo {
+margin-left: 15px;
+  border: 2px solid black;
+  margin-top: 15px;
+  padding: 5px;
+  }
+.nodeInfo div span {
+display:block;
+}
+.nodeInfo div a {
+display:block;
+}
+#current-uid  {
+float: left;
+display: block;
+margin: 0;
+  
+}
+#all-uids  {
+display: block;
+  margin: 0 0 0 15px;
+}
+#tooltip > span#currentUid {
+  opacity:0;
+  display: block;
+  float: left;
+}
+#currentUid.displaythecurrent {
+opacity:1;
+}
+#other {
+  display: block;
+  float: left;
+  margin: 0 5px 0 15px;
+}

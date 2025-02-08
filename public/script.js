@@ -21,6 +21,7 @@ function getCookieValue(name) {
  function setCurrentUid() {
   const lastUuidCookie = getCookieValue('lastUuid');
   document.getElementById("currentUid").innerHTML = lastUuidCookie;
+
 };
 function setInputValue2() {
   const lastUuidCookie = getCookieValue('lastUuid');
@@ -61,6 +62,30 @@ function addEntry(){
     setCookie('timestamp', fileNamei, 14);
     createAndDownloadFile(fileNameii, uuid);
     updateCache(lastUuidi, fileNamei, uuid);
+  })();
+};
+function spawnUuid(){
+  const lastUuidi = "10000000-1000-4000-8000-100000000000";
+  const lastLogi = 0;
+  const statusi = "alive";
+  const fortunei = "qwerty";
+  const postEntryUrl = window.location.origin + "/entry";
+  const payload = {
+    lastUuid: lastUuidi,
+    lastLog: lastLogi,
+    status: statusi,
+    fortune: fortunei
+  };
+  (async () => {
+    const rawResponse = await fetch(postEntryUrl, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
   })();
 };
 function checkin(){
@@ -179,7 +204,7 @@ function findHistory(uuid) {
         Object.values(item).forEach(value => {
           const cell = row.insertCell();
           if (item.timestamp == value){
-            const date = new Date(value * 1000);
+            const date = new Date(value * 1000).toLocaleString("en-US");
             cell.textContent = date;
           }
           else {
@@ -204,7 +229,7 @@ function findEntry(uuid) {
       Object.values(data[0]).forEach(value => {
           const cell = row.insertCell();
           if (data[0].timestamp == value){
-            const date = new Date(value * 1000);
+            const date = new Date(value * 1000).toLocaleString("en-US");
             cell.textContent = date;
           }
           else {
@@ -230,7 +255,7 @@ function findSubsequence(uuid) {
         Object.values(item).forEach(value => {
           const cell = row.insertCell();
           if (item.timestamp == value){
-            const date = new Date(value * 1000);
+            const date = new Date(value * 1000).toLocaleString("en-US");
             cell.textContent = date;
           }
           else {
@@ -319,6 +344,7 @@ function graphSubsequence(uuid) {
         const nodes = data.nodes;
         const links = data.links;
         forceGraph(data);
+        createNodeItems(nodes);
         })
     .catch(error => console.error('Error fetching data:', error));
 
@@ -336,20 +362,45 @@ function graphStrata(uuid) {
         const nodes = data.nodes;
         const links = data.links;
         forceGraph(data);
+        addNodes(nodes);
+        createNodeItems(nodes);
+        })
+    .catch(error => console.error('Error fetching data:', error));
+};
+function graphUuidNetwork(uuid) {
+    var lastUuid = uuid;
+    var traceUrl = "/logchain/network/"+ lastUuid;
+
+    fetch(traceUrl)
+    .then(response => response.json())
+    .then(data => {
+        //console.log(data);
+        const nodes = data.nodes;
+        const links = data.links;
+        forceGraph(data);
+        addNodes(nodes);
+        createNodeItems(nodes);
+        })
+    .catch(error => console.error('Error fetching data:', error));
+};
+function graphInit() {
+    var rUrl = "/vis-network.min.js";
+    fetch(rUrl)
+    .then(response => response)
+    .then(data => {
+        console.log(data);
+        //const js = data.body;
+        //const scriptElement = document.createElement('script');
+        //scriptElement.id = "1234testing";
+        //scriptElement.textContent = js;
+        console.log("nightvision");
         })
     .catch(error => console.error('Error fetching data:', error));
 };
 function forceGraph(data) {
-    // create an array with nodes
     var nodes = new vis.DataSet(data.nodes);
-
-    // create an array with edges
     var edges = new vis.DataSet(data.links);
-
-    // create a network
     var container = document.getElementById('graph');
-
-    // provide the data in the vis format
     var data = {
         nodes: nodes,
         edges: edges
@@ -377,6 +428,47 @@ function forceGraph(data) {
           stabilization: { iterations: 150 },
         },
       };
-    // initialize your network!
     var network = new vis.Network(container, data, options);
+    network.on("click", function (props) {
+        clearNodes();
+        var id = "node-" + props.nodes[0];
+        var element = document.getElementById(id);
+        element.classList.remove("hide");
+    });
+};
+function addNodes(nodes) {
+    console.log(nodes);
+    for (let i = 0; i < nodes.length; i++) {
+        var id = "node-" + nodes[i].id;
+        var output = document.getElementById("selectedNode");
+        var item = document.createElement("div");
+        item.id = id;
+        item.classList.add("hide");
+        item.classList.add("nodeInfo");
+        output.appendChild(item);
+    }
+};
+function clearNodes() {
+    var parentElement = document.getElementById("selectedNode");
+    const childElements = parentElement.querySelectorAll(".nodeInfo"); 
+    childElements.forEach(element => {
+      element.classList.add("hide");
+    });
+};
+function createNodeItems(nodes) {
+    var parentElement = document.getElementById("selectedNode");
+    const childElements = parentElement.querySelectorAll(".nodeInfo"); 
+    for (let i = 0; i < childElements.length; i++) {
+        var id = "node-" + nodes[i].id;
+        var output = document.getElementById(id);
+        var item = document.createElement("div");
+        //"<span>"++"</span>";
+        item.innerHTML += "<span><strong>when: </strong>"+ nodes[i].localeDate +"</span>";
+        item.innerHTML += "<span><strong>uuid: </strong>"+ nodes[i].uuid +"</span>";
+        item.innerHTML += "<span><strong>status: </strong>"+ nodes[i].status +"</span>";
+        item.innerHTML += "<span><strong>fortune: </strong>"+ nodes[i].fortune +"</span>";
+        item.innerHTML += "<a href=/history.html?uid="+nodes[i].uuid+">view strata</a>";
+        item.innerHTML += "<a href=/following.html?uid="+nodes[i].uuid+">view subsequence</a>";
+        output.appendChild(item);
+    }
 };

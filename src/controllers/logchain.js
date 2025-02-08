@@ -72,6 +72,10 @@ class LogchainController {
     getLastLog(req, res) {
         res.json(this.logchain.getLastLog());
     }
+    
+    getUuidNetwork(req, res) {
+        res.json(this.logchain.traceUuidNetwork(req.params.uuid));
+    }
 }
 
 module.exports = LogchainController;

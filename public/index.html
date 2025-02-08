@@ -7,7 +7,9 @@
     <title>dms-logchain</title>
     <link rel="stylesheet" href="./style.css">
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
-    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    
+    <script type="text/javascript" src="/vis-network.min.js"></script>
+
   </head>
   <body>
       <div id="consentBox">
@@ -39,14 +41,15 @@
             <li><a href="/login.html">returning deadman</a></li>
             <li><a id="findEntry" href="/findEntry.html">find entry</a></li>
             <li><a class="hide" id="watchlist" href="/watchlist.html">uid watchlist</a></li>
-            <li><a class="hide" id="strata" href="/history.html">view a strata</a></li>            
-            <li><a class="hide" id="subsequence" href="/following.html">view a subsequence</a></li>            
+            <li><a class="hide" id="strata" href="/history.html">view my strata</a></li>            
+            <li><a class="hide" id="subsequence" href="/following.html">view my subsequence</a></li>            
             <li><a class="hide" id="newEntry" href="/newEntry.html">add new entry</a></li>
         </ul>
         <div class="buttons">
           <button id="log">checkin</button><br /><br />
           <button id="mine">mine entries</button><br /><br />
           <button id="lode">lode uids</button><br /><br />
+          <button id="addEntry" class="hide" onClick="spawnUuid()">spawn uid</button><br />
         </div>
         <div id="logoutput"></div>
     </main>
@@ -56,10 +59,18 @@
       <h3>cache</h3>
       <iframe id="cache" src="/cache" title="description"></iframe>
     </div>
-    
     <div class="windows">
-      <h3 id="current">dms-logchain-uid: <span id="currentUid"></span></h3>
+      <div id="tooltip">
+      <input type="checkbox" id="other" name="other" value="other" />
+        <h5 id="current-uid">current-uid: </h5>
+        
+        <span id="currentUid"></span>
+      </div>      
+    </div>
+    <div class="windows">
+      <h3 id="all-uids">all-uids</h3>
       <div id="graph"></div>
+      <div id="selectedNode"></div>
     </div>
     <script src="./script.js"></script>
     <script type="text/javascript">
@@ -69,6 +80,28 @@
     const mineBtn = document.getElementById("mine");
     const lodeBtn = document.getElementById("lode");
     const checkinBtn = document.getElementById("log");
+    const tooltip = document.getElementById("current-uid");
+    const tooltipUid = document.getElementById("currentUid");
+    const otherCheckbox = document.querySelector("#other");
+    
+    //tooltip.addEventListener('mouseover', e => {
+    //  let c = document.getElementById("currentUid");
+    //  c !== -1 ? tooltipUid.classList.add("displaythecurrent") : tooltipUid.classList.remove("displaythecurrent");
+    //  c.style.opacity = 1;
+    //});
+    //tooltip.addEventListener('mouseout', e => {
+     // let c = document.getElementById("currentUid");
+     // c !== -1 ? tooltipUid.classList.remove("displaythecurrent") : tooltipUid.classList.add("displaythecurrent");
+     // c.style.opacity = 0;
+    //});
+    otherCheckbox.addEventListener("change", () => {
+      let c = document.getElementById("currentUid");
+      if (otherCheckbox.checked) {
+        c.style.opacity = 1;
+      } else {
+        c.style.opacity = 0;
+      }
+    });
     acceptBtn.onclick = () => {
         document.cookie = "cookieby=dms-logchain; max-age=" + 60 * 60 * 24 * 30;
         if (document.cookie) {
@@ -113,7 +146,7 @@
     const watchlistElement = document.getElementById("watchlist");
     const newEntryElement = document.getElementById("newEntry");
     const findEntryElement = document.getElementById("findEntry");
-    const currentElement = document.getElementById("current");
+    const currentElement = document.getElementById("current-uid");
     const graphElement = document.getElementById("graph");
     let uidCookie = document.cookie.indexOf("lastUuid");    
     
@@ -127,7 +160,16 @@
     uidCookie !== -1 ?  currentElement.classList.remove("hide") : currentElement.classList.add("hide");
     uidCookie !== -1 ?  graphElement.classList.remove("hide") : graphElement.classList.add("hide");
     setCurrentUid();
-    graphStrata(getCookieValue('lastUuid'));
+    document.onload = () => {
+      console.log("Document loaded");
+    };
+    window.addEventListener('load', function() {
+      // Code to execute after all resources are loaded
+      console.log("Window loaded");
+      graphUuidNetwork("10000000-1000-4000-8000-100000000000");
+      //graphInit();
+    });
+    
     </script>
   </body>
 </html>

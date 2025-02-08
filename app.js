@@ -35,15 +35,24 @@ app.get('/cache', (req, res) => {
     const keys = thisCache.keys();
     const now = Math.floor(+new Date() / 1000);
     keys.forEach( (key) => {
-          var cachedStamp = thisCache.get(key);
+          var cachedStamp = parseInt(thisCache.get(key));
           var diff = Math.abs(now - cachedStamp);
           var seconds = Math.floor(diff / 1000);
           var minutes = Math.floor(seconds / 60);
           var hours = Math.floor(minutes / 60);
           var days = Math.floor(hours / 24);
+          var days2 = Math.ceil(diff / (1000 * 60 * 60 * 24));
           var payload = {
-            lastUuid: key,
-            lastSeen: days + " days ago"
+            uuid: key,
+            lastSeen: days2 + " day(s) ago",
+            //cachedStamp: cachedStamp,
+            //now: now,
+            //diff: diff,
+            //seconds: seconds,
+            //minutes: minutes,
+            //hours: hours,
+            //days: days,
+            //days2: days2
           };
           if (key !== "10000000-1000-4000-8000-100000000000") {
               keylist.push(payload);
@@ -70,16 +79,18 @@ app.get('/lode/:olduuid/:timestamp/:newuuid', (req, res) => {
   if (thisCache.has(oldkey)) {
     if (oldkey.includes("10000000-1000-4000-8000-100000000000")) {
       thisCache.set(oldkey, timestamp, 1209600);
+      console.log(oldkey);
     }
     else {
       thisCache.del(oldkey);
+      console.log(oldkey);
     }
   }
   
   thisCache.set(newkey, timestamp, 1209600);
     
   const keys = thisCache.keys();
-  const postEntryUrl = "http://" + currentURL + "/entry";
+  const postEntryUrl = "https://" + currentURL + "/entry";
   keys.forEach( (key) => {
           var cachedStamp = thisCache.get(key);
           //console.log(cachedStamp);
@@ -137,4 +148,13 @@ app.get('/logchain/log/:uuid', lcontroller.getLogIdxByUuid.bind(lcontroller));
 app.get('/logchain/last/:uuid', lcontroller.getLastTimestampByUuid.bind(lcontroller));
 app.get('/logchain/subsequence/:uuid', lcontroller.getSubsequence.bind(lcontroller));
 app.get('/logchain/trace/subsequence/:uuid', lcontroller.traceSubsequence.bind(lcontroller));
+app.get('/logchain/network/:uuid', lcontroller.getUuidNetwork.bind(lcontroller));
 app.get('/latestlog', lcontroller.getLastLog.bind(lcontroller));
+app.get('/vis-network.min.js', function(req, res) {
+    res.sendFile('node_modules/vis-network/standalone/umd/vis-network.min.js', { 
+        root : "./",
+        headers:{
+            "Content-Type":"text/javascript"
+        }
+    });
+});
