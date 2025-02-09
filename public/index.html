@@ -12,27 +12,8 @@
 
   </head>
   <body>
-      <div id="consentBox">
-        <img src="" alt="Logo">
-        <div id="consentContent">
-            <header id="consentHeader">
-                  dms-cookies
-              </header>
-            <p>
-              We use cookies to monitor for sign of life.
-              <br>The cookies are necessary for site to function and are anonymous.
-            </p>
-            <div class="buttons">
-                <button class="consentButton">
-                      Accept Cookies
-                  </button>
-                <button class="rejectButton">
-                      Reject
-                  </button>
-            </div>
-        </div>
-    </div>
     <main>
+    <div class="windows">
         <h1>dms-logchain</h1>
         <h3>dms-logchain-home</h3>        
         <ul style="list-style: none;">/options
@@ -52,6 +33,7 @@
           <button id="addEntry" class="hide" onClick="spawnUuid()">spawn uid</button><br />
         </div>
         <div id="logoutput"></div>
+        </div>
     </main>
     <div class="windows">
       <h3>latest log</h3>
@@ -68,109 +50,11 @@
       </div>      
     </div>
     <div class="windows">
-      <h3 id="all-uids">all-uids</h3>
+      <h3 id="all-uids">100-random-uuids</h3>
       <div id="graph"></div>
       <div id="selectedNode"></div>
     </div>
     <script src="./script.js"></script>
-    <script type="text/javascript">
-    const consentBox = document.getElementById("consentBox");
-    const acceptBtn = document.querySelector(".consentButton");
-    const rejectBtn = document.querySelector(".rejectButton");
-    const mineBtn = document.getElementById("mine");
-    const lodeBtn = document.getElementById("lode");
-    const checkinBtn = document.getElementById("log");
-    const tooltip = document.getElementById("current-uid");
-    const tooltipUid = document.getElementById("currentUid");
-    const otherCheckbox = document.querySelector("#other");
-    
-    //tooltip.addEventListener('mouseover', e => {
-    //  let c = document.getElementById("currentUid");
-    //  c !== -1 ? tooltipUid.classList.add("displaythecurrent") : tooltipUid.classList.remove("displaythecurrent");
-    //  c.style.opacity = 1;
-    //});
-    //tooltip.addEventListener('mouseout', e => {
-     // let c = document.getElementById("currentUid");
-     // c !== -1 ? tooltipUid.classList.remove("displaythecurrent") : tooltipUid.classList.add("displaythecurrent");
-     // c.style.opacity = 0;
-    //});
-    otherCheckbox.addEventListener("change", () => {
-      let c = document.getElementById("currentUid");
-      if (otherCheckbox.checked) {
-        c.style.opacity = 1;
-      } else {
-        c.style.opacity = 0;
-      }
-    });
-    acceptBtn.onclick = () => {
-        document.cookie = "cookieby=dms-logchain; max-age=" + 60 * 60 * 24 * 30;
-        if (document.cookie) {
-            consentBox.classList.add("hide");
-        } else {
-            alert
-                ("Cookie can't be set! Please"+
-                  " unblock this site from the cookie"+
-                  " setting of your browser.");
-        }
-    };
-
-    rejectBtn.onclick = () => {
-        alert(
-            "Cookies rejected. functionality will be limited.");
-        consentBox.classList.add("hide");
-    };
-    mineBtn.onclick = () => {
-        mineEntries();
-        findLogIdx(getCookieValue('lastUuid'));
-    };
-
-    lodeBtn.onclick = () => {
-      lodeUIDs();
-      mineEntries();
-      findLogIdx(getCookieValue('lastUuid'));
-    };
-
-    checkinBtn.onclick = () => {
-      findLogIdx(getCookieValue('lastUuid'));
-      mineEntries();      
-      checkin();
-      mineEntries();
-      findLogIdx(getCookieValue('lastUuid'));
-    };
-    let checkCookie = document.cookie.indexOf("cookieby=dms-logchain");
-    checkCookie !== -1 ? consentBox.classList.add("hide") : consentBox.classList.remove("hide");
-    
-    const lastUuidCookie = getCookieValue('lastUuid');
-    const strataElement = document.getElementById("strata");
-    const subsequenceElement = document.getElementById("subsequence");
-    const watchlistElement = document.getElementById("watchlist");
-    const newEntryElement = document.getElementById("newEntry");
-    const findEntryElement = document.getElementById("findEntry");
-    const currentElement = document.getElementById("current-uid");
-    const graphElement = document.getElementById("graph");
-    let uidCookie = document.cookie.indexOf("lastUuid");    
-    
-    uidCookie !== -1 ? strataElement.setAttribute("href", "/history.html?uid="+lastUuidCookie) : strataElement.setAttribute("href", "#");
-    uidCookie !== -1 ? subsequenceElement.setAttribute("href", "/following.html?uid="+lastUuidCookie) : subsequenceElement.setAttribute("href", "#");
-    //uidCookie !== -1 ? findEntryElement.setAttribute("href", "/findEntry.html?uid="+lastUuidCookie) : findEntryElement.setAttribute("href", "#");
-    uidCookie !== -1 ?  strataElement.classList.remove("hide") : strataElement.classList.add("hide");
-    uidCookie !== -1 ?  subsequenceElement.classList.remove("hide") : subsequenceElement.classList.add("hide");
-    uidCookie !== -1 ?  watchlistElement.classList.remove("hide") : watchlistElement.classList.add("hide");
-    uidCookie !== -1 ?  newEntryElement.classList.remove("hide") : newEntryElement.classList.add("hide");
-    uidCookie !== -1 ?  currentElement.classList.remove("hide") : currentElement.classList.add("hide");
-    uidCookie !== -1 ?  graphElement.classList.remove("hide") : graphElement.classList.add("hide");
-    setCurrentUid();
-    document.onload = () => {
-      console.log("Document loaded");
-    };
-    window.addEventListener('load', function() {
-      // Code to execute after all resources are loaded
-      console.log("Window loaded");
-      graphUuidNetwork("10000000-1000-4000-8000-100000000000");
-      //graphInit();
-    });
-    
-    </script>
   </body>
 </html>
 

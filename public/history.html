@@ -14,8 +14,13 @@
     <div class="windows">
         <h1>dms-logchain</h1>
         <h3>dms-logchain-strata</h3>
-        <h4>dms-logchain-uid: <span id="currentUid"></span></h4>
-        <a href="/index.html">home</a><br /><br />
+        <div id="tooltip">
+        <input type="checkbox" id="other" name="other" value="other" />
+          <h5 id="current-uid">current-uid: </h5>
+          
+          <span id="currentUid"></span>
+        </div><br />
+        <a href="/index.html" id="home">home</a><br /><br />
         <i>the strata are any entries that were logged before a given uid</i><br />
         <label class="hide" for="lastUuid">lastUuid:</label>
         <input class="hide" id="lastUuid" type="text" name="lastUuid" value="" />        
@@ -42,19 +47,6 @@
             <tbody id="data"></tbody>
         </table>
         <script src="./script.js"></script>
-        <script type="text/javascript">
-            //setInputValue2();
-            setCurrentUid();
-            findLogIdx(getCookieValue('lastUuid'));
-            const uid = getParam('uid'); 
-            document.getElementById("lastUuid").value = uid;
-            graphStrata(uid);
-            const historyBtn = document.getElementById("history");
-            historyBtn.onclick = () => {
-              findHistory(document.getElementById("lastUuid").value);
-              graphStrata(document.getElementById("lastUuid").value);
-          };
-        </script>
     </main>
   </body>
 </html>

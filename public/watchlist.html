@@ -11,10 +11,16 @@
   </head>
   <body>
     <main>
+    <div class="windows">
         <h1>dms-logchain</h1>
         <h3>dms-logchain-watchlist</h3>
-        <h4>dms-logchain-uid: <span id="currentUid"></span></h4>
-        <a href="/index.html">home</a><br /><br />
+        <div id="tooltip">
+        <input type="checkbox" id="other" name="other" value="other" />
+          <h5 id="current-uid">current-uid: </h5>
+          
+          <span id="currentUid"></span>
+        </div><br />
+        <a href="/index.html" id="home">home</a><br /><br />
         <label class="label" for="lastUuid">lastUuid:</label>
         <input id="lastUuid" type="text" name="lastUuid" value="" /><br /><br />
 
@@ -30,13 +36,8 @@
                 </tr>
             </thead>
         </table>
+        </div>
         <script src="./script.js"></script>
-        <script type="text/javascript">
-            setCurrentUid();
-            initiateWatchlist();
-            const uid = getParam('uid'); 
-            document.getElementById("lastUuid").value = uid;
-          </script>
     </main>
   </body>
 </html>

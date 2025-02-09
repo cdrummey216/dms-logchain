@@ -37,14 +37,14 @@ app.get('/cache', (req, res) => {
     keys.forEach( (key) => {
           var cachedStamp = parseInt(thisCache.get(key));
           var diff = Math.abs(now - cachedStamp);
-          var seconds = Math.floor(diff / 1000);
+          var seconds = Math.floor(diff);
           var minutes = Math.floor(seconds / 60);
           var hours = Math.floor(minutes / 60);
           var days = Math.floor(hours / 24);
           var days2 = Math.ceil(diff / (1000 * 60 * 60 * 24));
           var payload = {
             uuid: key,
-            lastSeen: days2 + " day(s) ago",
+            lastSeen: days + " day(s) ago",
             //cachedStamp: cachedStamp,
             //now: now,
             //diff: diff,
@@ -90,13 +90,13 @@ app.get('/lode/:olduuid/:timestamp/:newuuid', (req, res) => {
   thisCache.set(newkey, timestamp, 1209600);
     
   const keys = thisCache.keys();
-  const postEntryUrl = "https://" + currentURL + "/entry";
+  const postEntryUrl = "http://" + currentURL + "/entry";
   keys.forEach( (key) => {
           var cachedStamp = thisCache.get(key);
-          //console.log(cachedStamp);
+          console.log(key);
           var diff = Math.abs(now - cachedStamp);
           //console.log(diff);
-          var seconds = Math.floor(diff / 1000);
+          var seconds = Math.floor(diff);
           //console.log(seconds);
           var minutes = Math.floor(seconds / 60);
           //console.log(minutes);

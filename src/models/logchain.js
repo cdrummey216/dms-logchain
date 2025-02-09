@@ -240,7 +240,8 @@ class Logchain {
                     source: index,
                     target: index + 1,
                     from: index,
-                    to: index + 1
+                    to: index + 1,
+                    arrows: "to"
                 };
                 resn.push(node);
                 resl.push(link);
@@ -301,7 +302,8 @@ class Logchain {
                     source: index,
                     target: index + 1,
                     from: index,
-                    to: index + 1
+                    to: index + 1,
+                    arrows: "to"
                 };
                 resn.push(node);
                 resl.push(link);
@@ -363,7 +365,8 @@ class Logchain {
                     source: 0,
                     target: index + 1,
                     from: 0,
-                    to: index + 1
+                    to: index + 1,
+                    arrows: "to"
                 };
                 resn.push(node);
                 resl.push(link);
@@ -388,10 +391,24 @@ class Logchain {
 
             }
           });
+        var shuffled = resn.sort(() => 0.5 - Math.random());
+        let selectedNodes = shuffled.filter(function(){return true;}).slice(0, 100);
+        let selectedLinks = [];
+        for (let i = 0; i < selectedNodes.length; i++) {
+            var link = {
+                source: 0,
+                target: selectedNodes[i].id,
+                from: 0,
+                to: selectedNodes[i].id,
+                arrows: "to"
+            };
+            selectedLinks.push(link);
+        }
         const data = {
-            nodes: resn,
-            links: resl
-          };
+        nodes: selectedNodes,
+        links: selectedLinks
+        };
+        console.log("success-100");
         return data;
     }
     

@@ -11,14 +11,21 @@
   </head>
   <body>
     <main>
+    <div class="windows">
         <h1>dms-logchain</h1>
         <h3>dms-logchain-login</h3>
-        <h4>dms-logchain-uid: <span id="currentUid"></span></h4>
-        <a href="/index.html">home</a><br /><br />
+        <div id="tooltip">
+        <input type="checkbox" id="other" name="other" value="other" />
+          <h5 id="current-uid">current-uid: </h5>
+          
+          <span id="currentUid"></span>
+        </div><br />
+        <a href="/index.html" id="home">home</a><br /><br />
         <i>import the file with your last uid</i><br />
         <input type="file" id="fileInput">
         <p id="lastUuid"></p>
         <p id="lastLog"></p>
+        </div>
         <script src="./script.js"></script>
         <script type="text/javascript">
         const fileInput = document.getElementById('fileInput');
@@ -38,7 +45,6 @@
            };
            reader.readAsText(file);
         });
-        setCurrentUid();
         </script>
     </main>
   </body>

@@ -39,6 +39,11 @@ h1 {
   float: left;
   background: white;
   margin-top: inherit;
+  margin-left: 15px;
+}
+#thisTable {
+float: left;
+display:none;
 }
 iframe {
   resize: both;
@@ -50,10 +55,12 @@ iframe {
   z-index:1;
 }
 #graph {
-  margin-left: 15px;
+  margin-left: 0px;
   border: 2px solid black;
   height: 400px;
 }
+#home {
+  }
 #consentBox {
     background: #fff;
     padding: 20px;
@@ -165,7 +172,7 @@ margin: 0;
 }
 #all-uids  {
 display: block;
-  margin: 0 0 0 15px;
+  margin: 0 0 0 0px;
 }
 #tooltip > span#currentUid {
   opacity:0;
@@ -178,5 +185,8 @@ opacity:1;
 #other {
   display: block;
   float: left;
-  margin: 0 5px 0 15px;
+  margin: 0 5px 0 0px;
+}
+#selectedNode {
+max-width: 500px;
 }

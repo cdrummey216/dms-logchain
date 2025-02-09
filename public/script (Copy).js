@@ -197,7 +197,6 @@ function findHistory(uuid) {
     .then(response => response.json())
     .then(data => {
       const table = document.getElementById('thisTable');
-      table.style.display = "block";
       const tbody = table.getElementsByTagName('tbody')[0];
 
       data.forEach(item => {
@@ -224,7 +223,6 @@ function findEntry(uuid) {
     .then(response => response.json())
     .then(data => {
       const table = document.getElementById('thisTable');
-      table.style.display = "block";
       const tbody = table.getElementsByTagName('tbody')[0];
       console.log(findEntryUrl);
       const row = tbody.insertRow();
@@ -250,7 +248,6 @@ function findSubsequence(uuid) {
     .then(response => response.json())
     .then(data => {
       const table = document.getElementById('thisTable');
-      table.style.display = "block";
       const tbody = table.getElementsByTagName('tbody')[0];
 
       data.forEach(item => {
@@ -273,9 +270,8 @@ function initiateWatchlist() {
     let delimiter = '#';
     let uid = document.getElementById("lastUuid").value;
     const watchlistCookieStr = getCookieValue("watchlist");
-    //console.log(window.location.pathname);
-    if (watchlistCookieStr === undefined || window.location.pathname !== "/watchlist.html") {
-      console.log("skipped initializing watchlist");
+    if (watchlistCookieStr === undefined) {
+      console.log("no uids in watchlist");
     }
     else {
       const watchlistArray = watchlistCookieStr.split("#");
@@ -344,7 +340,7 @@ function graphSubsequence(uuid) {
     fetch(traceUrl)
     .then(response => response.json())
     .then(data => {
-        //console.log(data);
+        console.log(data);
         const nodes = data.nodes;
         const links = data.links;
         forceGraph(data);
@@ -362,7 +358,7 @@ function graphStrata(uuid) {
     fetch(traceUrl)
     .then(response => response.json())
     .then(data => {
-        //console.log(data);
+        console.log(data);
         const nodes = data.nodes;
         const links = data.links;
         forceGraph(data);
@@ -402,7 +398,9 @@ function graphInit() {
     .catch(error => console.error('Error fetching data:', error));
 };
 function forceGraph(data) {
-    var nodes = new vis.DataSet(data.nodes);
+    var shuffled = data.nodes.sort(() => 0.5 - Math.random());
+    let selectedNodes = shuffled.slice(0, 100);
+    var nodes = new vis.DataSet(selectedNodes);
     var edges = new vis.DataSet(data.links);
     var container = document.getElementById('graph');
     
@@ -477,158 +475,3 @@ function createNodeItems(nodes) {
         output.appendChild(item);
     }
 };
-document.body.innerHTML += "<div id=\"consentBox\"><img src=\"\" alt=\"Logo\"><div id=\"consentContent\"><header id=\"consentHeader\">dms-cookies</header><p>We use cookies to monitor for sign of life. The cookies are necessary for site to function and are anonymous.</p><div class=\"buttons\"><button class=\"consentButton\">Accept Cookies</button><button class=\"rejectButton\">Reject</button></div></div></div>";
-const consentBox = document.getElementById("consentBox") ?? "";
-let checkCookie = document.cookie.indexOf("cookieby=dms-logchain");
-checkCookie !== -1 ? consentBox.classList.add("hide") : consentBox.classList.remove("hide");
-//const tooltip = document.getElementById("current-uid");
-//const tooltipUid = document.getElementById("currentUid");
-//tooltip.addEventListener('mouseover', e => {
-//  let c = document.getElementById("currentUid");
-//  c !== -1 ? tooltipUid.classList.add("displaythecurrent") : tooltipUid.classList.remove("displaythecurrent");
-//  c.style.opacity = 1;
-//});
-//tooltip.addEventListener('mouseout', e => {
- // let c = document.getElementById("currentUid");
- // c !== -1 ? tooltipUid.classList.remove("displaythecurrent") : tooltipUid.classList.add("displaythecurrent");
- // c.style.opacity = 0;
-//});
-const otherCheckbox = document.querySelector("#other") ?? "";
-if (otherCheckbox !== "") {
-    otherCheckbox.addEventListener("change", () => {
-      let c = document.getElementById("currentUid");
-      if (otherCheckbox.checked) {
-        c.style.opacity = 1;
-      } else {
-        c.style.opacity = 0;
-      }
-    });
-}
-
-const acceptBtn = document.querySelector(".consentButton") ?? "";
-if (acceptBtn !== "") {
-    acceptBtn.onclick = () => {
-        document.cookie = "cookieby=dms-logchain; max-age=" + 60 * 60 * 24 * 30;
-        if (document.cookie) {
-            consentBox.classList.add("hide");
-        } else {
-            alert
-                ("Cookie can't be set! Please"+
-                  " unblock this site from the cookie"+
-                  " setting of your browser.");
-        }
-    };
-}
-
-const rejectBtn = document.querySelector(".rejectButton") ?? "";
-if (rejectBtn !== "") {
-    rejectBtn.onclick = () => {
-        alert(
-            "Cookies rejected. functionality will be limited.");
-        consentBox.classList.add("hide");
-    };
-}
-
-const mineBtn = document.getElementById("mine") ?? "";
-if (mineBtn !== "") {
-    mineBtn.onclick = () => {
-        mineEntries();
-        findLogIdx(getCookieValue('lastUuid'));
-    };
-}
-
-const lodeBtn = document.getElementById("lode") ?? "";
-if (lodeBtn !== "") {
-    lodeBtn.onclick = () => {
-      lodeUIDs();
-      mineEntries();
-      findLogIdx(getCookieValue('lastUuid'));
-    };
-}
-
-const checkinBtn = document.getElementById("log") ?? "";
-if (checkinBtn !== "") {
-    checkinBtn.onclick = () => {
-      findLogIdx(getCookieValue('lastUuid'));
-      mineEntries();      
-      checkin();
-      mineEntries();
-      findLogIdx(getCookieValue('lastUuid'));
-    };
-}
-
-const subsequenceBtn = document.getElementById("subsequence") ?? "";
-if (subsequenceBtn !== "") {
-    subsequenceBtn.onclick = () => {
-      findSubsequence(document.getElementById("lastUuid").value);
-      graphSubsequence(document.getElementById("lastUuid").value);
-    };
-}
-
-const entryBtn = document.getElementById("entry") ?? "";
-if (entryBtn !== "") {
-    entryBtn.onclick = () => {
-        findEntry(document.getElementById("lastUuid").value);
-    };
-}
-
-const historyBtn = document.getElementById("history") ?? "";
-if (historyBtn !== "") {
-    historyBtn.onclick = () => {
-      findHistory(document.getElementById("lastUuid").value);
-      graphStrata(document.getElementById("lastUuid").value);
-    };
-}
-
-const lastUuidCookie = getCookieValue('lastUuid') ?? "";
-const strataElement = document.getElementById("strata") ?? "";
-const subsequenceElement = document.getElementById("subsequence") ?? "";
-const watchlistElement = document.getElementById("watchlist") ?? "";
-const newEntryElement = document.getElementById("newEntry") ?? "";
-const findEntryElement = document.getElementById("findEntry") ?? "";
-const currentElement = document.getElementById("current-uid") ?? "";
-const graphElement = document.getElementById("graph") ?? "";
-let uidCookie = document.cookie.indexOf("lastUuid") ?? "";
-const uid = getParam('uid') ?? ""; 
-if (uid !== "") {
-    document.getElementById("lastUuid").value = uid;
-}
-if (uidCookie !== "" && strataElement !== "") {
-    uidCookie !== -1 ? strataElement.setAttribute("href", "/history.html?uid="+lastUuidCookie) : strataElement.setAttribute("href", "#");
-}
-if (uidCookie !== "" && subsequenceElement !== "") {
-    uidCookie !== -1 ? subsequenceElement.setAttribute("href", "/following.html?uid="+lastUuidCookie) : subsequenceElement.setAttribute("href", "#");
-}
-if (uidCookie !== "" && strataElement !== "") {
-    uidCookie !== -1 ?  strataElement.classList.remove("hide") : watchlistElement.classList.add("hide");
-}
-if (uidCookie !== "" && subsequenceElement !== "") {
-    uidCookie !== -1 ?  subsequenceElement.classList.remove("hide") : watchlistElement.classList.add("hide");
-}
-if (uidCookie !== "" && watchlistElement !== "") {
-    uidCookie !== -1 ?  watchlistElement.classList.remove("hide") : watchlistElement.classList.add("hide");
-}
-if (uidCookie !== "" && newEntryElement !== "") {
-    uidCookie !== -1 ?  newEntryElement.classList.remove("hide") : newEntryElement.classList.add("hide");
-}
-if (uidCookie !== "" && currentElement !== "") {
-    uidCookie !== -1 ?  currentElement.classList.remove("hide") : currentElement.classList.add("hide");
-}
-if (uidCookie !== "" && graphElement !== "") {
-    uidCookie !== -1 ?  graphElement.classList.remove("hide") : graphElement.classList.add("hide");
-}
-if (window.location.pathname === "/watchlist.html") {
-  initiateWatchlist();
-}
-if (window.location.pathname === "/history.html") {
-  graphStrata(uid);
-}
-if (window.location.pathname === "/following.html") {
-  graphSubsequence(uid);
-}
-if (window.location.pathname === "/index.html") {
-  graphUuidNetwork("10000000-1000-4000-8000-100000000000");
-}
-findLogIdx(lastUuidCookie);
-//console.log(window.location.pathname);
-setCurrentUid();
