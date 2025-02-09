@@ -408,7 +408,7 @@ class Logchain {
         nodes: selectedNodes,
         links: selectedLinks
         };
-        console.log("success-100");
+        //console.log("success-100");
         return data;
     }
     
