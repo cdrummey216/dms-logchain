@@ -67,6 +67,7 @@ iframe {
     border-radius: 15px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     text-align: center;
+    position: absolute;
 }
 
 #consentBox.hide {
@@ -153,7 +154,6 @@ svg {
 overflow: inherit;
 }
 .nodeInfo {
-margin-left: 15px;
   border: 2px solid black;
   margin-top: 15px;
   padding: 5px;

@@ -392,17 +392,22 @@ class Logchain {
             }
           });
         var shuffled = resn.sort(() => 0.5 - Math.random());
+        let fib = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946, 17711, 28657, 46368, 75025, 121393, 196418, 317811, 514229];
+        var item = fib[Math.floor(Math.random()*fib.length)];
+        //console.log(item);
         let selectedNodes = shuffled.filter(function(){return true;}).slice(0, 100);
         let selectedLinks = [];
         for (let i = 0; i < selectedNodes.length; i++) {
-            var link = {
-                source: 0,
-                target: selectedNodes[i].id,
-                from: 0,
-                to: selectedNodes[i].id,
-                arrows: "to"
-            };
-            selectedLinks.push(link);
+            if (selectedNodes[i].id != 0) {
+                var link = {
+                    source: 0,
+                    target: selectedNodes[i].id,
+                    from: 0,
+                    to: selectedNodes[i].id,
+                    arrows: "to"
+                };
+                selectedLinks.push(link);
+            }
         }
         const data = {
         nodes: selectedNodes,

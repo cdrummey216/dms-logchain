@@ -5,13 +5,10 @@ const NodeCache = require('node-cache');
 const url = process.env.URL || '0.0.0.0';
 const port = process.env.PORT || 4000;
 const fs = require('fs');
-
+const readline = require('node:readline');
+const { stdin: input, stdout: output } = require('node:process');
+const rl = readline.createInterface({ input, output });
 const thisCache = new NodeCache();
-process.on('SIGINT', () => {
-    const cacheData = JSON.stringify(thisCache.data);
-    fs.writeFileSync('cache.json', cacheData);
-    process.exit(0);
-});
 
 try {
     const cacheData = fs.readFileSync('cache.json');
@@ -19,6 +16,18 @@ try {
 } catch(err) {
     console.log(err);
 }
+
+rl.on('line', (input) => {
+  console.log(`Received: ${input}`);
+  if (input === "save-cache") {
+    const cacheData = JSON.stringify(thisCache.data);
+    fs.writeFileSync('cache.json', cacheData);
+    console.log("Action: saved-cache");
+  }
+  if (input === "echo") {
+    console.log("echo");
+  }
+});
 
 let app = express();
 app.use(bodyParser.json());
@@ -79,11 +88,11 @@ app.get('/lode/:olduuid/:timestamp/:newuuid', (req, res) => {
   if (thisCache.has(oldkey)) {
     if (oldkey.includes("10000000-1000-4000-8000-100000000000")) {
       thisCache.set(oldkey, timestamp, 1209600);
-      console.log(oldkey);
+      //console.log(oldkey);
     }
     else {
       thisCache.del(oldkey);
-      console.log(oldkey);
+      //console.log(oldkey);
     }
   }
   
@@ -93,7 +102,7 @@ app.get('/lode/:olduuid/:timestamp/:newuuid', (req, res) => {
   const postEntryUrl = "http://" + currentURL + "/entry";
   keys.forEach( (key) => {
           var cachedStamp = thisCache.get(key);
-          console.log(key);
+          //console.log(key);
           var diff = Math.abs(now - cachedStamp);
           //console.log(diff);
           var seconds = Math.floor(diff);

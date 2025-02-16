@@ -405,7 +405,8 @@ function forceGraph(data) {
     var nodes = new vis.DataSet(data.nodes);
     var edges = new vis.DataSet(data.links);
     var container = document.getElementById('graph');
-    
+    //console.log(data.nodes);
+    //console.log(data.links);
     var data = {
         nodes: nodes,
         edges: edges
@@ -436,6 +437,7 @@ function forceGraph(data) {
     var network = new vis.Network(container, data, options);
     network.on("click", function (props) {
         clearNodes();
+        console.log(props.nodes[0]);
         var id = "node-" + props.nodes[0];
         var element = document.getElementById(id);
         element.classList.remove("hide");
@@ -617,18 +619,26 @@ if (uidCookie !== "" && currentElement !== "") {
 if (uidCookie !== "" && graphElement !== "") {
     uidCookie !== -1 ?  graphElement.classList.remove("hide") : graphElement.classList.add("hide");
 }
-if (window.location.pathname === "/watchlist.html") {
-  initiateWatchlist();
-}
-if (window.location.pathname === "/history.html") {
-  graphStrata(uid);
-}
-if (window.location.pathname === "/following.html") {
-  graphSubsequence(uid);
-}
-if (window.location.pathname === "/index.html") {
-  graphUuidNetwork("10000000-1000-4000-8000-100000000000");
-}
+window.addEventListener('load', (event) => {
+    
+    if (window.location.pathname === "/watchlist.html") {
+        console.log('watchlist');
+        initiateWatchlist();
+    }
+    if (window.location.pathname === "/history.html") {
+        console.log('history');
+        graphStrata(uid);
+    }
+    if (window.location.pathname === "/following.html") {
+        console.log('following');
+        graphSubsequence(uid);
+    }
+    if (window.location.pathname === "/index.html") {
+        console.log('index');
+        graphUuidNetwork("10000000-1000-4000-8000-100000000000");
+    }
+});
+
 findLogIdx(lastUuidCookie);
 //console.log(window.location.pathname);
 setCurrentUid();
