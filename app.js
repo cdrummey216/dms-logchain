@@ -20,9 +20,20 @@ try {
 rl.on('line', (input) => {
   console.log(`Received: ${input}`);
   if (input === "save-cache") {
-    const cacheData = JSON.stringify(thisCache.data);
-    fs.writeFileSync('cache.json', cacheData);
+    const wcacheData = JSON.stringify(thisCache.data);
+    fs.writeFileSync('cache.json', wcacheData);
     console.log("Action: saved-cache");
+  }
+  if (input === "reload-cache") {
+    const rcacheData = fs.readFileSync('cache.json');
+    thisCache.data = JSON.parse(rcacheData);
+    console.log("Action: reload-cache");
+  }
+  if (input === "shutdown") {
+    const scacheData = JSON.stringify(thisCache.data);
+    fs.writeFileSync('cache.json', scacheData);
+    console.log("Action: cache saved, shutting down");
+    process.exit(0);
   }
   if (input === "echo") {
     console.log("echo");
