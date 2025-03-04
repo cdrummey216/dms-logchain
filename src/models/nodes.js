@@ -8,7 +8,7 @@ const Logchain = require('./logchain');
 
 class Nodes {
     constructor(url, port) {
-        const nodes = require(process.env.NODE_ENV=='production' ? '../../config/nodes.prod.json' : '../../config/nodes.json');
+        const nodes = require(process.env.NODE_ENV=='production' ? '../../config/nodes.prod.json' : '../../config/nodes.current.json');
         const currentURL = url + ':' + port;
         this.list = [];
 
