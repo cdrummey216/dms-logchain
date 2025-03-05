@@ -16,7 +16,23 @@ class Nodes {
             if (nodes[i].indexOf(currentURL) == -1)
                 this.list.push(nodes[i]);
     }
-
+    
+    addUniqueObjects(array) {
+      const uniqueArray = [];
+      const seenObjects = new Set();
+    
+      for (const obj of array) {
+        const stringifiedObj = JSON.stringify(obj);
+    
+        if (!seenObjects.has(stringifiedObj)) {
+          uniqueArray.push(obj);
+          seenObjects.add(stringifiedObj);
+        }
+      }
+    
+      return uniqueArray;
+    }
+    
     resolve(res, logchain) {
         let completed = 0;
         let nNodes = this.list.length;
