@@ -17,37 +17,64 @@ class Nodes {
                 this.list.push(nodes[i]);
     }
     
-    addUniqueObjects(array) {
-      const uniqueArray = [];
-      const seenObjects = new Set();
-    
-      for (const obj of array) {
-        const stringifiedObj = JSON.stringify(obj);
-    
-        if (!seenObjects.has(stringifiedObj)) {
-          uniqueArray.push(obj);
-          seenObjects.add(stringifiedObj);
-        }
-      }
-    
-      return uniqueArray;
-    }
-    
     resolve(res, logchain) {
         let completed = 0;
         let nNodes = this.list.length;
         let response = [];
         let errorCount = 0;
-
+        const uniqueArray = [];
+        const seenObjects = new Set();
+        
         this.list.forEach(function(node) {
             fetch(node + '/logchain')
                 .then(function(resp) {
                     return resp.json();
                 })
-                .then(function(respLogchain) {
-                    if (logchain.logs.length < respLogchain.length) {
-                        logchain.updateLogs(respLogchain);
+                .then(function(respLogchain) {                    
+                    var counter = 0;
+                    for (const obj of respLogchain) {
+                        const stringifiedObj = JSON.stringify(obj);
+                        //obj["hash"] = "test";
+                        if (!seenObjects.has(stringifiedObj)) {                            
+                            if (obj["previousHash"] == "0000000000000000") {
+                                if (counter == 0) {
+                                    uniqueArray.push(obj);
+                                    seenObjects.add(stringifiedObj);
+                                    console.log("previousHash counter: " + counter); 
+                                }
+                            }
+                            else {
+                                uniqueArray.push(obj);
+                                seenObjects.add(stringifiedObj);
+                                console.log("obj.hash: " + counter +" "+ JSON.stringify(obj["hash"]));
+                            }
+                            //uniqueArray.push(obj);
+                            //seenObjects.add(stringifiedObj);
+                            //console.log("obj.hash: " + counter +" "+ JSON.stringify(obj["hash"]));
+                        }
+                        counter++;
+                    }
+                    uniqueArray.sort((a, b) => {
+                    //console.log("a.index "+a.index);
+                        const indexA = a.index;
+                        const indexB = b.index;
+                        if (indexA == indexB) {
+                            return 1;
+                        }
+                        if (indexA < indexB) {
+                            return -1;
+                        }
+                        if (indexA > indexB) {
+                            return 1;
+                        }
+                        
+                        return 0;
+                    });
+                    if (logchain.logs.length < uniqueArray.length) {//new entries
+                        logchain.updateLogs(uniqueArray);
                         response.push({synced: node});
+                        console.log("logchain.logs.length: " + logchain.logs.length);
+                        console.log("uniqueArray.length: " + uniqueArray.length);
                     } else {
                         response.push({noaction: node});
                     }
@@ -71,6 +98,22 @@ class Nodes {
         });
     }
 
+    addUniqueObjects(array) {
+      const uniqueArray = [];
+      const seenObjects = new Set();
+    
+      for (const obj of array) {
+        const stringifiedObj = JSON.stringify(obj);
+    
+        if (!seenObjects.has(stringifiedObj)) {
+          uniqueArray.push(obj);
+          seenObjects.add(stringifiedObj);
+        }
+      }
+    
+      return uniqueArray;
+    }
+    
     broadcast() {
         this.list.forEach(function(node) {
             fetch(node + '/resolve')
