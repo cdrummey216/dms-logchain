@@ -24,14 +24,14 @@ class Nodes {
         let errorCount = 0;
         const uniqueArray = [];
         const seenObjects = new Set();
-        
+        var counter = 0;
         this.list.forEach(function(node) {
             fetch(node + '/logchain')
                 .then(function(resp) {
                     return resp.json();
                 })
                 .then(function(respLogchain) {                    
-                    var counter = 0;
+                    
                     for (const obj of respLogchain) {
                         const stringifiedObj = JSON.stringify(obj);
                         //obj["hash"] = "test";
@@ -54,11 +54,19 @@ class Nodes {
                         }
                         counter++;
                     }
+                    //console.log("uniqueArray "+JSON.stringify(uniqueArray));
                     uniqueArray.sort((a, b) => {
                     //console.log("a.index "+a.index);
                         const indexA = a.index;
                         const indexB = b.index;
+                        
                         if (indexA == indexB) {
+                            console.log("indexA == indexB "+a.hash);
+                            const mergedObject = a.entries.concat(b.entries);
+                            console.log("a.entries " + JSON.stringify(a.entries));
+                            console.log("b.entries " + JSON.stringify(b.entries));
+                            console.log("Merged a.entries and b.entries" + JSON.stringify(mergedObject));
+                            a.entries = mergedObject;
                             return 1;
                         }
                         if (indexA < indexB) {
@@ -70,6 +78,7 @@ class Nodes {
                         
                         return 0;
                     });
+                    //let uniqueSortedArr = [...new Set(uniqueArray)];
                     if (logchain.logs.length < uniqueArray.length) {//new entries
                         logchain.updateLogs(uniqueArray);
                         response.push({synced: node});
