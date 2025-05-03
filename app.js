@@ -131,7 +131,7 @@ app.get('/lode/:olduuid/:timestamp/:newuuid', (req, res) => {
             fortune: "veritatem iterum",
           };
 
-          if (days < 7) {
+          if (days < 14) {
             console.log("last sign of life for " +key+ " was " +days+ " days ago." );
           }
           else {
